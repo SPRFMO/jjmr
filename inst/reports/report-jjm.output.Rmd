@@ -1,0 +1,52 @@
+---
+title: "Risk Tables"
+author: "South Pacific Regional Fisheries Management Organisation"
+date: ''
+output:
+  pdf_document:
+    fig_caption: yes
+---
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 300)
+```
+
+```{r pander, echo=FALSE, results='asis'}
+table   = summary(object, Projections = TRUE, Fmult = Fmult,
+                  BiomProj = BiomProj, CapProj = CapProj, 
+                  MRS = MRS)$proj[[1]]
+
+#Nombre de la tabla: solo numeros
+namesCol = colnames(table[[1]])
+
+#Nombre de la col F. Siempre existe.
+NameFs = paste0("Multiplier of \n", "$F_{", namesCol[1], "}$")
+
+#Nombre de las col B. Depende de la longitud de BiomProj
+nBiom = 3
+NameBs = NULL
+for(i in 1:nBiom){
+  NameBs1 = c(paste0("$B_{", namesCol[i*2], "}$"), paste0("P(", "$B_{", namesCol[i*2+1], "}$", " > ", "$B_{MSY}$) %"))
+  NameBs = c(NameBs, NameBs1)
+}
+
+#Nombre de las col C. Depende de la longitud de CapProj
+nCap = 2
+indName = 1 + nBiom * 2
+NameCt = NULL
+for(i in 1:nCap){
+  NameCt1 = paste0("Catch \n", namesCol[indName + i], " (kt)")
+  NameCt = c(NameCt, NameCt1)
+}
+
+###
+NamesCol = c(NameFs, NameBs, NameCt)
+for(i in seq_along(table)){
+  colnames(table[[i]]) = NamesCol  
+}
+ModelName = names(object)
+
+library(pander)
+panderOptions('table.split.table', Inf)
+pander(table)
+```
