@@ -1,0 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+TO_DO.txt
+cran-comments.md
+NEWS.md

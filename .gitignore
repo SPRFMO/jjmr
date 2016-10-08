@@ -1,0 +1,27 @@
+# History files
+.Rhistory
+.Rapp.history
+
+# Example code in package build process
+*-Ex.R
+.RData
+
+# RStudio files
+.Rproj.user/
+*.Rproj
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+.Rproj.user
+
+# Rcpp files
+*.o
+*.dll
+
+# vim backup
+
+*~
+
+# personal files
+TO_DO.txt
