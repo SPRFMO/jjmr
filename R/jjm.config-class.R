@@ -115,7 +115,7 @@ runJJM.jjm.config = function(models, path=NULL, output="results", input=NULL,
   
   for(i in seq_along(models)){
 	writeJJM(object = models[[i]]$Dat, outFile = models[[i]]$Ctl$dataFile, path = temp) 
-	writeJJM(object = models[[i]]$Ctl, outFile = paste0(modNames, ".ctl"), path = temp) 
+	writeJJM(object = models[[i]]$Ctl, outFile = paste0(modNames[i], ".ctl"), path = temp) 
   }
   
   runJJM.default(models = modNames, path=temp, output=output, input=temp, 

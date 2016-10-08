@@ -2120,7 +2120,7 @@ if(Projections){
   return(modelName)
 }
 
-.runJJM = function(model, output, input, exec, useGuess, guess, iprint, wait, temp=NULL, ...) {
+.runJJM = function(model, output, input, exec, useGuess, guess, profile, iprint, wait, temp=NULL, ...) {
   
   cat("\nRunning model", model, "|", as.character(Sys.time()), "\n")
   
@@ -2135,6 +2135,10 @@ if(Projections){
             basename(model), guess, iprint)
   } else {
     sprintf("%s -nox -ind %s.ctl -iprint %d", exec, basename(model), iprint)
+  }
+  
+  if(!is.null(profile)) {
+    jjm = paste(jjm)
   }
   
   start   = proc.time()  
