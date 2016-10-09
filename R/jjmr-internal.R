@@ -1194,13 +1194,23 @@ if(Projections){
   
 }
 
+.writeJJM = function(object, outFile, path = NULL){
+  
+  outFile = if(is.null(path)) outFile else file.path(path, outFile)
+  
+  .writeFiles(object = object, outFile = outFile)
+  
+  return(invisible(NULL))
+  
+}
+
 .writeFiles = function(object, outFile){
 
   xa = object
   idx = names(which(!is.na(xa)))
   
   listCtl = list()
-  for(i in seq_along(idx)){
+  for(i in seq_along(idx)) {
     listCtl[[i]] = xa[[idx[i]]]
   }
   names(listCtl) = idx
@@ -1215,14 +1225,15 @@ if(Projections){
     }
   }
   
-  fnlist <- function(x, fil){  nams = paste("#", names(x), sep = "") 
-                               for (i in seq_along(x) ){ 
-                                 cat(nams[i], "\n", file = fil, append = TRUE)
-                                  for(j in 1:nrow(x[[i]])) { 
-                                    cat(x[[i]][j,], "\n", file = fil, append = TRUE)
-                                  }
-                               }
-  }
+  fnlist <- function(x, fil) {  
+    nams = paste("#", names(x), sep = "") 
+    for(i in seq_along(x)) { 
+      cat(nams[i], "\n", file = fil, append = TRUE)
+      for(j in 1:nrow(x[[i]])) { 
+        cat(x[[i]][j,], "\n", file = fil, append = TRUE)
+        }
+      }
+    }
   
   outname = outFile
   fnlist(listCtl, outname)
@@ -2120,7 +2131,7 @@ if(Projections){
   return(modelName)
 }
 
-.runJJM = function(model, output, input, exec, useGuess, guess, profile, iprint, wait, temp=NULL, ...) {
+.runJJM = function(model, output, input, exec, useGuess, guess, piner, iprint, wait, temp=NULL, ...) {
   
   cat("\nRunning model", model, "|", as.character(Sys.time()), "\n")
   
@@ -2137,8 +2148,8 @@ if(Projections){
     sprintf("%s -nox -ind %s.ctl -iprint %d", exec, basename(model), iprint)
   }
   
-  if(!is.null(profile)) {
-    jjm = paste(jjm)
+  if(!is.null(piner)) {
+    jjm = sprintf("%s -piner %f", jjm, piner)
   }
   
   start   = proc.time()  

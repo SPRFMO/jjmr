@@ -69,6 +69,7 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
 #' @param useGuess boolean, to use an initial guess for the parameters?
 #' @param guess File with the initial guess for the parameters. If \code{NULL}, will use \code{model.par} in the output folder. 
 #' @param iprint iprint parameter for the JJM model, 100 by default.
+#' @param piner A number to start the profiling on the meanlogrec
 #' @param wait boolean, wait for the model to finish? Forced to be TRUE.
 #' @param temp character, path for a temporal directory to run models, if \code{NULL} a temporal folder is automaticaly created.
 #' @param ... Arguments passed from \code{system} function.
@@ -199,11 +200,26 @@ readExFiles = function(fileName, type, path = NULL, version = "2015MS", paramete
 
 # Write jjm files ---------------------------------------------------------------
 
-writeJJM = function(object, outFile, path = NULL){
+#' @title Run a JJM model
+#' @description Function to run one or several JJM models
+#' @param models String with the name of the models to be run.
+#' @param path Directory where the 'admb' folder is located.
+#' @param output Folder to save the outputs, 'arc' by default.
+#' @param useGuess boolean, to use an initial guess for the parameters?
+#' @param guess File with the initial guess for the parameters. If \code{NULL}, will use \code{model.par} in the output folder. 
+#' @param iprint iprint parameter for the JJM model, 100 by default.
+#' @param wait boolean, wait for the model to finish? Forced to be TRUE.
+#' @param temp character, path for a temporal directory to run models, if \code{NULL} a temporal folder is automaticaly created.
+#' @param ... Arguments passed from \code{system} function.
+#' @examples
+#' model = runJJM(models = "mod2.4")
+#' @export
+writeJJM = function(object, model=NULL, path = NULL) {
+  
+  modName = if(is.null(model)) deparse(substitute(object)) else model
 		
-	outFile = if(is.null(path)) outFile else file.path(path, outFile)
-		
-	.writeFiles(object = object, outFile = outFile)
+  .writeJJM(object = object$Dat, outFile = object$Ctl$dataFile, path = path) 
+  .writeJJM(object = object$Ctl, outFile = paste0(modName, ".ctl"), path = path) 
 	
 	return(invisible(NULL))
 	

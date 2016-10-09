@@ -40,7 +40,7 @@ print.summary.jjm.config = function(x, ...) {
 # runJJM ------------------------------------------------------------------
 
 runJJM.default = function(models, path=NULL, output="results", input=NULL, 
-                          exec=NULL, version=NULL, useGuess=FALSE, guess=NULL, 
+                          exec=NULL, version=NULL, useGuess=FALSE, guess=NULL, piner=NULL,
                           iprint=100, wait = TRUE, parallel=FALSE, 
                           temp=NULL, ...) {
   
@@ -72,7 +72,7 @@ runJJM.default = function(models, path=NULL, output="results", input=NULL,
     for(i in seq_along(models)) {
       setwd(base)
       rtime = .runJJM(model=models[i], output=output, input=input, exec=exec, 
-                      useGuess=useGuess, guess=guess[i], iprint=iprint, 
+                      useGuess=useGuess, guess=guess[i], iprint=iprint, piner=piner,
                       wait=wait, temp=temp, ...)
       res = c(res, rtime)  
     }
@@ -85,7 +85,7 @@ runJJM.default = function(models, path=NULL, output="results", input=NULL,
     res = foreach(i=seq_along(models), .combine=c) %dopar% {
       setwd(base)
       .runJJM(model=models[i], output=output, input=input, exec=exec, useGuess=useGuess, 
-              guess=guess[i], iprint=iprint, wait=wait, temp=temp, ...)  
+              guess=guess[i], iprint=iprint, piner=piner, wait=wait, temp=temp, ...)  
     }  
     
   }
@@ -106,7 +106,7 @@ runJJM.default = function(models, path=NULL, output="results", input=NULL,
 
 
 runJJM.jjm.config = function(models, path=NULL, output="results", input=NULL, 
-							exec=NULL, version=NULL, useGuess=FALSE, guess=NULL, 
+							exec=NULL, version=NULL, useGuess=FALSE, guess=NULL, piner=NULL,
 							iprint=100, wait = TRUE, parallel=FALSE, 
 							temp=NULL, ...) {
   
@@ -114,13 +114,13 @@ runJJM.jjm.config = function(models, path=NULL, output="results", input=NULL,
   if(is.null(temp)) temp = tempdir()
   
   for(i in seq_along(models)){
-	writeJJM(object = models[[i]]$Dat, outFile = models[[i]]$Ctl$dataFile, path = temp) 
-	writeJJM(object = models[[i]]$Ctl, outFile = paste0(modNames[i], ".ctl"), path = temp) 
+	.writeJJM(object = models[[i]]$Dat, outFile = models[[i]]$Ctl$dataFile, path = temp) 
+	.writeJJM(object = models[[i]]$Ctl, outFile = paste0(modNames[i], ".ctl"), path = temp) 
   }
   
   runJJM.default(models = modNames, path=temp, output=output, input=temp, 
                  exec=exec, version=version, useGuess=useGuess, guess=guess, 
-                 iprint=iprint, wait = wait, parallel=parallel, 
+                 iprint=iprint, piner=piner, wait = wait, parallel=parallel, 
                  temp=temp, ...)
   
   return(invisible())
