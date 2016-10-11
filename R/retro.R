@@ -32,7 +32,7 @@
 retro = function(model, n=5, output="results", exec=NULL, iprint=100, 
                   wait = TRUE, parallel=FALSE, temp=NULL, ...) {
   
-
+  oPath = output
   if(length(model)>1) stop("only one model is allowed.")
   modName = names(model)
   
@@ -40,6 +40,44 @@ retro = function(model, n=5, output="results", exec=NULL, iprint=100,
   for(i in 1:n) {
     mod = model[[1]]
     mod$control$Retro = i
+    models[[i]] = mod
+  }
+  
+  class(models) = c("jjm.output", class(models))
+  
+  names(models) = sprintf("%s_r%02d", modName, 1:n)
+  
+  temp = if(is.null(temp)) tempdir() else temp
+  runJJM(models, output=oPath, exec=exec, iprint=iprint, wait=wait, parallel=parallel, temp=temp)
+  
+  ifsh = grep(x=names(model[[1]]$output[[1]]), patt="F_fsh", value = TRUE)
+  ivar = c("SSB", "R", ifsh)
+  .getRetro = function(x, ind) x[ind]
+  
+  output = list()
+  output[[1]] = lapply(model[[1]]$output, FUN=.getRetro, ind=ivar)
+  for(i in 1:n) {
+    output[[i+1]] = .getRetroData(names(models)[i], output=oPath, ind=ivar)
+  }
+  names(output) = c(modName, names(models))
+  
+  oFile = file.path(oPath, paste(modName, "_retrospective.RData", sep=""))
+  save(list = "output", file=oFile)
+  return(output)
+  
+}
+
+profiler = function(model, par, values, output="results", exec=NULL, iprint=100, 
+                  wait = TRUE, parallel=FALSE, temp=NULL, ...) {
+  
+
+  if(length(model)>1) stop("only one model is allowed.")
+  modName = names(model)
+  
+  models = list()
+  for(i in seq_along(values)) {
+    mod = model[[1]]
+    mod$control[par] = 
     models[[i]] = mod
   }
   
@@ -61,10 +99,10 @@ retro = function(model, n=5, output="results", exec=NULL, iprint=100,
   }
   names(output) = c(modName, names(models))
   
+  save(list = "output", file=paste(modName, "_retrospective.RData", sep=""))
   return(output)
   
 }
-
 
 
 .getRetroData = function(model, output, ind, ...) {
