@@ -34,7 +34,9 @@
   cols$ages[]       = na.omit(.an(unlist(res1[3:4])))
   cols$lengths      = matrix(NA, ncol = 2, nrow = 1, dimnames = list("lengths", c("first length", "last length")))
   cols$lengths[]    = na.omit(c(min(Ls), max(Ls)))
-  cols$lengthbin    = numeric()
+  cols$nbins        = nL
+  cols$lengthbin    = numeric(nL)
+  cols$lengthbin[]  = Ls 
   
   #-Fisheries data
   cols$Fnum         = numeric()
@@ -1194,51 +1196,68 @@ if(Projections){
   
 }
 
-.writeJJM = function(object, outFile, path = NULL){
+.writeJJM = function(object, outFile, path = NULL, transpose=TRUE){
   
   outFile = if(is.null(path)) outFile else file.path(path, outFile)
   
-  .writeFiles(object = object, outFile = outFile)
+  .writeFiles(object = object, outFile = outFile, transpose=transpose)
   
   return(invisible(NULL))
   
 }
 
-.writeFiles = function(object, outFile){
+.writeFiles = function(object, outFile, transpose=TRUE) {
 
-  xa = object
-  idx = names(which(!is.na(xa)))
+  object$ControlFile = NULL
+  object$lengths = NULL
+  if(!is.null(object$Fnames)) 
+    object$Fnames = paste(object$Fnames, collapse="%")
+  if(!is.null(object$Inames)) 
+    object$Inames = paste(object$Inames, collapse="%")
+  
+  idx = names(which(!is.na(object)))
   
   listCtl = list()
   for(i in seq_along(idx)) {
-    listCtl[[i]] = xa[[idx[i]]]
+    listCtl[[i]] = object[[idx[i]]]
   }
   names(listCtl) = idx
   
+  listCtl = lapply(listCtl, toWrite, transpose=transpose)
   
-    for(i in seq_along(listCtl)){  
-    
-    if(class(listCtl[[i]]) == "matrix") {
-      listCtl[[i]] = listCtl[[i]]
-    } else {
-        listCtl[[i]] = t(as.matrix(listCtl[[i]]))
-    }
-  }
+  nams = paste("#", names(listCtl), sep = "") 
   
-  fnlist <- function(x, fil) {  
-    nams = paste("#", names(x), sep = "") 
-    for(i in seq_along(x)) { 
-      cat(nams[i], "\n", file = fil, append = TRUE)
-      for(j in 1:nrow(x[[i]])) { 
-        cat(x[[i]][j,], "\n", file = fil, append = TRUE)
+    for(i in seq_along(listCtl)) { 
+      append = if(i==1) FALSE else TRUE
+      cat(nams[i], "\n", file = outFile, append = append)
+      for(j in 1:nrow(listCtl[[i]])) { 
+        toOut = c(na.omit(listCtl[[i]][j,]))
+        # toOut = paste(toOut, collapse="\t")
+        if(length(toOut)>0)
+          cat(toOut, "\n", file = outFile, append = TRUE)
         }
       }
-    }
   
-  outname = outFile
-  fnlist(listCtl, outname)
-
 }
+
+toWrite = function(x, transpose=TRUE) {
+  UseMethod("toWrite")
+}
+
+toWrite.default = function(x, transpose) t(as.matrix(x))
+
+toWrite.matrix = function(x, transpose) {
+  x = if(isTRUE(transpose)) t(x) else x
+  return(x)
+}
+
+toWrite.array  = function(x, transpose) {
+  y = apply(x, 3, function(x) list(x))
+  y = lapply(y, FUN="[[", 1)
+  # y = if(isTRUE(transpose)) lapply(y, t) else y
+  return(do.call(rbind, y))
+}
+
 
 
 #.Fut_SSB_SD = function(lstOuts){
@@ -2101,7 +2120,7 @@ if(Projections){
 
 .getDatFile = function(ctl, input=NULL) {
   if(is.null(input)) input = dirname(normalizePath(ctl, mustWork=FALSE))
-  dat = scan(ctl, nlines=1, what="character", comment.char = "#", quiet=TRUE)
+  dat = scan(ctl, nlines=5, what="character", comment.char = "#", quiet=TRUE)[1]
   dat = normalizePath(file.path(input, dat), mustWork=FALSE)
   return(dat)
 }

@@ -12,8 +12,8 @@
 #' @author Ricardo Oliveros-Ramos, Wencheng Lau-Medrano, Giancarlo Moron 
 #' Josymar Torrejon and Niels Hintzen
 #' @seealso Joint Jack Mackerel Repository
-#' \code{\link{https://github.com/SPRFMO/jack_mackerel}}
-#' @keywords jjmR
+#' \code{\link{https://github.com/SPRFMO/jjm}}
+#' @keywords jjmr
 #' 
 #' 
 NULL
@@ -85,37 +85,37 @@ runJJM = function(models, ...) {
 
 #' @title Generate Assessment plots from single model
 #' @description Function to generate plots from results of readJJM function
-#' @param outputObject Object ob class outputs.
+#' @param object Object ob class outputs.
 #' @param ... Extra arguments
 #' @examples
 #' model = readJJM(modelName = "mod2.4")
-#' diagnostics(outputObject = model)
+#' diagnostics(object = model)
 #' @export
-diagnostics = function(outputObject, ...) {
+diagnostics = function(object, ...) {
   
   # Take an output object and get diagnostic plots extracting outputs, data and YPR
   output = list()
   
-  for(i in seq_along(outputObject)) {
+  for(i in seq_along(object)) {
      
-    jjmStocks = outputObject[[i]]$output
-    version = outputObject[[i]]$info$data$version
+    jjmStocks = object[[i]]$output
+    version = object[[i]]$info$data$version
 	
     output[[i]] = list()
     
     for(j in seq_along(jjmStocks)) {
 	
 		if(version != "2015MS")	{
-			outputObject[[i]]$data$wt_temp = outputObject[[i]]$data$Pwtatage[,1]
-			outputObject[[i]]$data$mt_temp = outputObject[[i]]$data$Pmatatage[,1]
-			toJjm.in = outputObject[[i]]$data
+			object[[i]]$data$wt_temp = object[[i]]$data$Pwtatage[,1]
+			object[[i]]$data$mt_temp = object[[i]]$data$Pmatatage[,1]
+			toJjm.in = object[[i]]$data
 		} else {
-			outputObject[[i]]$control$wt_temp = t(outputObject[[i]]$control$Pwtatage)[,j]
-			outputObject[[i]]$control$mt_temp = t(outputObject[[i]]$control$Pmatatage)[,j]
-			toJjm.in = c(outputObject[[i]]$data, outputObject[[i]]$control)
+			object[[i]]$control$wt_temp = t(object[[i]]$control$Pwtatage)[,j]
+			object[[i]]$control$mt_temp = t(object[[i]]$control$Pmatatage)[,j]
+			toJjm.in = c(object[[i]]$data, object[[i]]$control)
 		}
 	  
-      output[[i]][[j]] = .diagnostics(jjm.info = outputObject[[i]]$info$output,
+      output[[i]][[j]] = .diagnostics(jjm.info = object[[i]]$info$output,
                                   jjm.out  = jjmStocks[[j]], 
                                   jjm.in   = toJjm.in, ...)
       
@@ -125,7 +125,7 @@ diagnostics = function(outputObject, ...) {
     
   }
   
-  names(output) = names(outputObject)
+  names(output) = names(object)
   # Return a jjm.diag object
   class(output) = c("jjm.diag", class(output))
   return(output)
@@ -150,92 +150,75 @@ combineModels = function(...)
   return(output)
 }
 
-
-# Read external files ---------------------------------------------------------------
-
-readExFiles = function(fileName, type, path = NULL, version = "2015MS", parameters = FALSE,  
-					   parData, nameFishery, nameIndex, nAges, nStock = NULL){
-	
-    fileName = if(is.null(path)) fileName else file.path(path, fileName)
-	
-	if( type != "data" & type != "control") stop("File must be data or control type")
-	
-	if(type == "data"){
-		outList = .read.datEx(filename = fileName, version = version)
-	}
-	
-	if(type == "control"){
-		if(is.null(nStock)) stop("The number of stocks is necessary")
-
-		if(parameters){
-			info = list()
-			info$fisheryNames = .splitPor(parData$nameFish)
-			info$indexModel = .splitPor(parData$nameIndex)
-			info$nStock = nStock
-			info$filename = fileName
-			infoDat = list()
-			infoDat$age = c(1, parData$LastAge)
-		} 
-		if(!parameters){
-			info = list()
-			info$fisheryNames = nameFishery
-			info$indexModel = nameIndex
-			info$nStock = nStock
-			info$filename = fileName
-			infoDat = list()
-			infoDat$age = c(1, nAges)
-		}
-			
-		if(version != "2015MS"){ 
-			outList = .read.ctl(filename = fileName, info = info, infoDat = infoDat)
-			} else {
-			outList = .read.ctlMS(filename = fileName, info = info, infoDat = infoDat)
-			}
-	}
-	
-	return(outList)
-	
-}
-
-
 # Write jjm files ---------------------------------------------------------------
 
-#' @title Run a JJM model
-#' @description Function to run one or several JJM models
-#' @param models String with the name of the models to be run.
-#' @param path Directory where the 'admb' folder is located.
-#' @param output Folder to save the outputs, 'arc' by default.
-#' @param useGuess boolean, to use an initial guess for the parameters?
-#' @param guess File with the initial guess for the parameters. If \code{NULL}, will use \code{model.par} in the output folder. 
-#' @param iprint iprint parameter for the JJM model, 100 by default.
-#' @param wait boolean, wait for the model to finish? Forced to be TRUE.
-#' @param temp character, path for a temporal directory to run models, if \code{NULL} a temporal folder is automaticaly created.
-#' @param ... Arguments passed from \code{system} function.
+#' @title Write dat and ctl files from a JJM model stored in R
+#' @description Function write to the disk dat and ctl files
+#' @param object An object of class jjm.config or jjm.output.
+#' @param path Directory where the configuration files will be written.
 #' @examples
-#' model = runJJM(models = "mod2.4")
+#' writeJJM(mod1)
 #' @export
-writeJJM = function(object, model=NULL, path = NULL) {
-  
-  modName = if(is.null(model)) deparse(substitute(object)) else model
-		
-  .writeJJM(object = object$Dat, outFile = object$Ctl$dataFile, path = path) 
-  .writeJJM(object = object$Ctl, outFile = paste0(modName, ".ctl"), path = path) 
-	
-	return(invisible(NULL))
-	
+writeJJM = function(object, path, ...) {
+UseMethod("writeJJM")
 }
 
+writeJJM.jjm.output = function(object, path = NULL) {
+  
+  for(i in seq_along(object)) {
+    obj = object[[i]]
+    .writeJJM(object = obj$data, outFile = obj$control$dataFile, path = path) 
+    .writeJJM(object = obj$control, outFile = paste0(names(object)[i], ".ctl"), path = path, transpose=FALSE) 
+  }
+	
+	return(invisible(NULL))
+}
 
+# writeJJM.jjm.config = function(object, path = NULL) {
+#   
+#   modName = if(is.null(model)) deparse(substitute(object)) else model
+#   
+#   .writeJJM(object = object$Dat, outFile = object$Ctl$dataFile, path = path) 
+#   .writeJJM(object = object$Ctl, outFile = paste0(modName, ".ctl"), path = path)   
+#   
+#   return(invisible(NULL))
+# }
 # Read jjm config ---------------------------------------------------------------
 
-readConfig = function(data, control, ...){
+#' @title Read dat and ctl files from disk to create a jjm.config object.
+#' @description Store in an R object (of class jjm.config) the dat and ctl files needed
+#' to run a model.
+#' @param data Path to the data file.
+#' @param control Path to the control file.
+#' @param ... Additional arguments passed to other functions.
+#' @examples
+#' readJJMConfig(mod1)
+#' @export
+readJJMConfig = function(data, control, ...){
+    UseMethod("readJJMConfig")
+}
+
+readJJMConfig.default = function(data, control, ...){
 		
-  output <- .getJjmCongif(data = data, control = control, ...)
+  ctl  = .getCtlFile(model=model, path=path) # path to ctl file
+  dat  = .getDatFile(ctl=ctl, input=input) # path to dat file
+  
+  output <- .getJjmConfig(data = data, control = control, ...)
   
   return(output)
 	
 }
 
+readJJMConfig.jjm.output = function(data, control, ...){
+  
+  ctl  = .getCtlFile(model=model, path=path) # path to ctl file
+  dat  = .getDatFile(ctl=ctl, input=input) # path to dat file
+  
+  output <- .getJjmConfig(data = data, control = control, ...)
+  
+  return(output)
+  
+}
 
 # Combine jjm config ---------------------------------------------------------------
 
@@ -246,3 +229,50 @@ combineConfig = function(...){
   return(output)
 	
 }
+
+# Read external files ---------------------------------------------------------------
+
+readExFiles = function(fileName, type, path = NULL, version = "2015MS", parameters = FALSE,  
+                       parData, nameFishery, nameIndex, nAges, nStock = NULL){
+  
+  fileName = if(is.null(path)) fileName else file.path(path, fileName)
+  
+  if( type != "data" & type != "control") stop("File must be data or control type")
+  
+  if(type == "data"){
+    outList = .read.datEx(filename = fileName, version = version)
+  }
+  
+  if(type == "control"){
+    if(is.null(nStock)) stop("The number of stocks is necessary")
+    
+    if(parameters){
+      info = list()
+      info$fisheryNames = .splitPor(parData$nameFish)
+      info$indexModel = .splitPor(parData$nameIndex)
+      info$nStock = nStock
+      info$filename = fileName
+      infoDat = list()
+      infoDat$age = c(1, parData$LastAge)
+    } 
+    if(!parameters){
+      info = list()
+      info$fisheryNames = nameFishery
+      info$indexModel = nameIndex
+      info$nStock = nStock
+      info$filename = fileName
+      infoDat = list()
+      infoDat$age = c(1, nAges)
+    }
+    
+    if(version != "2015MS"){ 
+      outList = .read.ctl(filename = fileName, info = info, infoDat = infoDat)
+    } else {
+      outList = .read.ctlMS(filename = fileName, info = info, infoDat = infoDat)
+    }
+  }
+  
+  return(outList)
+  
+}
+
