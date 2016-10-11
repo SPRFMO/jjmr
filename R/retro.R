@@ -30,7 +30,7 @@
 # }
 
 retro = function(model, n=5, output="results", exec=NULL, iprint=100, 
-                  wait = TRUE, parallel=FALSE, ...) {
+                  wait = TRUE, parallel=FALSE, temp=NULL, ...) {
   
 
   if(length(model)>1) stop("only one model is allowed.")
@@ -47,15 +47,15 @@ retro = function(model, n=5, output="results", exec=NULL, iprint=100,
   
   names(models) = sprintf("%s_r%02d", modName, 1:n)
   
-  temp = tempdir()
+  temp = if(is.null(temp)) tempdir() else temp
   runJJM(models, output=output, exec=exec, iprint=iprint, wait=wait, parallel=parallel, temp=temp)
   
-  ifsh = grep(x=names(x), patt="F_fsh", value = TRUE)
+  ifsh = grep(x=names(model[[1]]$output[[1]]), patt="F_fsh", value = TRUE)
   ivar = c("SSB", "R", ifsh)
   .getRetro = function(x, ind) x[ind]
   
   output = list()
-  output[[1]] = lapply(model$output, FUN=.getRetro, ind=ind)
+  output[[1]] = lapply(model$output, FUN=.getRetro, ind=ivar)
   for(i in 1:n) {
     output[[i+1]] = .getRetroData(model, output=file.path(temp, names(models)[i]), ind=ivar)
   }
