@@ -60,6 +60,7 @@ retro = function(model, n=5, output="results", exec=NULL, iprint=100,
     output[[i+1]] = .getRetroData(names(models)[i], output=oPath, ind=ivar)
   }
   names(output) = c(modName, names(models))
+  class(output) = c("jjm.retro", class(output))
   
   oFile = file.path(oPath, paste(modName, "_retrospective.RData", sep=""))
   save(list = "output", file=oFile)
@@ -100,6 +101,7 @@ profiler = function(model, par, values, output="results", exec=NULL, iprint=100,
   names(output) = c(modName, names(models))
   
   output = sortRetro(output)
+  class(output) = c("jjm.retro", class(output))
   
   save(list = "output", file=paste(modName, "_retrospective.RData", sep=""))
   return(output)
@@ -109,10 +111,10 @@ profiler = function(model, par, values, output="results", exec=NULL, iprint=100,
 
 .getRetroData = function(model, output, ind, ...) {
   
-  yld  = jjmR:::.getYldFile(model=model, output=output)
-  reps = jjmR:::.getRepFiles(model=model, output=output)
+  yld  = .getYldFile(model=model, output=output)
+  reps = .getRepFiles(model=model, output=output)
   
-  out = jjmR:::.readOutputsJJM(files=reps, yld=yld)
+  out = .readOutputsJJM(files=reps, yld=yld)
   
   .getRetro = function(x, ind) x[ind]
   output = lapply(out, FUN = .getRetro, ind=ind)
