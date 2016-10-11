@@ -14,6 +14,7 @@ Depends:
     PBSadmb,
     rmarkdown,
     doBy,
+    doSNOW,
     foreach,
     pander,
     latticeExtra,
