@@ -163,12 +163,13 @@ writeJJM = function(object, path, ...) {
 UseMethod("writeJJM")
 }
 
-writeJJM.jjm.output = function(object, path = NULL) {
+writeJJM.jjm.output = function(object, path = NULL, ctlPath=path, datPath=path) {
   
   for(i in seq_along(object)) {
     obj = object[[i]]
-    .writeJJM(object = obj$data, outFile = obj$control$dataFile, path = path) 
-    .writeJJM(object = obj$control, outFile = paste0(names(object)[i], ".ctl"), path = path, transpose=FALSE) 
+    .writeJJM(object = obj$data, outFile = obj$control$dataFile, path = datPath) 
+    .writeJJM(object = obj$control, outFile = paste0(names(object)[i], ".ctl"), path = ctlPath, 
+              transpose=FALSE) 
   }
 	
 	return(invisible(NULL))
