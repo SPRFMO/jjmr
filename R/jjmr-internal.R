@@ -2039,7 +2039,6 @@ toWrite.array  = function(x, transpose) {
 }
 
 .checkModels = function(models) {
-  models = tolower(models)
   models = unique(models)
   check = file.exists(paste0(models, ".ctl"))
   if(any(!check)) {
