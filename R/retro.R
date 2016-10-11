@@ -12,31 +12,38 @@
 #' @examples
 #' readJJMConfig(mod1)
 #' @export
-retro = function(models, n=5, output="results", exec=NULL, iprint=100, 
-                 wait = TRUE, parallel=FALSE, temp=NULL, ...) {
-  
-  
-  output = lapply(models, FUN=.retro, n=n, results=results, exec=exec, iprint=iprint,
-                  wait=wait, parallel=parallel, ...)
-  
-  return(output)
-  
-}
+# retro = function(models, n=5, output="results", exec=NULL, iprint=100, 
+#                  wait = TRUE, parallel=FALSE, temp=NULL, ...) {
+#   
+#   output = list()
+#   for(i in seq_along(models)) {
+#     
+#     output[[i]] = .retro(model=models[i], n=n, output=output, exec=exec, iprint=iprint, 
+#                    wait=wait, parallel=parallel, ...)
+#     
+#   }
+#   
+#   names(output) = names(models)
+#   
+#   return(output)
+#   
+# }
 
-
-
-.retro = function(model, n=5, output="results", exec=NULL, iprint=100, 
+retro = function(model, n=5, output="results", exec=NULL, iprint=100, 
                   wait = TRUE, parallel=FALSE, ...) {
   
+
   if(length(model)>1) stop("only one model is allowed.")
   modName = names(model)
   
   models = list()
   for(i in 1:n) {
-    mod = model
+    mod = model[[1]]
     mod$control$Retro = i
     models[[i]] = mod
   }
+  
+  class(models) = c("jjm.output", class(models))
   
   names(models) = sprintf("%s_r%02d", modName, 1:n)
   
