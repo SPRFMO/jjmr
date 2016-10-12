@@ -4,11 +4,11 @@
 \alias{retro}
 \title{Run a retrospective analysis diagnostic for a JJM model}
 \usage{
-retro(models, n = 5, output = "results", exec = NULL, iprint = 100,
-  wait = TRUE, parallel = FALSE, temp = NULL, ...)
+retro(model, n = 5, output = "results", exec = NULL, parallel = FALSE,
+  temp = NULL, wait = TRUE, iprint = 100, ...)
 }
 \arguments{
-\item{models}{An object of class jjm.output}
+\item{model}{An object of class jjm.output}
 
 \item{n}{Number of years to run a retrospective analysis.}
 
@@ -19,6 +19,10 @@ retro(models, n = 5, output = "results", exec = NULL, iprint = 100,
 \item{parallel}{Boolean flag to run models in parallel.}
 
 \item{temp}{Folder to run retrospective analysis. If NULL, a temporal folder is used.}
+
+\item{wait}{Boolen, passed to runJJM, should we wait for the parameter estimation?}
+
+\item{iprint}{Command line argument passed to jjm.}
 
 \item{...}{Additional arguments passed to other functions.}
 }

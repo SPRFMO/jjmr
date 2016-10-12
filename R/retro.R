@@ -2,35 +2,20 @@
 
 #' @title Run a retrospective analysis diagnostic for a JJM model
 #' @description Run a retrospective analysis for a model
-#' @param models An object of class jjm.output
+#' @param model An object of class jjm.output
 #' @param n Number of years to run a retrospective analysis.
 #' @param output Path to save results.
 #' @param exec Path to JJM executable file.
 #' @param parallel Boolean flag to run models in parallel.
 #' @param temp Folder to run retrospective analysis. If NULL, a temporal folder is used. 
+#' @param wait Boolen, passed to runJJM, should we wait for the parameter estimation?
+#' @param iprint Command line argument passed to jjm.
 #' @param ... Additional arguments passed to other functions.
 #' @examples
 #' readJJMConfig(mod1)
 #' @export
-# retro = function(models, n=5, output="results", exec=NULL, iprint=100, 
-#                  wait = TRUE, parallel=FALSE, temp=NULL, ...) {
-#   
-#   output = list()
-#   for(i in seq_along(models)) {
-#     
-#     output[[i]] = .retro(model=models[i], n=n, output=output, exec=exec, iprint=iprint, 
-#                    wait=wait, parallel=parallel, ...)
-#     
-#   }
-#   
-#   names(output) = names(models)
-#   
-#   return(output)
-#   
-# }
-
-retro = function(model, n=5, output="results", exec=NULL, iprint=100, 
-                  wait = TRUE, parallel=FALSE, temp=NULL, ...) {
+retro = function(model, n=5, output="results", exec=NULL, parallel=FALSE,  
+                  temp=NULL, wait = TRUE,  iprint=100, ...) {
   
   oPath = output
   if(length(model)>1) stop("only one model is allowed.")
@@ -68,8 +53,24 @@ retro = function(model, n=5, output="results", exec=NULL, iprint=100,
   oFile = file.path(oPath, paste(modName, "_retrospective.RData", sep=""))
   save(list = "output", file=oFile)  
   return(output)
-  
 }
+
+# retro = function(models, n=5, output="results", exec=NULL, iprint=100, 
+#                  wait = TRUE, parallel=FALSE, temp=NULL, ...) {
+#   
+#   output = list()
+#   for(i in seq_along(models)) {
+#     
+#     output[[i]] = .retro(model=models[i], n=n, output=output, exec=exec, iprint=iprint, 
+#                    wait=wait, parallel=parallel, ...)
+#     
+#   }
+#   
+#   names(output) = names(models)
+#   
+#   return(output)
+#   
+# }
 
 
 .getRetroData = function(model, output, ind, ...) {
