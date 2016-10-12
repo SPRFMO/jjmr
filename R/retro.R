@@ -139,8 +139,8 @@ sortRetro = function(object) {
 
 # plot method -------------------------------------------------------------
 
-plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, ...) {
-  lapply(x, FUN = .plotRetroByStock, var=var, what=what, lty=lty, lwd=lwd, std=std, ...)
+plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0.12, ...) {
+  lapply(x, FUN = .plotRetroByStock, var=var, lty=lty, lwd=lwd, std=std, alpha=alpha, ...)
   return(invisible())
 }
 
@@ -150,7 +150,7 @@ plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, ...) {
   return(x/as.numeric(x[,1,1]) - 1)
 }
 
-.plotRetro = function(object, var, ci = TRUE, lty=1, lwd=2,std=TRUE, ...) {
+.plotRetro = function(object, var, ci = TRUE, lty=1, lwd=2, std=TRUE, alpha=0.12, ...) {
   # ssb = object[[iStock]][[var]]
   ssb = object[[var]]
   ylab = var
@@ -169,7 +169,7 @@ plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, ...) {
   
   for(i in seq_len(n)) {
     if(isTRUE(ci)) {
-      .linesCI(ssb$time, ssb$var[, c(1,3,4), i], lwd=3, col=i)
+      .linesCI(ssb$time, ssb$var[, c(1,3,4), i], lwd=3, col=i, alpha=alpha)
     } else {
       lines(ssb$time, ssb$var[, 1, i], lwd=3, col=i)
     }
@@ -183,14 +183,14 @@ plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, ...) {
 }
 
 
-.plotRetroByStock = function(x, var=NULL, lty=1, lwd=2, std=TRUE, ...) {
+.plotRetroByStock = function(x, var=NULL, lty=1, lwd=2, std=TRUE, alpha=0.12, ...) {
   if(is.null(var)) var = names(x)
   for(iVar in var)
-    .plotRetro(object=x, var=iVar, lty=lty, lwd=lwd,std=std, ...)
+    .plotRetro(object=x, var=iVar, lty=lty, lwd=lwd,std=std, alpha=alpha, ...)
   return(invisible())
 }
 
-.linesCI = function(x, y, col="grey", alpha=0.7, ...) {
+.linesCI = function(x, y, col="grey", alpha=0.12, ...) {
   
   ind = complete.cases(y)
   y = y[ind, ]

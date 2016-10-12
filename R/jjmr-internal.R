@@ -2155,7 +2155,7 @@ toWrite.array  = function(x, transpose) {
   
   tmpDir = .setParallelJJM(model=model, input=input, exec=exec, tmpDir=temp)  
   setwd(tmpDir)
-  # .cleanad()
+  .cleanad()
 
   exec = if(Sys.info()[["sysname"]]=="Windows") "jjm" else "./jjm"
   
@@ -2171,7 +2171,7 @@ toWrite.array  = function(x, transpose) {
   }
   
   start   = proc.time()  
-  # system(jjm, wait = TRUE, ...)
+  system(jjm, wait = TRUE, ...)
   elapsed = proc.time() - start
   
   cat("\n\tModel run finished. Time elapsed =", elapsed[3],"s.")
