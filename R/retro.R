@@ -176,6 +176,7 @@ plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0
       lines(ssb$time, ssb$var[, 1, i], lwd=3, col=i)
     }
   }
+  mtext(var, 3, line=-2, adj=0.05, cex=1.8)
   axis(1)
   axis(2, las=2)
   box()
