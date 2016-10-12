@@ -139,8 +139,8 @@ sortRetro = function(object) {
 
 # plot method -------------------------------------------------------------
 
-plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0.12, ...) {
-  lapply(x, FUN = .plotRetroByStock, var=var, lty=lty, lwd=lwd, std=std, alpha=alpha, ...)
+plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0.12, xlim=NULL, ylim=NULL, ...) {
+  lapply(x, FUN = .plotRetroByStock, var=var, ci=ci, lty=lty, lwd=lwd, std=std, alpha=alpha, xlim=xlim, ylim=ylim, ...)
   return(invisible())
 }
 
@@ -150,11 +150,13 @@ plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0
   return(x/as.numeric(x[,1,1]) - 1)
 }
 
-.plotRetro = function(object, var, ci = TRUE, lty=1, lwd=2, std=TRUE, alpha=0.12, ...) {
+.plotRetro = function(object, var, ci = TRUE, lty=1, lwd=2, std=TRUE, alpha=0.12, xlim=NULL, ylim=NULL, ...) {
   # ssb = object[[iStock]][[var]]
   ssb = object[[var]]
   ylab = var
-  
+
+  ci = if(dim(ssb$var)[2]==4) ci else FALSE
+    
   if(isTRUE(std)) {
     ssb$var = .normRetro(ssb$var)
     ylab = sprintf("%s relative change", var)
@@ -162,8 +164,8 @@ plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0
   
   n = dim(ssb$var)[3]
   
-  xlim = range(ssb$time, na.rm=TRUE)
-  ylim = range(ssb$var[, c(1,3,4), ], na.rm=TRUE)*c(0.8, 1.2)
+  if(is.null(xlim)) xlim = range(ssb$time, na.rm=TRUE)
+  if(is.null(ylim)) ylim = range(ssb$var[, -2, ], na.rm=TRUE)*c(0.8, 1.2)
   plot.new()
   plot.window(xlim=xlim, ylim=ylim)
   
@@ -183,10 +185,10 @@ plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0
 }
 
 
-.plotRetroByStock = function(x, var=NULL, lty=1, lwd=2, std=TRUE, alpha=0.12, ...) {
+.plotRetroByStock = function(x, var=NULL, lty=1, lwd=2, std=TRUE, ci=TRUE, alpha=0.12, xlim=NULL, ylim=NULL, ...) {
   if(is.null(var)) var = names(x)
   for(iVar in var)
-    .plotRetro(object=x, var=iVar, lty=lty, lwd=lwd,std=std, alpha=alpha, ...)
+    .plotRetro(object=x, var=iVar, ci=ci, lty=lty, lwd=lwd,std=std, alpha=alpha, xlim=xlim, ylim=ylim, ...)
   return(invisible())
 }
 
