@@ -60,47 +60,9 @@ retro = function(model, n=5, output="results", exec=NULL, iprint=100,
     output[[i+1]] = .getRetroData(names(models)[i], output=oPath, ind=ivar)
   }
   names(output) = c(modName, names(models))
-  class(output) = c("jjm.retro", class(output))
-  
-  oFile = file.path(oPath, paste(modName, "_retrospective.RData", sep=""))
-  save(list = "output", file=oFile)
-  return(output)
-  
-}
 
-profiler = function(model, par, values, output="results", exec=NULL, iprint=100, 
-                  wait = TRUE, parallel=FALSE, temp=NULL, ...) {
-  
-
-  if(length(model)>1) stop("only one model is allowed.")
-  modName = names(model)
-  
-  models = list()
-  for(i in seq_along(values)) {
-    mod = model[[1]]
-    mod$control[par] = 
-    models[[i]] = mod
-  }
-  
-  class(models) = c("jjm.output", class(models))
-  
-  names(models) = sprintf("%s_r%02d", modName, 1:n)
-  
-  temp = if(is.null(temp)) tempdir() else temp
-  runJJM(models, output=output, exec=exec, iprint=iprint, wait=wait, parallel=parallel, temp=temp)
-  
-  ifsh = grep(x=names(model[[1]]$output[[1]]), patt="F_fsh", value = TRUE)
-  ivar = c("SSB", "R", ifsh)
-  .getRetro = function(x, ind) x[ind]
-  
-  output = list()
-  output[[1]] = lapply(model$output, FUN=.getRetro, ind=ivar)
-  for(i in 1:n) {
-    output[[i+1]] = .getRetroData(model, output=file.path(temp, names(models)[i]), ind=ivar)
-  }
-  names(output) = c(modName, names(models))
-  
   output = sortRetro(output)
+
   class(output) = c("jjm.retro", class(output))
   
   oFile = file.path(oPath, paste(modName, "_retrospective.RData", sep=""))
@@ -171,4 +133,42 @@ sortRetro = function(object) {
   names(out) = stockNames
   return(out)
   
+}
+
+
+# plot method -------------------------------------------------------------
+
+plot.jjm.retro = function(x, var=NULL, what=1, lty=1, lwd=2, std=TRUE, ...) {
+  lapply(x, FUN = .plotRetroByStock, var=var, what=what, lty=lty, lwd=lwd, std=std, ...)
+  return(invisible())
+}
+
+# auxiliar
+
+.normRetro = function(x) {
+  return(x/as.numeric(x[,,1]) - 1)
+}
+
+.plotRetro = function(object, var, what=1, lty=1, lwd=2,std=TRUE, ...) {
+  # ssb = object[[iStock]][[var]]
+  ssb = object[[var]]
+  ssb$var = ssb$var
+  ylab = var
+  if(isTRUE(std)) {
+    ssb$var = .normRetro(ssb$var)
+    ylab = sprintf("%s relative change", var)
+  }
+  n = dim(ssb$var)[3]
+  matplot(ssb$time, ssb$var[,what,], type="l", lty=lty, lwd=lwd,
+          xlab="", ylab=ylab, las=1, ...)
+  legend("topright", lty=lty, col=1:n, legend = 1:n - 1, lwd=lwd, bty="n")
+  return(invisible())
+}
+
+
+.plotRetroByStock = function(x, var=NULL, what=1, lty=1, lwd=2, std=TRUE, ...) {
+  if(is.null(var)) var = names(x)
+  for(iVar in var)
+    .plotRetro(object=x, var=iVar, what=what, lty=lty, lwd=lwd,std=std, ...)
+  return(invisible())
 }
