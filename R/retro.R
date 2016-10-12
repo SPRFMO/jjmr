@@ -103,7 +103,8 @@ profiler = function(model, par, values, output="results", exec=NULL, iprint=100,
   output = sortRetro(output)
   class(output) = c("jjm.retro", class(output))
   
-  save(list = "output", file=paste(modName, "_retrospective.RData", sep=""))
+  oFile = file.path(oPath, paste(modName, "_retrospective.RData", sep=""))
+  save(list = "output", file=oFile)  
   return(output)
   
 }
@@ -132,7 +133,7 @@ profiler = function(model, par, values, output="results", exec=NULL, iprint=100,
   return(newx)
 }
 
-.sortRetro = function(object, iStock, iVar) {
+.sortRetro = function(object, iStock, iVar, n) {
   x = lapply(object, FUN=.xtract, s=iStock, i=iVar)
   nrowmax = max(sapply(x, nrow))
   x = do.call(cbind, lapply(x, FUN=.mutateMatrix, n=nrowmax))
@@ -143,14 +144,14 @@ profiler = function(model, par, values, output="results", exec=NULL, iprint=100,
   return(output)
 }
 
-.sortRetroByStock = function(object, iStock) {
+.sortRetroByStock = function(object, iStock, n) {
   
   nV = length(object[[1]][[1]])
   varNames = names(object[[1]][[1]])
   
   out = list()
   for(iVar in seq_len(nV)) {
-    out[[iVar]] = .sortRetro(object, iStock, iVar)
+    out[[iVar]] = .sortRetro(object=object, iStock=iStock, iVar=iVar, n=n)
   }
   names(out) = varNames
   
@@ -165,7 +166,7 @@ sortRetro = function(object) {
   
   out = list()
   for(iStock in seq_len(nS)) {
-    out[[iStock]] = .sortRetroByStock(object, iStock)
+    out[[iStock]] = .sortRetroByStock(object=object, iStock=iStock, n=n)
   }
   names(out) = stockNames
   return(out)
