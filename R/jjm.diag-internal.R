@@ -2452,9 +2452,9 @@
   return(pic)
 }
 
-.kobeFUN = function(jjm.out) {
+.kobeFUN = function(jjm.out, pic.add = NULL, add = FALSE, col = "black", xlim = NULL, ylim = NULL) {
   kob = jjm.out$msy_mt
-  col = "black"
+  col = col
   
   F_Fmsy = kob[, 4]
   B_Bmsy = kob[, 13]
@@ -2462,8 +2462,10 @@
   
   n = length(B_Bmsy)
   
-  xlim = range(pretty(c(0, B_Bmsy)))
-  ylim = range(pretty(c(0, F_Fmsy)))
+  if(is.null(xlim))
+    xlim = range(pretty(c(0, B_Bmsy)))
+  if(is.null(ylim))
+    ylim = range(pretty(c(0, F_Fmsy)))
 
   x = seq(0, max(xlim), by = 0.1)
   y = seq(0, max(ylim), by = 0.1)
@@ -2477,15 +2479,21 @@
 
   b = xyplot(F_Fmsy[c(1,n)] ~ B_Bmsy[c(1,n)], type = "p", col = col, pch = c(15, 17), panel = mypanel, cex = 0.8)
   c = xyplot(F_Fmsy ~ B_Bmsy, type = "b", col = col, pch = 19, cex = 0.5)
-
-  pic = xyplot(y ~ x, type="n", xlim = xlim, ylim = ylim, xlab = toExpress("B/B[msy]"), ylab = toExpress("F/F[msy]"),
-               main="Kobe plot", scales = list(alternating = 1, tck = c(1,0))) + 
-    layer_(panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
-		layer_(panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
-		layer_(panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +
-		layer_(panel.xblocks(x, x >= 1, col = rgb(0, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
-		as.layer(b)+
-		as.layer(c)
+  
+  if(!isTRUE(add)){
+    pic = xyplot(y ~ x, type="n", xlim = xlim, ylim = ylim, xlab = toExpress("B/B[msy]"), ylab = toExpress("F/F[msy]"),
+                 main="Kobe plot", scales = list(alternating = 1, tck = c(1,0))) + 
+      layer_(panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
+      layer_(panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
+      layer_(panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +
+      layer_(panel.xblocks(x, x >= 1, col = rgb(0, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
+      as.layer(b)+
+      as.layer(c)
+  } else {
+    pic = pic.add+
+      as.layer(b)+
+      as.layer(c)
+  }
 
   return(pic)
  
