@@ -294,3 +294,94 @@ readExFiles = function(fileName, type, path = NULL, version = "2015MS", paramete
   
 }
 
+# Kobe plot ---------------------------------------------------------------
+
+#' @title Kobe plot
+#' @description This function create a kobe plot from JJM  model outputs
+#' @param model Name for new model created with the \code{readJJM} function.
+#' @param add boolean, add to an existing kobe plot?
+#' @param col color for the lines and points.
+#' @param Bref Reference point for B/B_MSY, default=1.
+#' @param Fref Reference point for F/F_MSY, default=1.
+#' @param Blim Limit reference point for B/B_MSY, default=0.5.
+#' @param Flim Limit reference point for F/F_MSY, default=1.5.
+#' @param xlim 'x' axis limits.
+#' @param ylim 'y' axis limits.
+#' @param ... Additional parameters passed to plot.
+#' @examples
+#' kobe(model)
+kobe = function(obj, add=FALSE, col="black", stock=1, Bref = 1, Fref = 1, Blim = Bref, Flim = Fref,  
+                xlim = NULL, ylim = NULL, ...) {
+  
+  for(i in seq_along(obj)){
+    
+    object = obj[[i]]
+    
+    .kobe1(x = object, stock=stock, add=add, col=col, Bref = Bref, Fref = Fref, 
+           Blim = Bref, Flim = Fref, xlim = xlim, ylim = ylim, ...)
+    
+  }
+  
+  return(invisible())
+  
+}
+
+
+.kobe1 = function(x, stock, add, col, Bref, Fref, 
+                  Blim, Flim, xlim, ylim, ...) {
+  
+  #if(class(obj) == "jjm.output") kob = x$output$msy_mt
+  #if(class(obj) == "jjm.diag") kob = x$
+  
+  kob = x$output[[stock]]$msy_mt
+  
+  F_Fmsy = kob[,4]
+  B_Bmsy = kob[,13]
+  years  = kob[,1]
+  
+  n = length(B_Bmsy)
+  
+  if(!isTRUE(add)) {
+    
+    if(is.null(xlim)) xlim= range(pretty(c(0, B_Bmsy)))
+    if(is.null(ylim)) ylim= range(pretty(c(0, F_Fmsy)))
+    
+    plot.new()
+    plot.window(xlim=xlim, ylim=ylim, 
+                xaxs="i", yaxs="i")
+    par(xpd = TRUE)
+    
+    ylim = par()$usr[3:4]
+    zero = ylim[1]
+    
+    polygon(x=c(0, 0, Bref, Bref),
+            y=c(Fref, ylim[2], ylim[2], Fref),
+            col=rgb(1, 165/255, 0, alpha = 0.5), border=NA)
+    polygon(x=c(0, 0, Bref, Bref),
+            y=c(zero, Fref, Fref, zero),
+            col=rgb(1, 1, 0, alpha = 0.5), border=NA)
+    polygon(x=c(Bref, Bref, xlim[2], xlim[2]),
+            y=c(Fref, ylim[2], ylim[2], Fref),
+            col=rgb(1, 1, 0, alpha = 0.5), border=NA)
+    polygon(x=c(Bref, Bref, xlim[2], xlim[2]),
+            y=c(zero, Fref, Fref, zero),
+            col = rgb(0, 1, 0, alpha = 0.5), border=NA)
+    polygon(x=c(0, 0, Blim, Blim),
+            y=c(Flim, ylim[2], ylim[2], Flim),
+            col=rgb(1, 0, 0, alpha = 0.5), border=NA)
+    
+    mtext(toExpress("F/F[msy]"), 2, line=2.5)
+    mtext(toExpress("B/B[msy]"), 1, line=2.5)
+    axis(1, las=1)
+    axis(2, las=2)
+    box()
+  }
+  
+  text(B_Bmsy[c(1,n)] + 0.01, F_Fmsy[c(1,n)] + 0.1, labels=range(years), cex=0.6,
+       adj=-0.2, col=col)
+  lines(B_Bmsy, F_Fmsy, type="b", pch=19, cex=0.5, col=col)
+  points(B_Bmsy[c(1,n)], F_Fmsy[c(1,n)], pch=c(15, 17), col=col, cex=0.8)
+  
+  return(invisible())
+  
+}
