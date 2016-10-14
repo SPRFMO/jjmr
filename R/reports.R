@@ -34,7 +34,7 @@ report.jjm.output = function(object, format="word", output=NULL, Fmult = NULL,
   
 }
 
-report.jjm.diag = function(object, format="pdf", output=NULL, tangle=FALSE, 
+report.jjm.diag = function(object, format="word", output=NULL, tangle=FALSE, 
                            tidy=TRUE, open=TRUE, ...) {
   
   modelName = deparse(substitute(object))
