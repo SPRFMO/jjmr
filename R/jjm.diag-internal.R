@@ -513,7 +513,7 @@
                                                 main = NA,
                                                 scales = list(alternating = 1, tck = c(1,0), 
                                                               y = list(relation = "free", rot = 0),
-                                                              axs = "i"))
+                                                              axs = "r"))
   
   # 22b: Summary sheet 2
   outPlots$summarySheet2 = .fit_summarySheet2FUN(jjm.out,
