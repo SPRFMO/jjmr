@@ -1233,7 +1233,7 @@
                     yr      = names(which.max(table(tmpres$year[which(tmpres$data %in% y)])))
                     colidx  = tmpres$cohort[which(tmpres$data %in% y & tmpres$year == .an(yr))]
                     panel.barchart(x[first], y[first], horizontal = FALSE, origin = 0, box.width = 1, col = cols[colidx])
-                    panel.points(x[second], y[second], pch = 19, col = 1, cex = 0.5)
+                    panel.lines(x[second], y[second], lty = 1, col = 1, cex = 0.5)
                   }, ...)
     
     ageFitsCatch[[iFleet]] = pic
@@ -1495,7 +1495,7 @@
                       yr      = names(which.max(table(tmpres$year[which(tmpres$data %in% y)])))
                       colidx  = tmpres$cohort[which(tmpres$data %in% y & tmpres$year == .an(yr))]
                       panel.barchart(x[first], y[first], horizontal = FALSE, origin = 0, box.width = 1, col = cols[colidx])
-                      panel.points(x[second], y[second], pch = 19, col = 1, cex = 0.5)
+                      panel.lines(x[second], y[second], lty=1, col = 1, cex = 0.5)
                     }, ...) else NULL
     
     ageFitsSurvey[[iSurvey]] = pic
