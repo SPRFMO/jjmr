@@ -5,6 +5,11 @@
   res   = data.frame(year = rep(years, dims[2]), data = c(data), class = rep(class, each = dims[1]))
   return(res)}
 
+.mygray = function(n) {
+  out = seq_len(n)*0.5/n + 0.25
+  return(gray(out))
+}
+
 .bubbles         = function(x, data, bub.scale = 2.5, col = c("black", "black"),...){
   dots = list(...)
   dots$data = data
@@ -287,7 +292,8 @@
                                                   main = "Age composition in fleets",
                                                   zlab = "", ylab = "")    
     
-    cols       = rainbow(length(ages))
+    cols  = .mygray(length(ages))
+
     inputPlots$ageFleetsPlots = .input_ageFleetsPlotsFUN(jjm.in, ages, cols, ageFleets,
                                                           xlab = "Age", ylab = "Proportion at age")
   }
@@ -390,7 +396,7 @@
   }
   
   # 14: Absolute catch by fleet modelled and observed
-  cols  = rainbow(11)  
+  # cols  = rainbow(11)  
   outPlots$predictedObservedCatchesByFleet = .fit_predictedObservedCatchesByFleetFUN(Nfleets, cols, jjm.out,
                                                                                      scales = list(alternating = 1, tck = c(1,0)),
                                                                                      main = "Predicted and observed catches by fleet",
@@ -415,7 +421,7 @@
   }
   
   # 16: Log residuals in survey
-  cols  = rainbow(length(ages))  
+  cols  =  .mygray(length(ages))  
   outPlots$standardizedSurveyResiduals = .fit_standardizedSurveyResidualsFUN(Nsurveys, jjm.out, cols,
                                                                               xlab = "Years", ylab = "Log residuals", 
                                                                               main = "Standardized survey residuals",
@@ -450,7 +456,7 @@
                                    xlab = "Age", ylab = "Years", main = "F at age")
   
   # 19b: Prop F at age
-  cols  = rainbow(length(ages))
+  cols  =  .mygray(length(ages))
   outPlots$fProportionAtAGe = .fit_fProportionAtAGeFUN(jjm.out, ages, cols,
                                                        xlab = "Years", ylab = "Proportion of F at age", 
                                                        main = "F proportion at age",
@@ -465,7 +471,7 @@
                                    xlab = "Age", ylab = "Years", main = "N at age")
   
   #19c: Prop N at age
-  cols  = rainbow(length(ages))
+  cols  =  .mygray(length(ages))
   outPlots$nProportionAtAGe = .fit_nProportionAtAGeFUN(jjm.out, cols, ages,
                                                        xlab = "Years", ylab = "Proportion of N at age", 
                                                        main = "Proportion at age",
@@ -526,7 +532,7 @@
                                                                main = "Uncertainty of key parameters")
                                                                
   # 23: Mature - immature ratio
-  cols  = rainbow(length(ages))
+  cols  =  .mygray(length(ages))
   outPlots$matureInmatureFishes = .fit_matureInmatureFishesFUN(jjm.out, 
                                                                 lwd = 3, lty = c(1, 3), col = 1,
                                                                 ylab = "Biomass in kt", xlab = "Years", 
@@ -1207,7 +1213,7 @@
   ikey$points$col       = c("white", "black")
   ikey$points$cex       = c(0, 1.1)
   
-  cols  = rainbow(length(ages))
+  cols  =  .mygray(length(ages))
   ageFitsCatch = list()
   for(iFleet in c(jjm.out$Fshry_names)[.an(ageFleets)]){
     tmpres  = subset(res, fleet == iFleet)
@@ -1285,7 +1291,8 @@
   ikey$points$col       = c("white", "black")
   ikey$points$cex       = c(0, 1.1)
   
-  cols  = rainbow(length(lengths))
+  cols  = .mygray(length(lengths))
+  
   lengthFitsCatch = list()
   for(iFleet in c(jjm.out$Fshry_names)[.an(lgtFleets)]){
     tmpres  = subset(res, fleet == iFleet)
@@ -1468,7 +1475,7 @@
   ikey$points$col       = c("white", "black")
   ikey$points$cex       = c(0, 1.1)
   
-  cols  = rainbow(length(ages))
+  cols  =  .mygray(length(ages))
   ageFitsSurvey = list()
   for(iSurvey in c(jjm.out$Index_names)[.an(ageSurveys)]){
     tmpres = subset(res, survey == iSurvey)
@@ -2162,13 +2169,14 @@
 .fit_stockRecruitmentFUN2 = function(jjm.out, cols, ...)
 {
   
-  cols  = rainbow(10)
   county = grep("SR_Curve_years_", names(jjm.out))
   colyear = NULL
   for(i in seq_along(county)){
     namesy = paste("SR_Curve_years_", i, sep = "")
     colyear[[i]] = jjm.out[[namesy]]
   }
+  cols  = rainbow(length(colyear))
+  
   
   res1 = data.frame(jjm.out[["Stock_Rec"]][, c(2, 4)])
   res1$class = "Simulated"
