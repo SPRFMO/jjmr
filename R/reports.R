@@ -3,7 +3,7 @@ report = function(object, format, output, ...) {
   UseMethod("report")
 }
 
-report.jjm.output = function(object, format="latex", output=NULL, Fmult = NULL,
+report.jjm.output = function(object, format="word", output=NULL, Fmult = NULL,
                              BiomProj = NULL, CapProj = NULL, verbose=TRUE,
                              MRS = NULL, tangle=FALSE, tidy=TRUE, ...) {
   
@@ -24,8 +24,9 @@ report.jjm.output = function(object, format="latex", output=NULL, Fmult = NULL,
     file.rename(from=basename(f1), to=paste0(modelName, ".R"))
   }
   
-  outputFile = paste0(modelName, "_output.pdf")
-  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output)
+  extFormat = if(format=="word") "docx" else format
+  outputFile = paste0(modelName, "_output.", extFormat)
+  render(skeleton, paste(format, "_document", sep=""), output_file=outputFile, output_dir=output)
   
   if(isTRUE(open)) shell.exec(outputFile)
   
@@ -33,7 +34,7 @@ report.jjm.output = function(object, format="latex", output=NULL, Fmult = NULL,
   
 }
 
-report.jjm.diag = function(object, format="latex", output=NULL, tangle=FALSE, 
+report.jjm.diag = function(object, format="pdf", output=NULL, tangle=FALSE, 
                            tidy=TRUE, open=TRUE, ...) {
   
   modelName = deparse(substitute(object))
@@ -47,9 +48,10 @@ report.jjm.diag = function(object, format="latex", output=NULL, tangle=FALSE,
     f1 = gsub(pattern = ".Rmd", replacement = "\\.R", skeleton)
     file.rename(from=basename(f1), to=paste0(modelName, ".R"))
   }
-  
-  outputFile = paste0(modelName, "_diag.pdf")
-  render(skeleton, c("pdf_document"), output_file=outputFile, output_dir=output)
+ 
+  extFormat = if(format=="word") "docx" else format
+  outputFile = paste0(modelName, "_diag.", extFormat)
+  render(skeleton, paste(format, "_document", sep=""), output_file=outputFile, output_dir=output)
   
   if(isTRUE(open)) shell.exec(outputFile)
   
