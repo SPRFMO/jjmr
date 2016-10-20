@@ -1,16 +1,25 @@
-
-report = function(object, format, output, ...) {
+#' @title Create a report from JJM outputs
+#' @description Function to create and save reports in PDF and MS Word formats.
+#' @param object The object to create the report with, can be of classes 
+#' 'jjm.output' or 'jjm.diag' as created with \code{readJJM} or \code{diagnostics}.
+#' @param format Format for the report: either "pdf", "html" or "word".
+#' @param output Path to save the report, by default the working directory.
+#' @param tangle Boolean, if TRUE the R script to create the report is produced.
+#' @param tidy Boolean, if TRUE the intermediate files (Rmd, tex) are deleted. 
+#' @param ... Extra arguments
+#' @examples
+#' report(mod0.0)
+#' @export
+report = function(object, format, output, tidy, tangle, ...) {
   UseMethod("report")
 }
 
-report.jjm.output = function(object, format="word", output=NULL, Fmult = NULL,
+report.jjm.output = function(object, format="pdf", output=NULL, Fmult = NULL,
                              BiomProj = NULL, CapProj = NULL, verbose=TRUE,
                              MRS = NULL, tangle=FALSE, tidy=TRUE, ...) {
   
-  if(is.null(BiomProj)) nBiom = 3
-  if(!is.null(BiomProj)) nBiom = length(BiomProj)
-  if(is.null(CapProj)) nCap = 2
-  if(!is.null(CapProj)) nCap = length(CapProj)
+  nBiom =  if(is.null(BiomProj))  3 else length(BiomProj)
+  nCap = if(is.null(CapProj))  2 else length(CapProj)
   
   modelName = deparse(substitute(object))
   
@@ -34,7 +43,7 @@ report.jjm.output = function(object, format="word", output=NULL, Fmult = NULL,
   
 }
 
-report.jjm.diag = function(object, format="word", output=NULL, tangle=FALSE, 
+report.jjm.diag = function(object, format="pdf", output=NULL, tangle=FALSE, 
                            tidy=TRUE, open=TRUE, ...) {
   
   modelName = deparse(substitute(object))

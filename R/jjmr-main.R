@@ -228,14 +228,22 @@ readJJMConfig.jjm.output = function(data, control, ...){
 #' @description Shortcut to fit, run, read and plot a JJM model
 #' @param mod A character specifying the name of a model (by it's ctl filename).
 #' @param est Boolean, should we run the parameter estimation for a model?
-#' @param exec Path to the JJM executable file.
+#' @param exec Path to the JJM executable file. By default, 'jjms' will be used.
 #' @param path Directory where the configuration files will be written.
 #' @examples
 #' writeJJM(mod1)
 #' @export
-runit = function(mod, est=FALSE, exec="jjm", path="config", input="input", output="results",
+runit = function(mod, est=FALSE, exec=NULL, path="config", input="input", output="results",
                  version="2015MS", pdf=FALSE, portrait=TRUE) {
-  if(isTRUE(est)) runJJM(mod, path=path, input=input, output=output, version=version, exec=exec)
+  
+  
+  if(isTRUE(est)) {
+    if(is.null(exec)) {
+      exec = "jjms"
+      message(sprintf("Using '%s' as default executable, check 'exec' argument.", exec))
+    }
+    runJJM(mod, path=path, input=input, output=output, version=version, exec=exec)
+  }
   modtmp = readJJM(mod, path=path, input=input, output=output, version=version)
   
   dims = if(isTRUE(portrait)) c(9,7) else c(7,9)
