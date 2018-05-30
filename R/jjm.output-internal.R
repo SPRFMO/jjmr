@@ -498,6 +498,7 @@
     
     dataShape$combine=""
     dataShape$listStocks=paste(dataShape$model,dataShape$stocks)
+    dataShape$listStocks=factor(dataShape$listStocks, levels = unique(dataShape$listStocks))
     
     if(stack == !TRUE){
       pic = xyplot(mean ~ year | combine, data = dataShape, groups = listStocks, ylab = "", 
