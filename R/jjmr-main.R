@@ -216,42 +216,49 @@ writeJJM.jjm.output = function(object, path = NULL, ctlPath=path, datPath=path, 
 #' @title Read dat and ctl files from disk to create a jjm.config object.
 #' @description Store in an R object (of class jjm.config) the dat and ctl files needed
 #' to run a model.
-#' @param data Path to the data file.
-#' @param control Path to the control file.
+#'
+#' @param model Model object or outputs
+#' @param path Path to the ctl file
+#' @param input Path to the input files
 #' @param ... Additional arguments passed to other functions.
+#'
 #' @examples
 #' \dontrun{
 #' readJJMConfig(mod1)
 #' }
 #' @export
-readJJMConfig = function(data, control, ...){
+readJJMConfig = function(model, path, input=NULL, ...) {
     UseMethod("readJJMConfig")
 }
 
 #' @export
-readJJMConfig.default = function(data, control, ...){
+readJJMConfig.default = function(model, path=NULL, input=NULL, ...) {
 		
   ctl  = .getCtlFile(model=model, path=path) # path to ctl file
   dat  = .getDatFile(ctl=ctl, input=input) # path to dat file
   
-  output <- .getJjmConfig(data = data, control = control, ...)
+  output = .getJjmConfig(data = dat, control = ctl, ...)
   
   return(output)
 	
 }
 
 #' @export
-readJJMConfig.jjm.output = function(data, control, ...){
+readJJMConfig.jjm.output = function(model, path, input=NULL, ...) {
   
   ctl  = .getCtlFile(model=model, path=path) # path to ctl file
   dat  = .getDatFile(ctl=ctl, input=input) # path to dat file
   
-  output <- .getJjmConfig(data = data, control = control, ...)
+  output = .getJjmConfig(data = dat, control = ctl, ...)
   
   return(output)
   
 }
 
+.getJjmConfig = function(data, control, ...) {
+  # where is this function
+  return(invisible())
+}
 
 # RUnit -------------------------------------------------------------------
 

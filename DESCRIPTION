@@ -1,8 +1,8 @@
 Package: jjmR
 Type: Package
 Title: Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel model
-Version: 0.3
-Date: 2015-08-12
+Version: 1.2018.01
+Date: 2018-05-30
 Description: Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel model.
 Authors@R: c( person("Ricardo", "Oliveros-Ramos", email = "roliveros@imarpe.gob.pe", role = c("cre", "aut")), person("Wencheng",
     "Lau-Medrano", role = "aut"), person("Giancarlo", "Moron", role = "aut"), person("Josymar", "Torrejon-Magallanes", role = "aut"),
@@ -23,7 +23,7 @@ Imports:
     lattice,
     latticeExtra,
     pander,
-    PBSadmb,
+    PBSmodelling,
     rmarkdown,
     stats,
     utils

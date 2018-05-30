@@ -4,12 +4,14 @@
 \alias{readJJMConfig}
 \title{Read dat and ctl files from disk to create a jjm.config object.}
 \usage{
-readJJMConfig(data, control, ...)
+readJJMConfig(model, path, input = NULL, ...)
 }
 \arguments{
-\item{data}{Path to the data file.}
+\item{model}{Model object or outputs}
 
-\item{control}{Path to the control file.}
+\item{path}{Path to the ctl file}
+
+\item{input}{Path to the input files}
 
 \item{...}{Additional arguments passed to other functions.}
 }

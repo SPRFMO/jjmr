@@ -8,12 +8,12 @@
 #' @param exec Path to JJM executable file.
 #' @param parallel Boolean flag to run models in parallel.
 #' @param temp Folder to run retrospective analysis. If NULL, a temporal folder is used. 
-#' @param wait Boolen, passed to runJJM, should we wait for the parameter estimation?
+#' @param wait Boolean, passed to runJJM, should we wait for the parameter estimation?
 #' @param iprint Command line argument passed to jjm.
 #' @param ... Additional arguments passed to other functions.
 #' @examples
 #' \dontrun{
-#' readJJMConfig(mod1)
+#' retro(mod1)
 #' }
 #' @export
 retro = function(model, n=5, output="results", exec=NULL, parallel=FALSE,  
@@ -37,7 +37,7 @@ retro = function(model, n=5, output="results", exec=NULL, parallel=FALSE,
   temp = if(is.null(temp)) tempdir() else temp
   runJJM(models, output=oPath, exec=exec, iprint=iprint, wait=wait, parallel=parallel, temp=temp)
   
-  ifsh = grep(x=names(model[[1]]$output[[1]]), patt="F_fsh", value = TRUE)
+  ifsh = grep(x=names(model[[1]]$output[[1]]), pattern="F_fsh", value = TRUE)
   ivar = c("SSB", "R", ifsh)
   .getRetro = function(x, ind) x[ind]
   

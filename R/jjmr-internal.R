@@ -1154,7 +1154,7 @@ if(Projections){
     
     for(k in seq_along(Bp)){
       
-      futdat = subset(fut, year == Bp[k] & fut$nModel == i)
+      futdat = fut[fut$year == Bp[k] & fut$nModel == i, ]
       Bs = futdat[,2][c(5:4,2:1,3)]
       rsktable[1,] = (1 - pnorm(mrs, futdat$SSB, futdat$SD))*100
       tabla[,1] = Fs
@@ -1291,7 +1291,7 @@ toWrite.array  = function(x, transpose) {
 #  if(class(lstOuts)[1] == 'jjm.output') {
 #    Name = lstOuts$output$info$model
 #    lstOuts = list(lstOuts$output$output)
-#  }else {
+#F  }else {
 #    Name = lstOuts$info
 #    lstOuts = lstOuts$combined$output
 #  }

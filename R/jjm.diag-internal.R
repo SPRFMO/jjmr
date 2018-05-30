@@ -117,7 +117,7 @@
 }
 
 # Function that have not been used
-.check.zero      = function(x){
+check.zero = function(x){
   ## checks if there are zeros and replaces them with 1.
   x[x == 0] = 1
   return(x)
@@ -1205,7 +1205,7 @@
   res$cohort = (res$year - res$age) %% length(ages) + 1
   
   ikey          = simpleKey(text = c("Observed", "Predicted"),
-                             points = TRUE, lines = FALSE, rect = TRUE, columns = 2, cex = 1.5)
+                             points = TRUE, lines = FALSE, rectangles = TRUE, columns = 2, cex = 1.5)
   ikey$rectangles$alpha = c(1, 0)
   ikey$rectangles$col   = "white"
   ikey$rectangles$lty   = c(1, 0)
@@ -1283,7 +1283,7 @@
   res$cohort = res$length
   
   ikey                  = simpleKey(text = c("Observed", "Predicted"),
-                                     points = TRUE, lines = FALSE, rect = TRUE, columns = 2, cex = 1.5)
+                                     points = TRUE, lines = FALSE, rectangles = TRUE, columns = 2, cex = 1.5)
   ikey$rectangles$alpha = c(1, 0)
   ikey$rectangles$col   = "white"
   ikey$rectangles$lty   = c(1, 0)
@@ -1340,7 +1340,7 @@
   res$data = .an(.ac(res$data))
   
   ikey                  = simpleKey(text = c("Observed","Predicted"), cex = 1.5,
-                                    points = FALSE, lines = TRUE, rect = TRUE, columns = 2)
+                                    points = FALSE, lines = TRUE, rectangles = TRUE, columns = 2)
   ikey$rectangles$alpha = c(1,0)
   ikey$rectangles$col   = "grey"
   ikey$rectangles$lty   = c(1,0)
@@ -1467,7 +1467,7 @@
   res$cohort = (res$year - res$age) %% length(ages) + 1
   
   ikey                  = simpleKey(text = c("Observed","Predicted"),
-                                     points = TRUE, lines = FALSE, rect = TRUE, columns = 2, cex = 1.5)
+                                     points = TRUE, lines = FALSE, rectangles = TRUE, columns = 2, cex = 1.5)
   ikey$rectangles$alpha = c(1, 0)
   ikey$rectangles$col   = "white"
   ikey$rectangles$lty   = c(1, 0)

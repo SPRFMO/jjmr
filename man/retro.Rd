@@ -20,7 +20,7 @@ retro(model, n = 5, output = "results", exec = NULL, parallel = FALSE,
 
 \item{temp}{Folder to run retrospective analysis. If NULL, a temporal folder is used.}
 
-\item{wait}{Boolen, passed to runJJM, should we wait for the parameter estimation?}
+\item{wait}{Boolean, passed to runJJM, should we wait for the parameter estimation?}
 
 \item{iprint}{Command line argument passed to jjm.}
 
@@ -31,6 +31,6 @@ Run a retrospective analysis for a model
 }
 \examples{
 \dontrun{
-readJJMConfig(mod1)
+retro(mod1)
 }
 }

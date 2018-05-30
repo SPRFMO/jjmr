@@ -14,3 +14,11 @@ NULL
 NULL
 #' @importFrom rmarkdown render
 NULL
+#' @importFrom PBSmodelling writeList readList
+NULL
+#' @importFrom grid grid.newpage grid.draw
+NULL
+#' @importFrom gridExtra arrangeGrob
+NULL
+#' @importFrom latticeExtra panel.xblocks as.layer layer layer_
+NULL
