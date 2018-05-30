@@ -3,24 +3,30 @@ Type: Package
 Title: Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel model
 Version: 0.3
 Date: 2015-08-12
-Description: Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel
-    model
+Description: Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel model.
 Authors@R: c( person("Ricardo", "Oliveros-Ramos", email = "roliveros@imarpe.gob.pe", role = c("cre", "aut")), person("Wencheng",
     "Lau-Medrano", role = "aut"), person("Giancarlo", "Moron", role = "aut"), person("Josymar", "Torrejon-Magallanes", role = "aut"),
     person("Niels", "Hintzen", email = "niels.hintzen@wur.nl", role = "aut"),
     person("Enrique", "Ramos-Vasquez", role = "ctb"))
 License: GPL-2
 Depends:
-    PBSadmb,
-    rmarkdown,
+    R (>= 2.15)
+Imports:
     doBy,
     doSNOW,
     foreach,
-    pander,
+    graphics,
+    grDevices,
+    grid,
+    gridExtra,
+    knitr,
+    lattice,
     latticeExtra,
-    gridExtra
-Imports:
-    grid
+    pander,
+    PBSadmb,
+    rmarkdown,
+    stats,
+    utils
+VignetteBuilder: knitr
 LazyData: TRUE
-Encoding: utf-8
 RoxygenNote: 6.0.1

@@ -1,0 +1,16 @@
+#' @import lattice
+NULL
+#' @importFrom grDevices adjustcolor col2rgb dev.off gray heat.colors rainbow rgb
+NULL 
+#' @importFrom graphics axis box legend lines mtext par plot plot.new plot.window points polygon text
+NULL
+#' @importFrom stats aggregate complete.cases density na.omit pnorm sd update
+NULL
+#' @importFrom utils read.table
+NULL
+#' @importFrom foreach foreach %dopar%
+NULL
+#' @importFrom knitr knit
+NULL
+#' @importFrom rmarkdown render
+NULL
