@@ -20,6 +20,7 @@ readJJM(model, path = NULL, output = "results", input = NULL,
 Function to read models and list if models and generate results
 }
 \examples{
+\dontrun{
 readJJM(model = "mod2.4")
 }
-
+}

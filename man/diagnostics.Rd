@@ -15,7 +15,8 @@ diagnostics(object, ...)
 Function to generate plots from results of readJJM function
 }
 \examples{
+\dontrun{
 model = readJJM(modelName = "mod2.4")
 diagnostics(object = model)
 }
-
+}

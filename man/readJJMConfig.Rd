@@ -18,6 +18,7 @@ Store in an R object (of class jjm.config) the dat and ctl files needed
 to run a model.
 }
 \examples{
+\dontrun{
 readJJMConfig(mod1)
 }
-
+}

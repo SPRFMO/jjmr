@@ -30,6 +30,7 @@ retro(model, n = 5, output = "results", exec = NULL, parallel = FALSE,
 Run a retrospective analysis for a model
 }
 \examples{
+\dontrun{
 readJJMConfig(mod1)
 }
-
+}

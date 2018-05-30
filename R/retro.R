@@ -12,7 +12,9 @@
 #' @param iprint Command line argument passed to jjm.
 #' @param ... Additional arguments passed to other functions.
 #' @examples
+#' \dontrun{
 #' readJJMConfig(mod1)
+#' }
 #' @export
 retro = function(model, n=5, output="results", exec=NULL, parallel=FALSE,  
                   temp=NULL, wait = TRUE,  iprint=100, ...) {

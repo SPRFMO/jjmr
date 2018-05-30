@@ -15,6 +15,7 @@ writeJJM(object, path, ...)
 Function write to the disk dat and ctl files
 }
 \examples{
+\dontrun{
 writeJJM(mod1)
 }
-
+}
