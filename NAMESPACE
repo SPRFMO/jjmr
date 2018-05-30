@@ -2,6 +2,7 @@
 
 export(combineModels)
 export(diagnostics)
+export(kobe)
 export(readJJM)
 export(readJJMConfig)
 export(report)

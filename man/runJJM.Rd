@@ -31,5 +31,7 @@ runJJM(models, ...)
 Function to run one or several JJM models
 }
 \examples{
+\dontrun{
 model = runJJM(models = "mod2.4")
+}
 }

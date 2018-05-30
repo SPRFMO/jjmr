@@ -8,7 +8,9 @@
 #' @param tidy Boolean, if TRUE the intermediate files (Rmd, tex) are deleted. 
 #' @param ... Extra arguments
 #' @examples
+#' \dontrun{
 #' report(mod0.0)
+#' }
 #' @export
 report = function(object, format, output, tidy, tangle, ...) {
   UseMethod("report")

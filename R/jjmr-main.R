@@ -27,7 +27,9 @@ NULL
 #' @param modelName alias for \code{model} (to be deprecated).
 #' @param ... Extra arguments
 #' @examples
+#' \dontrun{
 #' readJJM(model = "mod2.4")
+#' }
 #' @export
 readJJM = function(model, path = NULL, output="results", input=NULL, 
                    version="2015MS", ...) {
@@ -74,7 +76,9 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
 #' @param temp character, path for a temporal directory to run models, if \code{NULL} a temporal folder is automaticaly created.
 #' @param ... Arguments passed from \code{system} function.
 #' @examples
+#' \dontrun{
 #' model = runJJM(models = "mod2.4")
+#' }
 #' @export
 runJJM = function(models, ...) {
   UseMethod("runJJM")
@@ -88,8 +92,10 @@ runJJM = function(models, ...) {
 #' @param object Object ob class outputs.
 #' @param ... Extra arguments
 #' @examples
+#' \dontrun{
 #' model = readJJM(modelName = "mod2.4")
 #' diagnostics(object = model)
+#' }
 #' @export
 diagnostics = function(object, ...) {
   
@@ -137,11 +143,13 @@ diagnostics = function(object, ...) {
 #' with combined models.
 #' @param ... One or more output objects, to be combined to list of models.
 #' @examples
+#' \dontrun{
 #' mod1 <- runJJM(modelName = "mod2.1")
 #' mod2 <- runJJM(modelName = "mod2.2")
 #' mod3 <- runJJM(modelName = "mod2.3")
 #' 
 #' mod_123 = combineModels(mod1, mod2, mod3)
+#' }
 #' @export
 combineModels = function(...)
 {
@@ -157,7 +165,9 @@ combineModels = function(...)
 #' @param object An object of class jjm.config or jjm.output.
 #' @param path Directory where the configuration files will be written.
 #' @examples
+#' \dontrun{
 #' writeJJM(mod1)
+#' }
 #' @export
 writeJJM = function(object, path, ...) {
 UseMethod("writeJJM")
@@ -193,7 +203,9 @@ writeJJM.jjm.output = function(object, path = NULL, ctlPath=path, datPath=path) 
 #' @param control Path to the control file.
 #' @param ... Additional arguments passed to other functions.
 #' @examples
+#' \dontrun{
 #' readJJMConfig(mod1)
+#' }
 #' @export
 readJJMConfig = function(data, control, ...){
     UseMethod("readJJMConfig")
@@ -231,7 +243,9 @@ readJJMConfig.jjm.output = function(data, control, ...){
 #' @param exec Path to the JJM executable file. By default, 'jjms' will be used.
 #' @param path Directory where the configuration files will be written.
 #' @examples
+#' \dontrun{
 #' writeJJM(mod1)
+#' }
 #' @export
 runit = function(mod, est=FALSE, exec=NULL, path="config", input="input", output="results",
                  version="2015MS", pdf=FALSE, portrait=TRUE) {
@@ -317,7 +331,10 @@ readExFiles = function(fileName, type, path = NULL, version = "2015MS", paramete
 #' @param ylim 'y' axis limits.
 #' @param ... Additional parameters passed to plot.
 #' @examples
+#' \dontrun{
 #' kobe(model)
+#' }
+#' @export
 kobe = function(obj, add=FALSE, col="black", stock=1, Bref = 1, Fref = 1, Blim = Bref, Flim = Fref,  
                 xlim = NULL, ylim = NULL, ...) {
   

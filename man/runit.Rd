@@ -20,5 +20,7 @@ runit(mod, est = FALSE, exec = NULL, path = "config", input = "input",
 Shortcut to fit, run, read and plot a JJM model
 }
 \examples{
+\dontrun{
 writeJJM(mod1)
+}
 }

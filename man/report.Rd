@@ -24,5 +24,7 @@ report(object, format, output, tidy, tangle, ...)
 Function to create and save reports in PDF and MS Word formats.
 }
 \examples{
+\dontrun{
 report(mod0.0)
+}
 }

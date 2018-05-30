@@ -32,5 +32,7 @@ kobe(obj, add = FALSE, col = "black", stock = 1, Bref = 1, Fref = 1,
 This function create a kobe plot from JJM  model outputs
 }
 \examples{
+\dontrun{
 kobe(model)
+}
 }
