@@ -13,8 +13,7 @@ Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel model.
 1.0\cr Date: \tab 2014-08-15\cr License: \tab TBD\cr }
 }
 \seealso{
-Joint Jack Mackerel Repository
-\code{\link{https://github.com/SPRFMO/jjm}}
+Joint Jack Mackerel Repository <https://github.com/SPRFMO/jjm>
 }
 \author{
 Ricardo Oliveros-Ramos, Wencheng Lau-Medrano, Giancarlo Moron 

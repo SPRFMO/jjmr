@@ -8,9 +8,13 @@ kobe(obj, add = FALSE, col = "black", stock = 1, Bref = 1, Fref = 1,
   Blim = Bref, Flim = Fref, xlim = NULL, ylim = NULL, ...)
 }
 \arguments{
+\item{obj}{a jjm model outputs object.}
+
 \item{add}{boolean, add to an existing kobe plot?}
 
 \item{col}{color for the lines and points.}
+
+\item{stock}{Number of the stock choosen for the kobe plot.}
 
 \item{Bref}{Reference point for B/B_MSY, default=1.}
 
@@ -25,8 +29,6 @@ kobe(obj, add = FALSE, col = "black", stock = 1, Bref = 1, Fref = 1,
 \item{ylim}{'y' axis limits.}
 
 \item{...}{Additional parameters passed to plot.}
-
-\item{model}{Name for new model created with the \code{readJJM} function.}
 }
 \description{
 This function create a kobe plot from JJM  model outputs

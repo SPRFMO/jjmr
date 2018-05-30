@@ -10,6 +10,8 @@ writeJJM(object, path, ...)
 \item{object}{An object of class jjm.config or jjm.output.}
 
 \item{path}{Directory where the configuration files will be written.}
+
+\item{...}{Additional arguments}
 }
 \description{
 Function write to the disk dat and ctl files

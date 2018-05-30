@@ -4,28 +4,39 @@
 \alias{runJJM}
 \title{Run a JJM model}
 \usage{
-runJJM(models, ...)
+runJJM(models, path = NULL, output = "results", input = NULL,
+  exec = NULL, version = NULL, useGuess = FALSE, guess = NULL,
+  piner = NULL, iprint = 100, wait = TRUE, parallel = FALSE,
+  temp = NULL, ...)
 }
 \arguments{
 \item{models}{String with the name of the models to be run.}
-
-\item{...}{Arguments passed from \code{system} function.}
 
 \item{path}{Directory where the 'admb' folder is located.}
 
 \item{output}{Folder to save the outputs, 'arc' by default.}
 
+\item{input}{Input}
+
+\item{exec}{Path to the jjm executable}
+
+\item{version}{version of JJM, default to "2015MS" (2015 SC multi-stock).}
+
 \item{useGuess}{boolean, to use an initial guess for the parameters?}
 
 \item{guess}{File with the initial guess for the parameters. If \code{NULL}, will use \code{model.par} in the output folder.}
 
-\item{iprint}{iprint parameter for the JJM model, 100 by default.}
-
 \item{piner}{A number to start the profiling on the meanlogrec}
+
+\item{iprint}{iprint parameter for the JJM model, 100 by default.}
 
 \item{wait}{boolean, wait for the model to finish? Forced to be TRUE.}
 
+\item{parallel}{Should model run in parallel? A cluster need to be setup to be used with foreach.}
+
 \item{temp}{character, path for a temporal directory to run models, if \code{NULL} a temporal folder is automaticaly created.}
+
+\item{...}{Arguments passed from \code{system} function.}
 }
 \description{
 Function to run one or several JJM models

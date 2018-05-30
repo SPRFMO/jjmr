@@ -12,9 +12,13 @@ readJJM(model, path = NULL, output = "results", input = NULL,
 
 \item{path}{Directory where the 'admb' folder is located.}
 
-\item{...}{Extra arguments}
+\item{output}{Path to the model outputs directory.}
 
-\item{modelName}{alias for \code{model} (to be deprecated).}
+\item{input}{Path to model inputs directory.}
+
+\item{version}{version of JJM, default to "2015MS" (2015 SC multi-stock).}
+
+\item{...}{Extra arguments}
 }
 \description{
 Function to read models and list if models and generate results

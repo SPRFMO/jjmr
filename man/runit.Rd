@@ -15,6 +15,16 @@ runit(mod, est = FALSE, exec = NULL, path = "config", input = "input",
 \item{exec}{Path to the JJM executable file. By default, 'jjms' will be used.}
 
 \item{path}{Directory where the configuration files will be written.}
+
+\item{input}{Input}
+
+\item{output}{Folder to save the outputs, 'arc' by default.}
+
+\item{version}{version of JJM, default to "2015MS" (2015 SC multi-stock).}
+
+\item{pdf}{Produce outputs in a pdf file?}
+
+\item{portrait}{Orientation of the pdf output, default TRUE.}
 }
 \description{
 Shortcut to fit, run, read and plot a JJM model

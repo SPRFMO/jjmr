@@ -4,7 +4,7 @@
 \alias{report}
 \title{Create a report from JJM outputs}
 \usage{
-report(object, format, output, tidy, tangle, ...)
+report(object, format, output, tangle = FALSE, tidy = TRUE, ...)
 }
 \arguments{
 \item{object}{The object to create the report with, can be of classes 
@@ -14,9 +14,9 @@ report(object, format, output, tidy, tangle, ...)
 
 \item{output}{Path to save the report, by default the working directory.}
 
-\item{tidy}{Boolean, if TRUE the intermediate files (Rmd, tex) are deleted.}
-
 \item{tangle}{Boolean, if TRUE the R script to create the report is produced.}
+
+\item{tidy}{Boolean, if TRUE the intermediate files (Rmd, tex) are deleted.}
 
 \item{...}{Extra arguments}
 }
