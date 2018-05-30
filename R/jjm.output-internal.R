@@ -506,7 +506,7 @@
                    xlim = c(min(dataShape$year - 1), max(dataShape$year + 1)),
                    scales = list(alternating = 1, tck = c(1, 0), y = list(relation = "free", rot = 0)),
                    key = list(lines = list(col = cols[1:length(unique(dataShape$listStocks))], lwd = 3),
-                              text = list(unique(dataShape$listStocks))
+                              text = list(unique(as.character(dataShape$listStocks)))
                               , ...),                
                    par.settings = mtheme,
                    upper = dataShape$upper, lower = dataShape$lower,
