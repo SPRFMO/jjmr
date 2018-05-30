@@ -141,6 +141,7 @@ sortRetro = function(object) {
 
 # plot method -------------------------------------------------------------
 
+#' @export
 plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0.12, xlim=NULL, ylim=NULL, ...) {
   lapply(x, FUN = .plotRetroByStock, var=var, ci=ci, lty=lty, lwd=lwd, std=std, alpha=alpha, xlim=xlim, ylim=ylim, ...)
   return(invisible())

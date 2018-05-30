@@ -16,12 +16,13 @@
   
 }
 
-
+#' @export
 print.jjm.config = function(x, ...) {
   
   return(invisible())
 }
 
+#' @export
 summary.jjm.config = function(object,...) {
   
   output = NULL
@@ -31,6 +32,7 @@ summary.jjm.config = function(object,...) {
   return(output)  
 }
 
+#' @export
 print.summary.jjm.config = function(x, ...) {
   
   return(invisible())
@@ -39,6 +41,7 @@ print.summary.jjm.config = function(x, ...) {
 
 # runJJM ------------------------------------------------------------------
 
+#' @export
 runJJM.default = function(models, path=NULL, output="results", input=NULL, 
                           exec=NULL, version=NULL, useGuess=FALSE, guess=NULL, piner=NULL,
                           iprint=100, wait = TRUE, parallel=FALSE, 
@@ -104,6 +107,7 @@ runJJM.default = function(models, path=NULL, output="results", input=NULL,
   return(invisible(temp))
 }
 
+#' @export
 runJJM.jjm.output = function(models, path=NULL, output="results", input=NULL, 
                              exec=NULL, version=NULL, useGuess=FALSE, guess=NULL, piner=NULL,
                              iprint=100, wait = TRUE, parallel=FALSE, 
@@ -127,6 +131,7 @@ runJJM.jjm.output = function(models, path=NULL, output="results", input=NULL,
   return(invisible())
 }
 
+#' @export
 runJJM.jjm.config = function(models, path=NULL, output="results", input=NULL, 
 							exec=NULL, version=NULL, useGuess=FALSE, guess=NULL, piner=NULL,
 							iprint=100, wait = TRUE, parallel=FALSE, 

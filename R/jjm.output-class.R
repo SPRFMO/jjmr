@@ -1,5 +1,6 @@
 
 
+#' @export
 print.jjm.output = function(x, ...) {
   
   for(i in seq_along(x)){
@@ -31,6 +32,7 @@ print.jjm.output = function(x, ...) {
   
 }
 
+#' @export
 summary.jjm.output = function(object, Projections = FALSE, Fmult = NULL,
                               BiomProj = NULL, 
                               CapProj = NULL, 
@@ -72,6 +74,7 @@ summary.jjm.output = function(object, Projections = FALSE, Fmult = NULL,
   
 }
 
+#' @export
 print.summary.jjm.output = function(x, ...) {
   
   
@@ -106,6 +109,7 @@ print.summary.jjm.output = function(x, ...) {
 
 
 
+#' @export
 plot.jjm.output = function(x, what = "biomass", stack = TRUE, endvalue = FALSE, total = FALSE, combine = FALSE,
                            cols = NULL, poslegend = "right", scen = 1, ...){
   

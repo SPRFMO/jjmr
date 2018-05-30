@@ -11,8 +11,7 @@
 #' @docType package
 #' @author Ricardo Oliveros-Ramos, Wencheng Lau-Medrano, Giancarlo Moron 
 #' Josymar Torrejon and Niels Hintzen
-#' @seealso Joint Jack Mackerel Repository
-#' \code{\link{https://github.com/SPRFMO/jjm}}
+#' @seealso Joint Jack Mackerel Repository <https://github.com/SPRFMO/jjm>
 #' @keywords jjmr
 #' 
 #' 
@@ -22,10 +21,14 @@ NULL
 
 #' @title Read a model or list of models
 #' @description Function to read models and list if models and generate results
+#'
 #' @param model String with the name of model that will be readed or run.
 #' @param path Directory where the 'admb' folder is located.
-#' @param modelName alias for \code{model} (to be deprecated).
+#' @param output Path to the model outputs directory.
+#' @param input Path to model inputs directory.
+#' @param version version of JJM, default to "2015MS" (2015 SC multi-stock).
 #' @param ... Extra arguments
+#'
 #' @examples
 #' \dontrun{
 #' readJJM(model = "mod2.4")
@@ -65,22 +68,31 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
 
 #' @title Run a JJM model
 #' @description Function to run one or several JJM models
+#'
 #' @param models String with the name of the models to be run.
 #' @param path Directory where the 'admb' folder is located.
 #' @param output Folder to save the outputs, 'arc' by default.
+#' @param input Input
 #' @param useGuess boolean, to use an initial guess for the parameters?
 #' @param guess File with the initial guess for the parameters. If \code{NULL}, will use \code{model.par} in the output folder. 
 #' @param iprint iprint parameter for the JJM model, 100 by default.
 #' @param piner A number to start the profiling on the meanlogrec
 #' @param wait boolean, wait for the model to finish? Forced to be TRUE.
 #' @param temp character, path for a temporal directory to run models, if \code{NULL} a temporal folder is automaticaly created.
+#' @param exec Path to the jjm executable
+#' @param version version of JJM, default to "2015MS" (2015 SC multi-stock).
+#' @param parallel Should model run in parallel? A cluster need to be setup to be used with foreach.
 #' @param ... Arguments passed from \code{system} function.
+#'
 #' @examples
 #' \dontrun{
 #' model = runJJM(models = "mod2.4")
 #' }
 #' @export
-runJJM = function(models, ...) {
+runJJM = function(models, path=NULL, output="results", input=NULL, 
+                  exec=NULL, version=NULL, useGuess=FALSE, guess=NULL, piner=NULL,
+                  iprint=100, wait = TRUE, parallel=FALSE, 
+                  temp=NULL, ...) {
   UseMethod("runJJM")
 }
 
@@ -162,8 +174,11 @@ combineModels = function(...)
 
 #' @title Write dat and ctl files from a JJM model stored in R
 #' @description Function write to the disk dat and ctl files
+#'
 #' @param object An object of class jjm.config or jjm.output.
 #' @param path Directory where the configuration files will be written.
+#' @param ... Additional arguments
+#'
 #' @examples
 #' \dontrun{
 #' writeJJM(mod1)
@@ -173,7 +188,8 @@ writeJJM = function(object, path, ...) {
 UseMethod("writeJJM")
 }
 
-writeJJM.jjm.output = function(object, path = NULL, ctlPath=path, datPath=path) {
+#' @export
+writeJJM.jjm.output = function(object, path = NULL, ctlPath=path, datPath=path, ...) {
   
   for(i in seq_along(object)) {
     obj = object[[i]]
@@ -194,6 +210,7 @@ writeJJM.jjm.output = function(object, path = NULL, ctlPath=path, datPath=path) 
 #   
 #   return(invisible(NULL))
 # }
+
 # Read jjm config ---------------------------------------------------------------
 
 #' @title Read dat and ctl files from disk to create a jjm.config object.
@@ -211,6 +228,7 @@ readJJMConfig = function(data, control, ...){
     UseMethod("readJJMConfig")
 }
 
+#' @export
 readJJMConfig.default = function(data, control, ...){
 		
   ctl  = .getCtlFile(model=model, path=path) # path to ctl file
@@ -222,6 +240,7 @@ readJJMConfig.default = function(data, control, ...){
 	
 }
 
+#' @export
 readJJMConfig.jjm.output = function(data, control, ...){
   
   ctl  = .getCtlFile(model=model, path=path) # path to ctl file
@@ -238,10 +257,17 @@ readJJMConfig.jjm.output = function(data, control, ...){
 
 #' @title Fit, run, read and plot a JJM model
 #' @description Shortcut to fit, run, read and plot a JJM model
+#'
 #' @param mod A character specifying the name of a model (by it's ctl filename).
 #' @param est Boolean, should we run the parameter estimation for a model?
 #' @param exec Path to the JJM executable file. By default, 'jjms' will be used.
 #' @param path Directory where the configuration files will be written.
+#' @param input Input
+#' @param output Folder to save the outputs, 'arc' by default.
+#' @param version version of JJM, default to "2015MS" (2015 SC multi-stock).
+#' @param pdf Produce outputs in a pdf file?
+#' @param portrait Orientation of the pdf output, default TRUE.
+#'
 #' @examples
 #' \dontrun{
 #' writeJJM(mod1)
@@ -272,6 +298,21 @@ runit = function(mod, est=FALSE, exec=NULL, path="config", input="input", output
 
 # Read external files ---------------------------------------------------------------
 
+#' @title Read external files
+#' @description Read external files
+#' 
+#' @param fileName filename
+#' @param type type
+#' @param path path
+#' @param version version of JJM, default to "2015MS" (2015 SC multi-stock).
+#' @param parameters parameters
+#' @param parData parData
+#' @param nameFishery nameFishery
+#' @param nameIndex nameIndex
+#' @param nAges nAges
+#' @param nStock nStock
+#'
+#' @export
 readExFiles = function(fileName, type, path = NULL, version = "2015MS", parameters = FALSE,  
                        parData, nameFishery, nameIndex, nAges, nStock = NULL){
   
@@ -320,9 +361,11 @@ readExFiles = function(fileName, type, path = NULL, version = "2015MS", paramete
 
 #' @title Kobe plot
 #' @description This function create a kobe plot from JJM  model outputs
-#' @param model Name for new model created with the \code{readJJM} function.
+#'
+#' @param obj a jjm model outputs object.
 #' @param add boolean, add to an existing kobe plot?
 #' @param col color for the lines and points.
+#' @param stock Number of the stock choosen for the kobe plot.
 #' @param Bref Reference point for B/B_MSY, default=1.
 #' @param Fref Reference point for F/F_MSY, default=1.
 #' @param Blim Limit reference point for B/B_MSY, default=0.5.
@@ -330,6 +373,7 @@ readExFiles = function(fileName, type, path = NULL, version = "2015MS", paramete
 #' @param xlim 'x' axis limits.
 #' @param ylim 'y' axis limits.
 #' @param ... Additional parameters passed to plot.
+#'
 #' @examples
 #' \dontrun{
 #' kobe(model)

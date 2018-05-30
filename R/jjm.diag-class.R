@@ -1,4 +1,5 @@
 
+#' @export
 print.jjm.diag = function(x, ...) {
   
   cat("Model name (s):\n")
@@ -24,6 +25,7 @@ print.jjm.diag = function(x, ...) {
 }
 
 
+#' @export
 summary.jjm.diag = function(object,...) {
   
   for(i in seq_along(object)){
@@ -43,6 +45,7 @@ summary.jjm.diag = function(object,...) {
 }
 
 
+#' @export
 print.summary.jjm.diag = function(x, ...) {
   
   class(x) = "list"
@@ -59,6 +62,7 @@ print.summary.jjm.diag = function(x, ...) {
 }
 
 
+#' @export
 plot.jjm.diag = function(x, what = c("data", "output"), model=NULL, stock=NULL, 
                          var=NULL, fleet=NULL, plot=TRUE, ...) {
   what = tolower(what)

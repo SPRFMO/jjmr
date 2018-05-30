@@ -12,13 +12,14 @@
 #' report(mod0.0)
 #' }
 #' @export
-report = function(object, format, output, tidy, tangle, ...) {
+report = function(object, format, output, tangle=FALSE, tidy=TRUE, ...) {
   UseMethod("report")
 }
 
-report.jjm.output = function(object, format="pdf", output=NULL, Fmult = NULL,
-                             BiomProj = NULL, CapProj = NULL, verbose=TRUE,
-                             MRS = NULL, tangle=FALSE, tidy=TRUE, ...) {
+#' @export
+report.jjm.output = function(object, format="pdf", output=NULL, tangle=FALSE, tidy=TRUE,
+                             Fmult = NULL, BiomProj = NULL, CapProj = NULL, verbose=TRUE,
+                             MRS = NULL,  ...) {
   
   nBiom =  if(is.null(BiomProj))  3 else length(BiomProj)
   nCap = if(is.null(CapProj))  2 else length(CapProj)
@@ -45,6 +46,7 @@ report.jjm.output = function(object, format="pdf", output=NULL, Fmult = NULL,
   
 }
 
+#' @export
 report.jjm.diag = function(object, format="pdf", output=NULL, tangle=FALSE, 
                            tidy=TRUE, open=TRUE, ...) {
   
