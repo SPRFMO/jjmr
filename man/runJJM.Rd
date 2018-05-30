@@ -33,4 +33,3 @@ Function to run one or several JJM models
 \examples{
 model = runJJM(models = "mod2.4")
 }
-

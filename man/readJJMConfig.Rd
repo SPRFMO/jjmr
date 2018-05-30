@@ -20,4 +20,3 @@ to run a model.
 \examples{
 readJJMConfig(mod1)
 }
-

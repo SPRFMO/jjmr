@@ -20,4 +20,3 @@ mod3 <- runJJM(modelName = "mod2.3")
 
 mod_123 = combineModels(mod1, mod2, mod3)
 }
-

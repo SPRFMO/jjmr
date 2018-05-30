@@ -2,8 +2,8 @@
 % Please edit documentation in R/jjmr-main.R
 \docType{package}
 \name{jjmR-package}
-\alias{jjmR}
 \alias{jjmR-package}
+\alias{jjmR}
 \title{Tools to process and get results from Joint Jack Mackerel (JJM) model outputs.}
 \description{
 Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel model.
@@ -12,13 +12,12 @@ Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel model.
 \tabular{ll}{ Package: \tab jjmR\cr Type: \tab Package\cr Version: \tab
 1.0\cr Date: \tab 2014-08-15\cr License: \tab TBD\cr }
 }
-\author{
-Ricardo Oliveros-Ramos, Wencheng Lau-Medrano, Giancarlo Moron 
-Josymar Torrejon and Niels Hintzen
-}
 \seealso{
 Joint Jack Mackerel Repository
 \code{\link{https://github.com/SPRFMO/jjm}}
 }
+\author{
+Ricardo Oliveros-Ramos, Wencheng Lau-Medrano, Giancarlo Moron 
+Josymar Torrejon and Niels Hintzen
+}
 \keyword{jjmr}
-

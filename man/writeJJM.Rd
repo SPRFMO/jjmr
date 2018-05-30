@@ -17,4 +17,3 @@ Function write to the disk dat and ctl files
 \examples{
 writeJJM(mod1)
 }
-

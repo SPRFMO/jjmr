@@ -32,4 +32,3 @@ Run a retrospective analysis for a model
 \examples{
 readJJMConfig(mod1)
 }
-

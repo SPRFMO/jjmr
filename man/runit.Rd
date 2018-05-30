@@ -4,7 +4,7 @@
 \alias{runit}
 \title{Fit, run, read and plot a JJM model}
 \usage{
-runit(mod, est = FALSE, exec = "jjm", path = "config", input = "input",
+runit(mod, est = FALSE, exec = NULL, path = "config", input = "input",
   output = "results", version = "2015MS", pdf = FALSE, portrait = TRUE)
 }
 \arguments{
@@ -12,7 +12,7 @@ runit(mod, est = FALSE, exec = "jjm", path = "config", input = "input",
 
 \item{est}{Boolean, should we run the parameter estimation for a model?}
 
-\item{exec}{Path to the JJM executable file.}
+\item{exec}{Path to the JJM executable file. By default, 'jjms' will be used.}
 
 \item{path}{Directory where the configuration files will be written.}
 }
@@ -22,4 +22,3 @@ Shortcut to fit, run, read and plot a JJM model
 \examples{
 writeJJM(mod1)
 }
-

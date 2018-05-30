@@ -22,4 +22,3 @@ Function to read models and list if models and generate results
 \examples{
 readJJM(model = "mod2.4")
 }
-
