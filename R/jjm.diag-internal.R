@@ -1387,7 +1387,7 @@ check.zero = function(x){
     res$class = .ac(res$class)
     res$data  = res$data/max(subset(res, class %in% c("model", "obs", "sd"))$data, na.rm = TRUE)
     resSort   = rbind(res, addToDF)
-    resSort   = orderBy(~year + class, data = resSort)
+    resSort   = doBy::orderBy(~year + class, data = resSort)
     
     if(iSurvey == 1)
       tot   = cbind(resSort, rep(jjm.out$Index_names[iSurvey, 1], nrow(resSort)))
@@ -1526,7 +1526,7 @@ check.zero = function(x){
                  subset(res, class == "lstdres")$data)
     colnames(res) = c("year", "obs", "model", "sd", "stdres", "lstdres")
     res = rbind(res, addToDF)
-    res = orderBy(~year, data = res)
+    res = doBy::orderBy(~year, data = res)
     
     if(iSurvey == 1) 
       tot = cbind(res, rep(jjm.out$Index_names[iSurvey, 1], nrow(res)))
