@@ -4,8 +4,8 @@
 \alias{retro}
 \title{Run a retrospective analysis diagnostic for a JJM model}
 \usage{
-retro(model, n = 5, output = "results", exec = NULL, parallel = FALSE,
-  temp = NULL, wait = TRUE, iprint = 100, ...)
+retro(model, n = 5, output = "results", exec = NULL,
+  parallel = FALSE, temp = NULL, wait = TRUE, iprint = 100, ...)
 }
 \arguments{
 \item{model}{An object of class jjm.output}

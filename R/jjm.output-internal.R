@@ -467,8 +467,8 @@
                    par.settings = mtheme,
                    upper = dataShape$upper, lower = dataShape$lower,
                    panel = function(x, y, ...){
-                     panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                     panel.xyplot(x, y, type ='l', cex = 0.6, lty = 1, lwd = 2, ...)
+                     lattice::panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
+                     lattice::panel.xyplot(x, y, type ='l', cex = 0.6, lty = 1, lwd = 2, ...)
                      if(endvalue){
                        ltext(x = x[dataShape$year == max(dataShape$year)], 
                              y = y[dataShape$year == max(dataShape$year)], 
@@ -484,8 +484,8 @@
                          scales = list(alternating = 1, tck = c(1, 0), y = list(relation = "free", rot = 0)),
                          upper = dataShape$upper, lower = dataShape$lower,
                          panel = function(x, y, ...){
-                           panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                           panel.xyplot(x, y, type = 'l', cex = 0.6, lty = 1, lwd = 2, ...)
+                           lattice::panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
+                           lattice::panel.xyplot(x, y, type = 'l', cex = 0.6, lty = 1, lwd = 2, ...)
                            if(endvalue){
                              ltext(x = rev(x)[1], y = rev(y)[1], 
                                    labels = round(rev(y)[1],0), pos=3, offset=1, cex=0.9,
@@ -511,8 +511,8 @@
                    par.settings = mtheme,
                    upper = dataShape$upper, lower = dataShape$lower,
                    panel = function(x, y, ...){
-                     panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                     panel.xyplot(x, y, type ='l', cex = 0.6, lty = 1, lwd = 2, ...)
+                     lattice::panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
+                     lattice::panel.xyplot(x, y, type ='l', cex = 0.6, lty = 1, lwd = 2, ...)
                      if(endvalue){
                        ltext(x = x[dataShape$year == max(dataShape$year)], 
                              y = y[dataShape$year == max(dataShape$year)], 
@@ -531,8 +531,8 @@
                    scales = list(alternating = 1, tck = c(1, 0), y = list(relation = "free", rot = 0)),
                    upper = dataShape$upper, lower = dataShape$lower,
                    panel = function(x, y, ...){
-                     panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                     panel.xyplot(x, y, type = 'l', cex = 0.6, lty = 1, lwd = 2, ...)
+                     lattice::panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
+                     lattice::panel.xyplot(x, y, type = 'l', cex = 0.6, lty = 1, lwd = 2, ...)
                      if(endvalue){
                        ltext(x = rev(x)[1], y = rev(y)[1], 
                              labels = round(rev(y)[1],0), pos=3, offset=1, cex=0.9,
@@ -586,12 +586,12 @@
 				scales = list(alternating = 1, tck = c(1, 0), y = list(relation = "free", rot = 0)),
 				#prepanel = function(...) {list(ylim = c(0, max(dataShape$data, na.rm = TRUE)))},
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   idx = mapply(seq(length(x)/Nfutscen, length(x), length.out = Nfutscen) - length(x)/Nfutscen + 1,
                                 seq(length(x)/Nfutscen, length(x), length.out = Nfutscen), FUN = seq)
                   #scen1 = idx[,1]; scen2 = idx[,2]; scen3 = idx[,3]; scen4 = idx[,4]; scen5 = idx[,5]
-                  for(iScen in 2:Nfutscen) panel.xyplot(x[idx[,iScen]], y[idx[,iScen]], type = "l", col = iScen, lwd = 2)
-                  panel.xyplot(x[idx[,1]], y[idx[,1]], type = "l", col = 1, lwd = 2)                  
+                  for(iScen in 2:Nfutscen) lattice::panel.xyplot(x[idx[,iScen]], y[idx[,iScen]], type = "l", col = iScen, lwd = 2)
+                  lattice::panel.xyplot(x[idx[,1]], y[idx[,1]], type = "l", col = 1, lwd = 2)                  
                 }, ...)
   
   return(pic)
@@ -621,8 +621,8 @@
                  par.settings=mtheme,
                  panel = function(x, y, ...){
                    #panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                   panel.xyplot(x, y, type ='l', lty = 1, lwd = 2, ...)
-				   panel.xyplot(x, y, type = 'p', cex = 1, pch = 19, ...)
+                   lattice::panel.xyplot(x, y, type ='l', lty = 1, lwd = 2, ...)
+				   lattice::panel.xyplot(x, y, type = 'p', cex = 1, pch = 19, ...)
                    if(endvalue){
                      ltext(x = x[dataShape$Scenario == max(dataShape$Scenario)], 
                            y = y[dataShape$Scenario == max(dataShape$Scenario)], 
@@ -637,8 +637,8 @@
                                      y = list(relation = "free", rot = 0)),
 					   panel = function(x, y, ...){
                          #panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                         panel.xyplot(x, y, type = 'l', lty = 1, lwd = 2, ...)
-                         panel.xyplot(x, y, type = 'p', cex = 1, pch = 19, ...)
+                         lattice::panel.xyplot(x, y, type = 'l', lty = 1, lwd = 2, ...)
+                         lattice::panel.xyplot(x, y, type = 'p', cex = 1, pch = 19, ...)
 						 if(endvalue){
                            ltext(x=rev(x)[1], y=rev(y)[1], labels=round(rev(y)[1],3), pos=3, offset=1, cex=0.9,
                                  font = 2, adj = 0)
@@ -674,8 +674,8 @@
                  par.settings=mtheme,
                  panel = function(x, y, ...){
                    #panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                   panel.xyplot(x, y, type ='l', lty = 1, lwd = 2, ...)
-				   panel.xyplot(x, y, type = 'p', cex = 1, pch = 19, ...)
+                   lattice::panel.xyplot(x, y, type ='l', lty = 1, lwd = 2, ...)
+				   lattice::panel.xyplot(x, y, type = 'p', cex = 1, pch = 19, ...)
                    if(endvalue){
                      ltext(x = x[dataShape$year == max(dataShape$year)], 
                            y = y[dataShape$year == max(dataShape$year)], 
@@ -690,8 +690,8 @@
                                      y = list(relation = "free", rot = 0)),
 					   panel = function(x, y, ...){
                          #panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                         panel.xyplot(x, y, type = 'l', lty = 1, lwd = 2, ...)
-                         panel.xyplot(x, y, type = 'p', cex = 1, pch = 19, ...)
+                         lattice::panel.xyplot(x, y, type = 'l', lty = 1, lwd = 2, ...)
+                         lattice::panel.xyplot(x, y, type = 'p', cex = 1, pch = 19, ...)
 						 if(endvalue){
                            ltext(x = rev(x)[1], y = rev(y)[1], labels = round(rev(y)[1], 3), pos = 3, offset = 1, cex = 0.9,
                                  font = 2, adj = 0)
@@ -727,7 +727,7 @@
                  par.settings=mtheme,
                  panel = function(x, y, ...){
                    #panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                   panel.xyplot(x, y, type ='l', lty = 1, lwd = 2, ...)
+                   lattice::panel.xyplot(x, y, type ='l', lty = 1, lwd = 2, ...)
                    if(endvalue){
                      ltext(x = x[dataShape$Scenario == max(dataShape$Scenario)], 
                            y = y[dataShape$Scenario == max(dataShape$Scenario)], 
@@ -742,7 +742,7 @@
                                      y = list(relation = "free", rot = 0)),
 					   panel = function(x, y, ...){
                          #panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
-                         panel.xyplot(x, y, type = 'l', lty = 1, lwd = 2, ...)
+                         lattice::panel.xyplot(x, y, type = 'l', lty = 1, lwd = 2, ...)
 						 if(endvalue){
                            ltext(x=rev(x)[1], y=rev(y)[1], labels = round(rev(y)[1], 3), pos=3, offset=1, cex=0.9,
                                  font = 2, adj = 0)
@@ -780,7 +780,7 @@
                                  y = list(relation = "free", rot = 0)),
                    #key = ikey,               
                    panel = function(x, y, ...){
-                     panel.xyplot(x, y, type = 'l', lwd = 2, 
+                     lattice::panel.xyplot(x, y, type = 'l', lwd = 2, 
                                   lty = c(5, 1, 3, 3),
                                   col = rep(cols[1:length(unique(dataShape$stocks))], each = 8), ...)
                      if(endvalue){

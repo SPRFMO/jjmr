@@ -5,7 +5,8 @@
 \title{Read external files}
 \usage{
 readExFiles(fileName, type, path = NULL, version = "2015MS",
-  parameters = FALSE, parData, nameFishery, nameIndex, nAges, nStock = NULL)
+  parameters = FALSE, parData, nameFishery, nameIndex, nAges,
+  nStock = NULL)
 }
 \arguments{
 \item{fileName}{filename}

@@ -17,8 +17,8 @@
   dots$col = ifelse(data$resids > 0, col[1], col[2])
   dots$pch = ifelse(data$resids>0, 19, 1)
   dots$panel = function(x, y, ..., cex, subscripts){
-    panel.grid(h = -1, v = -1)
-    panel.xyplot(x, y, cex = cex[subscripts], ...)
+    lattice::panel.grid(h = -1, v = -1)
+    lattice::panel.xyplot(x, y, cex = cex[subscripts], ...)
   }
   call.list = c(x = x, dots)
   ans = do.call("xyplot", call.list)
@@ -668,8 +668,8 @@ check.zero = function(x){
   pic = xyplot(data ~ age|fleet, data = subset(res, cohort%in%yrs), groups = cohort,
                 par.settings = list(superpose.symbol = list(pch = .ac(ages), cex = 1)),
                 panel = function(...){
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(...)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(...)
                 }, ...)
   
   return(pic)
@@ -694,8 +694,8 @@ check.zero = function(x){
   pic = xyplot(data ~ age|survey, data = subset(res, cohort %in% yrs), groups = cohort,
                 par.settings = list(superpose.symbol = list(pch = as.character(ages), cex = 1)),                
                 panel = function(...){
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(...)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(...)
                 }, ...)
   
   return(pic)
@@ -726,8 +726,8 @@ check.zero = function(x){
                  scales = list(rotation = 90, alternating = 3, y = list(axs = "i")), horizontal = FALSE,
                  groups = fleet, strip = FALSE, strip.left = strip.custom(style = 1), reverse.rows = TRUE,
                  panel = function(...){
-                   panel.grid(h = -1, v = -1)
-                   panel.barchart(...)
+                   lattice::panel.grid(h = -1, v = -1)
+                   lattice::panel.barchart(...)
                  }, ...)
   
   
@@ -790,7 +790,7 @@ check.zero = function(x){
                   panel = function(x,y){
                     yr      = names(which.max(table(tmpres$year[which(tmpres$data %in% y)])))
                     colidx  = tmpres$cohort[which(tmpres$data %in% y & tmpres$year == .an(yr))]
-                    panel.barchart(x, y, horizontal = FALSE, origin = 0, box.width = 1,
+                    lattice::panel.barchart(x, y, horizontal = FALSE, origin = 0, box.width = 1,
                                    col = cols[tmpres$cohort[colidx]])
                   }, ...)
     
@@ -825,8 +825,8 @@ check.zero = function(x){
                   reverse.rows = TRUE,
                   as.table = TRUE,
                   panel = function(...){
-                    panel.grid(h = -1, v = -1)
-                    panel.barchart(...)
+                    lattice::panel.grid(h = -1, v = -1)
+                    lattice::panel.barchart(...)
                   }, ...)
   
   return(pic)
@@ -863,8 +863,8 @@ check.zero = function(x){
   res = data.frame(year = 1, data = jjm.in$wt_temp, age = ages)
   pic = xyplot(data~age, data = res,
                 panel = function(...){
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(..., type = "b", pch = 19, cex = 0.6, lwd = 2, col = 1)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(..., type = "b", pch = 19, cex = 0.6, lwd = 2, col = 1)
                 }, ...)
   
   return(pic)
@@ -875,8 +875,8 @@ check.zero = function(x){
   res = data.frame(year = 1, data = jjm.in$mt_temp, age = ages)
   pic = xyplot(data~age, data = res,
                 panel = function(...){
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(..., type = "b", pch = 19, cex = 0.6, lwd = 2, col = 1)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(..., type = "b", pch = 19, cex = 0.6, lwd = 2, col = 1)
                 }, ...)
   
   return(pic)
@@ -938,7 +938,7 @@ check.zero = function(x){
                   panel = function(x, y){
                     yr      = names(which.max(table(tmpres$year[which(tmpres$data %in% y)])))
                     colidx  = tmpres$cohort[which(tmpres$data %in% y & tmpres$year == .an(yr))]
-                    panel.barchart(x, y, horizontal = FALSE, origin = 0, box.width = 1, col = tmpres$cohort[colidx],
+                    lattice::panel.barchart(x, y, horizontal = FALSE, origin = 0, box.width = 1, col = tmpres$cohort[colidx],
                                    border = 'transparent')
                   }, ...)
     
@@ -971,8 +971,8 @@ check.zero = function(x){
   pic = xyplot(totcatch~jjm.out$Yr, ylim = c(0, 1.1*max(totcatch)),
                 
                 panel = function(...){
-                  panel.grid(h = -1, v = -1)
-                  panel.barchart(..., horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.barchart(..., horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
                 }, ...)
   
   return(pic)
@@ -1010,10 +1010,10 @@ check.zero = function(x){
                   idx = mapply(seq,
                                 from = seq(1, length(lst$y), length(lst$y)/Nfleets),
                                 to = seq(1, length(lst$y), length(lst$y)/Nfleets) + (length(lst$y)/Nfleets - 1))
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(..., col = "white")
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(..., col = "white")
                   for(iFleet in Nfleets:1){
-                    panel.polygon(x = c(lst$x[idx[,iFleet]], rev(lst$x[idx[,iFleet]])),
+                    lattice::panel.polygon(x = c(lst$x[idx[,iFleet]], rev(lst$x[idx[,iFleet]])),
                                   y = c(rep(0, length(lst$y[idx[,iFleet]])), rev(lst$y[idx[,iFleet]])),
                                   col = (Nfleets:1)[iFleet], border = 0)
                   }
@@ -1054,9 +1054,9 @@ check.zero = function(x){
                 layout = c(1, Nfleets),
                 type = "p", key = ikey,
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
-                  panel.points(x, 1, cex = abs(y), col = ifelse(test = y > 0, yes = "black",  "white"), pch = 19)
-                  panel.points(x, 1, cex = abs(y), col = 1, pch = 1)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.points(x, 1, cex = abs(y), col = ifelse(test = y > 0, yes = "black",  "white"), pch = 19)
+                  lattice::panel.points(x, 1, cex = abs(y), col = 1, pch = 1)
                 }, ...)
   
   return(pic)
@@ -1084,8 +1084,8 @@ check.zero = function(x){
   
   pic = xyplot(model - obs ~ year | fleet, data = res, allow.multiple = TRUE,
                 panel = function(...){
-                  panel.grid(h = -1, v = -1, lty = 3)
-                  panel.barchart(..., horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
+                  lattice::panel.grid(h = -1, v = -1, lty = 3)
+                  lattice::panel.barchart(..., horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
                 }, ...)
   
   return(pic)
@@ -1232,8 +1232,8 @@ check.zero = function(x){
                     #cols = tmpres$cohort[which(is.na(pmatch(tmpres$data,y))==F & is.na(pmatch(tmpres$age,x))==F)]
                     yr      = names(which.max(table(tmpres$year[which(tmpres$data %in% y)])))
                     colidx  = tmpres$cohort[which(tmpres$data %in% y & tmpres$year == .an(yr))]
-                    panel.barchart(x[first], y[first], horizontal = FALSE, origin = 0, box.width = 1, col = cols[colidx])
-                    panel.lines(x[second], y[second], lty = 1, col = 1, cex = 0.5)
+                    lattice::panel.barchart(x[first], y[first], horizontal = FALSE, origin = 0, box.width = 1, col = cols[colidx])
+                    lattice::panel.lines(x[second], y[second], lty = 1, col = 1, cex = 0.5)
                   }, ...)
     
     ageFitsCatch[[iFleet]] = pic
@@ -1309,8 +1309,8 @@ check.zero = function(x){
                     #cols = tmpres$cohort[which(is.na(pmatch(tmpres$data,y))==F & is.na(pmatch(tmpres$age,x))==F)]
                     yr      = names(which.max(table(tmpres$year[which(tmpres$data %in% y)])))
                     colidx  = tmpres$cohort[which(tmpres$data %in% y & tmpres$year == .an(yr))]
-                    panel.barchart(x[first], y[first], horizontal = FALSE, origin = 0, box.width = 1, col = cols[colidx])
-                    panel.points(x[second], y[second], col = 1, pch = 19, cex = 0.25)
+                    lattice::panel.barchart(x[first], y[first], horizontal = FALSE, origin = 0, box.width = 1, col = cols[colidx])
+                    lattice::panel.points(x[second], y[second], col = 1, pch = 19, cex = 0.25)
                   }, ...)
     
     lengthFitsCatch[[iFleet]] = pic
@@ -1355,9 +1355,9 @@ check.zero = function(x){
                 panel = function(x, y){
                   first = 1:length(jjm.out$Yr)
                   second = (length(jjm.out$Yr) + 1):(length(jjm.out$Yr)*2)
-                  panel.grid(h = -1, v = -1)
-                  panel.barchart(x[first], y[second], horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
-                  panel.xyplot(x[first], y[second], type = "l", lwd = 5, col = 1, lty = 1)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.barchart(x[first], y[second], horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
+                  lattice::panel.xyplot(x[first], y[second], type = "l", lwd = 5, col = 1, lty = 1)
                 }, ...)
   
   return(pic)
@@ -1420,12 +1420,12 @@ check.zero = function(x){
                   first   = which(tmp$groups[1:length(tmp$x)] == "model")
                   second  = which(tmp$groups[1:length(tmp$x)] == "obs")
                   third   = which(tmp$groups[1:length(tmp$x)] == "sd")
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(tmp$x[first], tmp$y[first], type = "l", col = "black", lwd = 3)
-                  panel.points(tmp$x[second], tmp$y[second], col = "grey", pch = 19, cex = 0.6)
-                  panel.segments(tmp$x[third], c(tmp$y[second] + 1.96*tmp$y[third]),
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(tmp$x[first], tmp$y[first], type = "l", col = "black", lwd = 3)
+                  lattice::panel.points(tmp$x[second], tmp$y[second], col = "grey", pch = 19, cex = 0.6)
+                  lattice::panel.segments(tmp$x[third], c(tmp$y[second] + 1.96*tmp$y[third]),
                                  tmp$x[third], c(tmp$y[second] - 1.96*tmp$y[third]))
-                  panel.lines(tmp$x[first], tmp$y[first], col = "black", lwd = 3)
+                  lattice::panel.lines(tmp$x[first], tmp$y[first], col = "black", lwd = 3)
                 }, ...)
   
   return(pic)
@@ -1494,8 +1494,8 @@ check.zero = function(x){
                       second  = c(idx[,seq(from = 2, to = dim(idx)[2], by = 3)])
                       yr      = names(which.max(table(tmpres$year[which(tmpres$data %in% y)])))
                       colidx  = tmpres$cohort[which(tmpres$data %in% y & tmpres$year == .an(yr))]
-                      panel.barchart(x[first], y[first], horizontal = FALSE, origin = 0, box.width = 1, col = cols[colidx])
-                      panel.lines(x[second], y[second], lty=1, col = 1, cex = 0.5)
+                      lattice::panel.barchart(x[first], y[first], horizontal = FALSE, origin = 0, box.width = 1, col = cols[colidx])
+                      lattice::panel.lines(x[second], y[second], lty=1, col = 1, cex = 0.5)
                     }, ...) else NULL
     
     ageFitsSurvey[[iSurvey]] = pic
@@ -1559,9 +1559,9 @@ check.zero = function(x){
                 type = "p", col = cols, 
                 key = ikey,
                 panel = function(x, y){
-                  panel.grid(v = -1, h = 1)
-                  panel.points(x, 1, cex = abs(y), col = ifelse(y > 0, "black", "white"), pch = 19)
-                  panel.points(x, 1, cex = abs(y), col = 1, pch = 1)
+                  lattice::panel.grid(v = -1, h = 1)
+                  lattice::panel.points(x, 1, cex = abs(y), col = ifelse(y > 0, "black", "white"), pch = 19)
+                  lattice::panel.points(x, 1, cex = abs(y), col = 1, pch = 1)
                 }, ...)
   
   return(pic)
@@ -1598,9 +1598,9 @@ check.zero = function(x){
   
   pic = xyplot(data ~ year | class, data = res, type = "h",
                 panel = function(...){
-                  panel.grid(h = -1, v = -1)
-                  panel.abline(h = 1, col = "blue", lty = 3)
-                  panel.xyplot(..., col = 1)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.abline(h = 1, col = "blue", lty = 3)
+                  lattice::panel.xyplot(..., col = 1)
                 }, ...)
   
   return(pic)
@@ -1669,10 +1669,10 @@ check.zero = function(x){
                   idx = mapply(seq, from = seq(1, length(lst$y), length(lst$y)/length(ages)),
                                 to = seq(1, length(lst$y),
                                          length(lst$y)/length(ages)) + (length(lst$y)/length(ages) - 1))
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(..., col = "white")
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(..., col = "white")
                   for(iAge in rev(ages)){
-                    panel.polygon(x = c(lst$x[idx[, iAge]], rev(lst$x[idx[,iAge]])),
+                    lattice::panel.polygon(x = c(lst$x[idx[, iAge]], rev(lst$x[idx[,iAge]])),
                                   y = c(rep(0, length(lst$y[idx[,iAge]])), rev(lst$y[idx[,iAge]])),
                                   col = cols[iAge], border = 0)
                   }                  
@@ -1701,10 +1701,10 @@ check.zero = function(x){
                   lst = list(...)
                   idx = mapply(seq, from = seq(1, length(lst$y), length(lst$y)/length(ages)),
                                 to = seq(1, length(lst$y), length(lst$y)/length(ages)) + (length(lst$y)/length(ages) - 1))
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(..., col = "white")
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(..., col = "white")
                   for(iAge in rev(ages)){
-                    panel.polygon(x = c(lst$x[idx[,iAge]], rev(lst$x[idx[,iAge]])),
+                    lattice::panel.polygon(x = c(lst$x[idx[,iAge]], rev(lst$x[idx[,iAge]])),
                                   y = c(rep(0, length(lst$y[idx[,iAge]])), rev(lst$y[idx[,iAge]])),
                                   col = cols[iAge], border = 0)
                   }
@@ -1744,7 +1744,7 @@ check.zero = function(x){
   pic = xyplot(data ~ year | fleet, data = total,
                 type = "l", key = ikey,
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   idx = mapply(seq(length(x)/4, length(x), length.out = 4) - length(x)/4 + 1,
                                 seq(length(x)/4, length(x), length.out = 4), FUN = seq)
                   obs   = idx[,1]
@@ -1752,9 +1752,9 @@ check.zero = function(x){
                   obs5  = idx[,3]
                   obs95 = idx[,4]
                   
-                  panel.xyplot(x[obs], y[obs], type = "p", col = "grey", pch = 19, cex = 0.6)
-                  panel.segments(x[obs], y[obs5], x[obs], y[obs95])
-                  panel.xyplot(x[obs], y[mod], type = "l", lwd = 2, col = "black")                    
+                  lattice::panel.xyplot(x[obs], y[obs], type = "p", col = "grey", pch = 19, cex = 0.6)
+                  lattice::panel.segments(x[obs], y[obs5], x[obs], y[obs95])
+                  lattice::panel.xyplot(x[obs], y[mod], type = "l", lwd = 2, col = "black")                    
                 }, ...)
   
   return(pic)
@@ -1791,16 +1791,16 @@ check.zero = function(x){
   pic = xyplot(data ~ year | fleet, data = total,
                 type = "l", key = ikey,
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   idx = mapply(seq(length(x)/4, length(x), length.out = 4) - length(x)/4 + 1,
                                 seq(length(x)/4, length(x), length.out = 4), FUN = seq)
                   obs   = idx[,1]
                   mod   = idx[,2]
                   obs5  = idx[,3]
                   obs95 = idx[,4]
-                  panel.xyplot(x[obs], y[obs], type = "p", col = "grey", pch = 19, cex = 0.6)
-                  panel.segments(x[obs], y[obs5], x[obs], y[obs95])
-                  panel.xyplot(x[obs], y[mod], type = "l", lwd = 2, col = "black")
+                  lattice::panel.xyplot(x[obs], y[obs], type = "p", col = "grey", pch = 19, cex = 0.6)
+                  lattice::panel.segments(x[obs], y[obs5], x[obs], y[obs95])
+                  lattice::panel.xyplot(x[obs], y[mod], type = "l", lwd = 2, col = "black")
                 }, ...)
   
   return(pic)
@@ -1838,7 +1838,7 @@ check.zero = function(x){
   pic = xyplot(data ~ year | survey, data = total,
                 type = "l", key = ikey,
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   idx = mapply(seq(length(x)/4, length(x), length.out = 4) - length(x)/4 + 1,
                                 seq(length(x)/4, length(x), length.out = 4),FUN = seq)
                   obs   = idx[,1]
@@ -1846,9 +1846,9 @@ check.zero = function(x){
                   obs5  = idx[,3]
                   obs95 = idx[,4]
                   
-                  panel.xyplot(x[obs], y[obs], type = "p", col = "grey", pch = 19, cex = 0.6)
-                  panel.segments(x[obs], y[obs5], x[obs], y[obs95])
-                  panel.xyplot(x[obs], y[mod], type = "l", lwd = 2, col = "black")
+                  lattice::panel.xyplot(x[obs], y[obs], type = "p", col = "grey", pch = 19, cex = 0.6)
+                  lattice::panel.segments(x[obs], y[obs5], x[obs], y[obs95])
+                  lattice::panel.xyplot(x[obs], y[mod], type = "l", lwd = 2, col = "black")
                 }, ...)
   
   return(pic)
@@ -1885,36 +1885,36 @@ check.zero = function(x){
                 prepanel = function(...) {list(ylim = range(pretty(c(0, 1.1*list(...)$y))))},
                 layout = c(2, 2),
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   point = 1:length(jjm.out$Yr)
                   lower = (length(jjm.out$Yr) + 1):(2*length(jjm.out$Yr))
                   upper = (2*length(jjm.out$Yr) + 1):(3*length(jjm.out$Yr))
                   
                   # LANDINGS
-                  if(panel.number() == 2){
-                    panel.barchart(x[point], y[point], horizontal = FALSE, origin = 0, box.width = 1, col = "grey90")
-#                     panel.lines(x[point], jjm.out$msy_mt[,8], lwd = 4, 
+                  if(lattice::panel.number() == 2){
+                    lattice::panel.barchart(x[point], y[point], horizontal = FALSE, origin = 0, box.width = 1, col = "grey90")
+#                     lattice::panel.lines(x[point], jjm.out$msy_mt[,8], lwd = 4, 
 #                                 col = adjustcolor("blue", alpha.f = alpha.f))
                   }
                   
                   # Recruitment
-                  if(panel.number() == 1){
-                    panel.barchart(x[point], y[point], horizontal = FALSE, origin = 0, box.width = 1, col = "grey90")
-                    panel.segments(x[lower], y[lower], x[lower], y[upper])
+                  if(lattice::panel.number() == 1){
+                    lattice::panel.barchart(x[point], y[point], horizontal = FALSE, origin = 0, box.width = 1, col = "grey90")
+                    lattice::panel.segments(x[lower], y[lower], x[lower], y[upper])
                   }
                   
                   # F
-                  if(panel.number() == 4){
-                    panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
-                    panel.lines(x[point], jjm.out$msy_mt[,5], lwd = 4, 
+                  if(lattice::panel.number() == 4){
+                    lattice::panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
+                    lattice::panel.lines(x[point], jjm.out$msy_mt[,5], lwd = 4, 
                                 col = adjustcolor("blue", alpha.f = alpha.f))
                   }
                   
                   # SSB
-                  if(panel.number() == 3){
-                    panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey90", border = NA)
-                    panel.xyplot(x[point], y[point], type = "l", lwd = 3, lty = 1, col = 1)
-                    panel.lines(x[point], jjm.out$msy_mt[,10], lwd = 4, 
+                  if(lattice::panel.number() == 3){
+                    lattice::panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey90", border = NA)
+                    lattice::panel.xyplot(x[point], y[point], type = "l", lwd = 3, lty = 1, col = 1)
+                    lattice::panel.lines(x[point], jjm.out$msy_mt[,10], lwd = 4, 
                                 col = adjustcolor("blue", alpha.f = alpha.f))
                   }
                 }, ...)
@@ -1956,34 +1956,34 @@ check.zero = function(x){
                 prepanel = function(...) {list(ylim = range(pretty(c(0, 1.1*list(...)$y))))},
                 layout = c(1, 4),
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   point = 1:length(jjm.out$Yr)
                   lower = (length(jjm.out$Yr) + 1):(2*length(jjm.out$Yr))
                   upper = (2*length(jjm.out$Yr) + 1):(3*length(jjm.out$Yr))
                   
                   # NoFish
-				          if(panel.number() == 1){
-				            panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey", border = NA)
-                    panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
+				          if(lattice::panel.number() == 1){
+				            lattice::panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey", border = NA)
+                    lattice::panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
 
                   }
 
                   # Recruitment
-                  if(panel.number() == 2){
-                    panel.barchart(x[point], y[point], horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
-                    panel.segments(x[lower], y[lower], x[lower], y[upper])
+                  if(lattice::panel.number() == 2){
+                    lattice::panel.barchart(x[point], y[point], horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
+                    lattice::panel.segments(x[lower], y[lower], x[lower], y[upper])
                   }
                   
                   # Ftot
-                  if(panel.number() == 3){
-                    panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
+                  if(lattice::panel.number() == 3){
+                    lattice::panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
                   }
                   
                   # Total biomass
-                  if(panel.number() == 4){
-                    panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey",
+                  if(lattice::panel.number() == 4){
+                    lattice::panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey",
                                   border = NA)
-                    panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
+                    lattice::panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
                   }
                 }, ...)
   
@@ -2019,16 +2019,16 @@ check.zero = function(x){
                 prepanel = function(...) {list(ylim = range(pretty(c(0, 1.1*list(...)$y))))},
                 layout = c(3, 1),
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   point = 1:length(jjm.out$Yr)
                   lower = (length(jjm.out$Yr) + 1):(2*length(jjm.out$Yr))
                   upper = (2*length(jjm.out$Yr) + 1):(3*length(jjm.out$Yr))
                   
                   # Total biomass
-                  if(panel.number() == 1){
-                    panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey",
+                  if(lattice::panel.number() == 1){
+                    lattice::panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey",
                                   border = NA)
-                    panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
+                    lattice::panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
                     #if(endvalue){
                     #  ltext(x=rev(x)[1], y=rev(y)[1], labels=round(rev(y)[1],0), pos=2, offset=1, cex=0.9,
                     #        font = 2)
@@ -2037,9 +2037,9 @@ check.zero = function(x){
                   
                   
                   # Unfished biomass
-                  if(panel.number() == 2){
-                    panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey", border = NA)
-                    panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
+                  if(lattice::panel.number() == 2){
+                    lattice::panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey", border = NA)
+                    lattice::panel.xyplot(x[point], y[point], lwd = 2, lty = 1, type = "l", col = 1)
                     #if(endvalue){
                     #  ltext(x=rev(x)[1], y=rev(y)[1], labels=round(rev(y)[1],0), pos=2, offset=1, cex=0.9,
                     #        font = 2)
@@ -2048,9 +2048,9 @@ check.zero = function(x){
                   
                   
                   # F
-                  if(panel.number() == 3){
-                    panel.barchart(x[point], y[point], horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
-                    panel.segments(x[lower], y[lower], x[lower], y[upper]) 
+                  if(lattice::panel.number() == 3){
+                    lattice::panel.barchart(x[point], y[point], horizontal = FALSE, origin = 0, box.width = 1, col = "grey")
+                    lattice::panel.segments(x[lower], y[lower], x[lower], y[upper]) 
                   }
                   
                 }, ...)
@@ -2112,8 +2112,8 @@ check.zero = function(x){
                scales = list(alternating = 1, tck = c(1,0)),
                 type = "l", key = ikey,
                 panel = function(...){
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(...)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(...)
                 }, ...)
   
   return(pic)
@@ -2146,12 +2146,12 @@ check.zero = function(x){
                 scales = list(alternating = 1, tck = c(1,0)),
                 #key = ikey,
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   idxobs <- which(res$SSB %in% x & res$class == "observed")
                   idxmod <- which(res$SSB %in% x & res$class == "modelled")
-                  #panel.xyplot(x[idxobs], y[idxobs], type = "l", lwd = 3, col = 1, lty = 3)
-                  panel.points(x[idxobs], y[idxobs], type = "p", cex = 1.5, pch = 19, col = "darkgrey")
-                  panel.xyplot(x[idxmod], y[idxmod], type = "l", lwd = 4, col = "black", lty = 1)
+                  #lattice::panel.xyplot(x[idxobs], y[idxobs], type = "l", lwd = 3, col = 1, lty = 3)
+                  lattice::panel.points(x[idxobs], y[idxobs], type = "p", cex = 1.5, pch = 19, col = "darkgrey")
+                  lattice::panel.xyplot(x[idxmod], y[idxmod], type = "l", lwd = 4, col = "black", lty = 1)
                 },
 				
 				auto.key = list(title = "", 
@@ -2219,27 +2219,27 @@ check.zero = function(x){
   pic = xyplot(Rec ~ SSB, data = res, groups = class,
                scales = list(alternating = 1, tck = c(1,0)),
                panel = function(x, y, subscripts){
-                 panel.grid(h = -1, v = -1)
+                 lattice::panel.grid(h = -1, v = -1)
                  
                  for(i in c(0, seq_along(colyear))){
                    idxobs[[i+1]] = which(res$SSB %in% x & res$class == "Simulated" & res$col == i)
                  }
                  
-                 panel.text(x[res$class=="Simulated"], y[res$class=="Simulated"], labels=res$year[res$class=="Simulated"][subscripts], 
+                 lattice::panel.text(x[res$class=="Simulated"], y[res$class=="Simulated"], labels=res$year[res$class=="Simulated"][subscripts], 
                             cex = 1, pos = 3, offset = 1, srt = 0, adj = c(1,1))
                  
                  countm = grep("Regime", unique(res$class))
                  idxmod = NULL
                  
                  for(i in seq_along(idxobs)){
-                   if(i == 1) {panel.points(x[idxobs[[i]]], y[idxobs[[i]]], type = "p", cex = 1.5, pch = 19, col = "darkgrey")}
-                   else {panel.points(x[idxobs[[i]]], y[idxobs[[i]]], type = "p", cex = 1.5, pch = 19, col = rev(cols)[i-1])}
+                   if(i == 1) {lattice::panel.points(x[idxobs[[i]]], y[idxobs[[i]]], type = "p", cex = 1.5, pch = 19, col = "darkgrey")}
+                   else {lattice::panel.points(x[idxobs[[i]]], y[idxobs[[i]]], type = "p", cex = 1.5, pch = 19, col = rev(cols)[i-1])}
                  }
                  
                  for(i in seq_along(countm)){
                    namesid = paste("Regime", i, sep = "")
                    idxmod = which(res$SSB %in% x & res$class == namesid)
-                   panel.xyplot(x[idxmod], y[idxmod], type = "l", lwd = 4, col = rev(cols)[i], lty = 1)                   
+                   lattice::panel.xyplot(x[idxmod], y[idxmod], type = "l", lwd = 4, col = rev(cols)[i], lty = 1)                   
                  }
                },
                
@@ -2274,8 +2274,8 @@ check.zero = function(x){
                scales = list(alternating = 1, tck = c(1,0)),
                 key = ikey, type = "l",
                 panel = function(...){
-                  panel.grid(h = -1, v = -1)
-                  panel.xyplot(...)
+                  lattice::panel.grid(h = -1, v = -1)
+                  lattice::panel.xyplot(...)
                 }, ...)
   
   return(pic)
@@ -2336,26 +2336,26 @@ check.zero = function(x){
 #                 key = ikey,
   #              prepanel = function(...) {list(ylim = c(0, max(totres$data, na.rm = TRUE)))},
   #              panel = function(x, y){
-  #                panel.grid(h = -1, v = -1)
+  #                lattice::panel.grid(h = -1, v = -1)
   #                idx = mapply(seq(length(x)/Nfutscen, length(x), length.out = Nfutscen) - length(x)/Nfutscen + 1,
   #                              seq(length(x)/Nfutscen, length(x), length.out = Nfutscen), FUN = seq)
      #             idx2 = mapply(seq(length(idx[,1])/3, length(idx[,1]), length.out = 3) - length(idx[,1])/3 + 1,
      #                            seq(length(idx[,1])/3, length(idx[,1]), length.out = 3), FUN = seq)
      #             
      #             for(iScen in 2:Nfutscen){
-     #               panel.xyplot(x[idx[,iScen][idx2[,1]]], y[idx[,iScen][idx2[,1]]], type = "l", col = iScen, lwd = 3)
+     #               lattice::panel.xyplot(x[idx[,iScen][idx2[,1]]], y[idx[,iScen][idx2[,1]]], type = "l", col = iScen, lwd = 3)
      #               iCol  = col2rgb(iScen)
      #               iCol  = rgb(iCol[1]/255, iCol[2]/255, iCol[3]/255, 0.25)
-     #               panel.polygon(c(x[idx[,iScen][idx2[,2]]], rev(x[idx[,iScen][idx2[,3]]])),
+     #               lattice::panel.polygon(c(x[idx[,iScen][idx2[,2]]], rev(x[idx[,iScen][idx2[,3]]])),
      #                             c(y[idx[,iScen][idx2[,2]]], rev(y[idx[,iScen][idx2[,3]]])), col = iCol, border = iCol)
-     #               panel.lines(x[idx[,iScen][idx2[,1]]], y[idx[,iScen][idx2[,1]]], col = iScen, lwd = 3)
+     #               lattice::panel.lines(x[idx[,iScen][idx2[,1]]], y[idx[,iScen][idx2[,1]]], col = iScen, lwd = 3)
      #             }
-     #             panel.xyplot(x[idx[,1][idx2[,1]]], y[idx[,1][idx2[,1]]], type = "l", col = 1, lwd = 4)
+     #             lattice::panel.xyplot(x[idx[,1][idx2[,1]]], y[idx[,1][idx2[,1]]], type = "l", col = 1, lwd = 4)
      #             iCol  = col2rgb(1)
     #              iCol  = rgb(iCol[1]/255, iCol[2]/255, iCol[3]/255, 0.15)
-   #               panel.polygon(c(x[idx[,1][idx2[,2]]], rev(x[idx[,1][idx2[,3]]])),
+   #               lattice::panel.polygon(c(x[idx[,1][idx2[,2]]], rev(x[idx[,1][idx2[,3]]])),
   #                              c(y[idx[,1][idx2[,2]]], rev(y[idx[,1][idx2[,3]]])), col = iCol, border = iCol)
- #                 panel.lines(x[idx[,1][idx2[,1]]], y[idx[,1][idx2[,1]]], col = 1, lwd = 4)
+ #                 lattice::panel.lines(x[idx[,1][idx2[,1]]], y[idx[,1][idx2[,1]]], col = 1, lwd = 4)
   #              })
 				
   ikey           = simpleKey(text=scenarios, points = FALSE, lines = TRUE, columns = 2)
@@ -2367,12 +2367,12 @@ check.zero = function(x){
                 key = ikey, scales = list(alternating = 1, tck = c(1,0)),
                 prepanel = function(...) {list(ylim = c(0, max(totres$data, na.rm = TRUE)))},
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   idx = mapply(seq(length(x)/Nfutscen, length(x), length.out = Nfutscen) - length(x)/Nfutscen + 1,
                                 seq(length(x)/Nfutscen, length(x), length.out = Nfutscen), FUN = seq)
                   #scen1 = idx[,1]; scen2 = idx[,2]; scen3 = idx[,3]; scen4 = idx[,4]; scen5 = idx[,5]
-                  for(iScen in 2:Nfutscen) panel.xyplot(x[idx[,iScen]], y[idx[,iScen]], type = "l", col = iScen, lwd = 3)
-                  panel.xyplot(x[idx[,1]], y[idx[,1]], type = "l", col = 1, lwd = 4)                  
+                  for(iScen in 2:Nfutscen) lattice::panel.xyplot(x[idx[,iScen]], y[idx[,iScen]], type = "l", col = iScen, lwd = 3)
+                  lattice::panel.xyplot(x[idx[,1]], y[idx[,1]], type = "l", col = 1, lwd = 4)                  
                 }, ...)
   
   return(pic)
@@ -2421,12 +2421,12 @@ check.zero = function(x){
                key = ikey, scales = list(alternating = 1, tck = c(1,0)),
                 prepanel = function(...) {list(ylim = c(0, max(totres$data, na.rm = TRUE)))},
                 panel = function(x, y){
-                  panel.grid(h = -1, v = -1)
+                  lattice::panel.grid(h = -1, v = -1)
                   idx = mapply(seq(length(x)/Nfutscen, length(x), length.out = Nfutscen) - length(x)/Nfutscen + 1,
                                 seq(length(x)/Nfutscen, length(x), length.out = Nfutscen), FUN = seq)
                   #scen1 = idx[,1]; scen2 = idx[,2]; scen3 = idx[,3]; scen4 = idx[,4]; scen5 = idx[,5]
-                  for(iScen in 2:Nfutscen) panel.xyplot(x[idx[,iScen]], y[idx[,iScen]], type = "l", col = iScen, lwd = 3)
-                  panel.xyplot(x[idx[,1]], y[idx[,1]], type = "l", col = 1, lwd = 4)                  
+                  for(iScen in 2:Nfutscen) lattice::panel.xyplot(x[idx[,iScen]], y[idx[,iScen]], type = "l", col = iScen, lwd = 3)
+                  lattice::panel.xyplot(x[idx[,1]], y[idx[,1]], type = "l", col = 1, lwd = 4)                  
                 }, ...)
   
   return(pic)
@@ -2452,9 +2452,9 @@ check.zero = function(x){
                 layout = c(1, 2),
                 panel = function(...){
                   lst = list(...)
-                  panel.grid(h = -1, v = -1)
-                  if(panel.number() == 1) panel.xyplot(lst$x, lst$y, type = "l", lwd = 3, lty = 1, col = 1)
-                  if(panel.number() == 2) panel.xyplot(lst$x, lst$y, type = "l", lwd = 3, lty = 1, col = 1)
+                  lattice::panel.grid(h = -1, v = -1)
+                  if(lattice::panel.number() == 1) lattice::panel.xyplot(lst$x, lst$y, type = "l", lwd = 3, lty = 1, col = 1)
+                  if(lattice::panel.number() == 2) lattice::panel.xyplot(lst$x, lst$y, type = "l", lwd = 3, lty = 1, col = 1)
                 }, ...)
   
   return(pic)
@@ -2481,8 +2481,8 @@ check.zero = function(x){
   y = y[1:length(x)]
 
   mypanel<-function(x,y,...){
-  panel.xyplot(x, y, ...)
-  panel.text(B_Bmsy[c(1,n)] + 0.05, F_Fmsy[c(1,n)] + 0.2, labels = range(years), cex = 0.8)
+  lattice::panel.xyplot(x, y, ...)
+  lattice::panel.text(B_Bmsy[c(1,n)] + 0.05, F_Fmsy[c(1,n)] + 0.2, labels = range(years), cex = 0.8)
   }
 
   b = xyplot(F_Fmsy[c(1,n)] ~ B_Bmsy[c(1,n)], type = "p", col = col, pch = c(15, 17), panel = mypanel, cex = 0.8)
@@ -2491,10 +2491,10 @@ check.zero = function(x){
   if(!isTRUE(add)){
     pic = xyplot(y ~ x, type="n", xlim = xlim, ylim = ylim, xlab = toExpress("B/B[msy]"), ylab = toExpress("F/F[msy]"),
                  main="Kobe plot", scales = list(alternating = 1, tck = c(1,0))) + 
-      layer_(panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
-      layer_(panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
-      layer_(panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +
-      layer_(panel.xblocks(x, x >= 1, col = rgb(0, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
+      layer_(latticeExtra::panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
+      layer_(latticeExtra::panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
+      layer_(latticeExtra::panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +
+      layer_(latticeExtra::panel.xblocks(x, x >= 1, col = rgb(0, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
       as.layer(b)+
       as.layer(c)
   } else {
@@ -2563,8 +2563,8 @@ check.zero = function(x){
       dataxy = rbind(dataxy, data1)
            
       mypanel<-function(x,y,...){
-        panel.xyplot(x, y, ...)
-        panel.text(x + 0.05, y + 0.2, labels = range(years), ...)
+        lattice::panel.xyplot(x, y, ...)
+        lattice::panel.text(x + 0.05, y + 0.2, labels = range(years), ...)
       }
       
       if(endvalue) {b[[j]] <- xyplot(F_Fmsy[c(1,n)] ~ B_Bmsy[c(1,n)], type = "p", col = cols[j], panel = mypanel, pch = c(15, 17), cex = 1)}
@@ -2584,10 +2584,10 @@ check.zero = function(x){
                        key = list(lines = list(col = cols[1:length(obj[[i]]$output)], lwd = 3),
                                   text = list(names(obj[[i]]$output)), ...
                    ), ...) + 
-        layer_(panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
-        layer_(panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
-        layer_(panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +
-        layer_(panel.xblocks(x, x >= 1, col = rgb(0, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) 
+        layer_(latticeExtra::panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
+        layer_(latticeExtra::panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
+        layer_(latticeExtra::panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +
+        layer_(latticeExtra::panel.xblocks(x, x >= 1, col = rgb(0, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) 
       
     }
   }
@@ -2657,14 +2657,14 @@ check.zero = function(x){
                         xlim = range(pretty(c(0, B_Bmsy))),
                         ylim = range(pretty(c(0, F_Fmsy))),
                    ...) +  
-        layer_(panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
-        layer_(panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
-        layer_(panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +
-        layer_(panel.xblocks(x, x >= 1, col = rgb(0, 1, 0, alpha = 0.5), block.y = 1, vjust = 1))  
+        layer_(latticeExtra::panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
+        layer_(latticeExtra::panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
+        layer_(latticeExtra::panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +
+        layer_(latticeExtra::panel.xblocks(x, x >= 1, col = rgb(0, 1, 0, alpha = 0.5), block.y = 1, vjust = 1))  
       if(endvalue) pic[[j]] = pic[[j]] + as.layer(xyplot(V1 ~ V2 | name, datalab, type = "p", col = "black", 
                                                panel = function(x,y,subscripts, ...){
-                                                 panel.xyplot(x, y, ...)
-                                                 panel.text(x + 0.05, y + 0.2, labels = datalab$V3[subscripts], ...)
+                                                 lattice::panel.xyplot(x, y, ...)
+                                                 lattice::panel.text(x + 0.05, y + 0.2, labels = datalab$V3[subscripts], ...)
                                                } , 
                                                pch = c(15, 17), cex = 1))
       if(endvalue == FALSE) pic[[j]] = pic[[j]] + as.layer(xyplot(V1 ~ V2 | name, datalab, type = "p", col = cols, pch = c(15, 17), cex = 1))
@@ -2735,20 +2735,20 @@ check.zero = function(x){
                    xlim = c(min(density(res$value[res$class != "Simulated"])[[1]]),
                             max(density(res$value[res$class != "Simulated"])[[1]])),
                    panel = function(x, col = colBar, ...){
-                     panel.histogram(x = x, col = colBar[packet.number()],...)
-                     panel.densityplot(x = x, darg = list(bw = 0.2, kernel = "gaussian"), 
+                     lattice::panel.histogram(x = x, col = colBar[packet.number()],...)
+                     lattice::panel.densityplot(x = x, darg = list(bw = 0.2, kernel = "gaussian"), 
                                        col = "black", lwd = 2, ...)
                      meanstat = round(mean(x), 3)
                      sdstat = round(sd(x), 3)
                      ssqstat = round(sum((x)^2), 3)
                      ssqTot = round(sum((res$value[res$class != "Simulated"])^2), 3)
-                     panel.text(x = 0.8* max(density(res$value[res$class != "Simulated"])[[1]]), 
+                     lattice::panel.text(x = 0.8* max(density(res$value[res$class != "Simulated"])[[1]]), 
                                 y = 0.85*max(density(res$value)[[2]]), labels = paste("mean = ", meanstat))
-                     panel.text(x = 0.8*max(density(res$value[res$class != "Simulated"])[[1]]), 
+                     lattice::panel.text(x = 0.8*max(density(res$value[res$class != "Simulated"])[[1]]), 
                                 y = 0.8*max(density(res$value)[[2]]), labels = paste("std = ", sdstat))
-                     panel.text(x = 0.8*max(density(res$value[res$class != "Simulated"])[[1]]),
+                     lattice::panel.text(x = 0.8*max(density(res$value[res$class != "Simulated"])[[1]]),
                                 y = 0.75*max(density(res$value)[[2]]), labels = paste("ssq = ", ssqstat))
-                     panel.text(x = 0.8*max(density(res$value[res$class != "Simulated"])[[1]]),
+                     lattice::panel.text(x = 0.8*max(density(res$value[res$class != "Simulated"])[[1]]),
                                 y = 0.7*max(density(res$value)[[2]]), labels = paste("ssqT = ", ssqTot))
                    })
   
