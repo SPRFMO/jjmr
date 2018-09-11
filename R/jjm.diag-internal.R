@@ -1055,8 +1055,8 @@ check.zero = function(x){
                 type = "p", key = ikey,
                 panel = function(x, y){
                   lattice::panel.grid(h = -1, v = -1)
-                  lattice::panel.points(x, 1, cex = abs(y), col = ifelse(test = y > 0, yes = "black",  "white"), pch = 19)
-                  lattice::panel.points(x, 1, cex = abs(y), col = 1, pch = 1)
+                  lattice::panel.points(x, 1, cex = ifelse(test = !is.na(abs(y)), yes = abs(y), no = 0), col = ifelse(test = y > 0, yes = "black",  "white"), pch = 19)
+                  lattice::panel.points(x, 1, cex = ifelse(test = !is.na(abs(y)), yes = abs(y), no = 0), col = 1, pch = 1)
                 }, ...)
   
   return(pic)
@@ -1560,8 +1560,8 @@ check.zero = function(x){
                 key = ikey,
                 panel = function(x, y){
                   lattice::panel.grid(v = -1, h = 1)
-                  lattice::panel.points(x, 1, cex = abs(y), col = ifelse(y > 0, "black", "white"), pch = 19)
-                  lattice::panel.points(x, 1, cex = abs(y), col = 1, pch = 1)
+                  lattice::panel.points(x, 1, cex = ifelse(test = !is.na(abs(y)), yes = abs(y), no = 0), col = ifelse(y > 0, "black", "white"), pch = 19)
+                  lattice::panel.points(x, 1, cex = ifelse(test = !is.na(abs(y)), yes = abs(y), no = 0), col = 1, pch = 1)
                 }, ...)
   
   return(pic)
@@ -2485,12 +2485,15 @@ check.zero = function(x){
   lattice::panel.text(B_Bmsy[c(1,n)] + 0.05, F_Fmsy[c(1,n)] + 0.2, labels = range(years), cex = 0.8)
   }
 
-  b = xyplot(F_Fmsy[c(1,n)] ~ B_Bmsy[c(1,n)], type = "p", col = col, pch = c(15, 17), panel = mypanel, cex = 0.8)
-  c = xyplot(F_Fmsy ~ B_Bmsy, type = "b", col = col, pch = 19, cex = 0.5)
+  b = lattice::xyplot(F_Fmsy[c(1,n)] ~ B_Bmsy[c(1,n)], type = "p", col = col, pch = c(15, 17), panel = mypanel, cex = 0.8)
+  c = lattice::xyplot(F_Fmsy ~ B_Bmsy, type = "b", col = col, pch = 19, cex = 0.5)
   
   if(!isTRUE(add)){
-    pic = xyplot(y ~ x, type="n", xlim = xlim, ylim = ylim, xlab = toExpress("B/B[msy]"), ylab = toExpress("F/F[msy]"),
-                 main="Kobe plot", scales = list(alternating = 1, tck = c(1,0))) + 
+    pic = lattice::xyplot(y ~ x, type="n", xlim = xlim, ylim = ylim, xlab = toExpress("B/B[msy]"), ylab = toExpress("F/F[msy]"),
+                 main="Kobe plot", scales = list(alternating = 1, tck = c(1,0)),
+                 panel = function(...) {
+                   panel.xyplot(...)
+                 }) + 
       layer_(latticeExtra::panel.xblocks(x, x < 1, col = rgb(1, 0, 0, alpha = 0.5), block.y = 1)) +
       layer_(latticeExtra::panel.xblocks(x, x < 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1, vjust = 1)) +
       layer_(latticeExtra::panel.xblocks(x, x >= 1, col = rgb(1, 1, 0, alpha = 0.5), block.y = 1)) +

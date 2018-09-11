@@ -22,3 +22,5 @@ NULL
 NULL
 #' @importFrom latticeExtra panel.xblocks as.layer layer layer_
 NULL
+#' @importFrom doBy orderBy
+NULL
