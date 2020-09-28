@@ -2143,7 +2143,7 @@ toWrite.array  = function(x, transpose) {
 
 
 .getModelName = function(ctl) {
-  modelName = scan(ctl, nlines=2, what="character", comment.char = "#",
+  modelName = scan(ctl, nlines=4, what="character", comment.char = "#",
                    quiet=TRUE)[2]
   modelName = gsub(x = modelName, pattern = " ", replacement = "")
   return(modelName)
