@@ -4,10 +4,22 @@
 \alias{runJJM}
 \title{Run a JJM model}
 \usage{
-runJJM(models, path = NULL, output = "results", input = NULL,
-  exec = NULL, version = NULL, useGuess = FALSE, guess = NULL,
-  piner = NULL, iprint = 100, wait = TRUE, parallel = FALSE,
-  temp = NULL, ...)
+runJJM(
+  models,
+  path = NULL,
+  output = "results",
+  input = NULL,
+  exec = NULL,
+  version = NULL,
+  useGuess = FALSE,
+  guess = NULL,
+  piner = NULL,
+  iprint = 100,
+  wait = TRUE,
+  parallel = FALSE,
+  temp = NULL,
+  ...
+)
 }
 \arguments{
 \item{models}{String with the name of the models to be run.}

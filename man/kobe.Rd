@@ -4,9 +4,19 @@
 \alias{kobe}
 \title{Kobe plot}
 \usage{
-kobe(obj, add = FALSE, col = "black", stock = 1, Bref = 1,
-  Fref = 1, Blim = Bref, Flim = Fref, xlim = NULL, ylim = NULL,
-  ...)
+kobe(
+  obj,
+  add = FALSE,
+  col = "black",
+  stock = 1,
+  Bref = 1,
+  Fref = 1,
+  Blim = Bref,
+  Flim = Fref,
+  xlim = NULL,
+  ylim = NULL,
+  ...
+)
 }
 \arguments{
 \item{obj}{a jjm model outputs object.}

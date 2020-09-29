@@ -4,8 +4,14 @@
 \alias{readJJM}
 \title{Read a model or list of models}
 \usage{
-readJJM(model, path = NULL, output = "results", input = NULL,
-  version = "2015MS", ...)
+readJJM(
+  model,
+  path = NULL,
+  output = "results",
+  input = NULL,
+  version = "2015MS",
+  ...
+)
 }
 \arguments{
 \item{model}{String with the name of model that will be readed or run.}

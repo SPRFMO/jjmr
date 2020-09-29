@@ -4,9 +4,17 @@
 \alias{runit}
 \title{Fit, run, read and plot a JJM model}
 \usage{
-runit(mod, est = FALSE, exec = NULL, path = "config",
-  input = "input", output = "results", version = "2015MS",
-  pdf = FALSE, portrait = TRUE)
+runit(
+  mod,
+  est = FALSE,
+  exec = NULL,
+  path = "config",
+  input = "input",
+  output = "results",
+  version = "2015MS",
+  pdf = FALSE,
+  portrait = TRUE
+)
 }
 \arguments{
 \item{mod}{A character specifying the name of a model (by it's ctl filename).}
