@@ -4,9 +4,18 @@
 \alias{readExFiles}
 \title{Read external files}
 \usage{
-readExFiles(fileName, type, path = NULL, version = "2015MS",
-  parameters = FALSE, parData, nameFishery, nameIndex, nAges,
-  nStock = NULL)
+readExFiles(
+  fileName,
+  type,
+  path = NULL,
+  version = "2015MS",
+  parameters = FALSE,
+  parData,
+  nameFishery,
+  nameIndex,
+  nAges,
+  nStock = NULL
+)
 }
 \arguments{
 \item{fileName}{filename}

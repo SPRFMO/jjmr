@@ -170,6 +170,48 @@ combineModels = function(...)
   return(output)
 }
 
+
+# Compare models ----------------------------------------------------------
+#' @title Compare combined JJM outputs
+#' @description This function takes a vector of model names, reads in the JJM runs, and combines them.
+#' Basically a wrapper function for \code{combineModels}.
+#' Assumes model runs are in the same folder.
+#' @examples
+#' \dontrun{
+#' 
+#' mod_123 = compareModels(c("h1_0.00", "h1_0.01", "h1_0.02")
+#' }
+#' @export
+compareModels <- function(mods)
+{
+  temp <- list()
+  for(i in seq_along(mods)){
+    temp[[i]] <- readJJM(mods[i], path = "config", input = "input")
+  }
+  cmd <- paste0("mods_comb <- combineModels(",paste(paste0("temp[[",seq_along(mods),"]]"),collapse=", "),")")
+  eval(parse(text=cmd))
+
+  return(mods_comb)
+}
+
+# Change model name ----------------------------------------------------------
+#' @title Change the internal name of a model
+#' @description This function internally replaces the name of a JJM output object with a user-specified string.
+#' Mostly useful for plots.
+#' @examples
+#' \dontrun{
+#' recmods <- compareModels(c("mod1.00.hl","mod1.00.ll","mod1.00.hs","mod1.00.ls"))
+#' 
+#' changeNameModel(recmods,c( "h=0.8, full series","h=0.8, short series","h=0.65, full series","h=0.65, short series" ))
+#' }
+#' @export
+changeNameModel = function(modList, nameVector){
+  for(i in seq_along(modList)){
+    modList[[i]]$info$output$model <- nameVector[i]
+  }
+  return(modList)
+}
+
 # Write jjm files ---------------------------------------------------------------
 
 #' @title Write dat and ctl files from a JJM model stored in R
@@ -257,6 +299,7 @@ readJJMConfig.jjm.output = function(model, path, input=NULL, ...) {
 
 .getJjmConfig = function(data, control, ...) {
   # where is this function
+  # right above you
   return(invisible())
 }
 
