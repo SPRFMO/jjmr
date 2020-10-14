@@ -662,7 +662,7 @@ listCtl$n_proj_yrs = fVector[cV]; cV = cV + 1
 
 FshInd = c(Fishery, Index)
 
-FshInd <- c(paste0("F", 1:4), paste0("I", 1:8))
+FshInd <- c(paste0("F", seq(Fishery)), paste0("I", seq(Index)))
 
   for(i in seq_along(FshInd)){
     listCtl[[paste0(FshInd[i], "_info")]] = fVector[cV:(cV + 5)]
