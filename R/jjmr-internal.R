@@ -249,6 +249,7 @@
                          dimnames = list(years = Ys[1]:Ys[2], age = As[1]:As[2], paste("index", 1:nI, sep = "")))
   
   for(iSu in 1:nI){
+    if(iSu == 8)
     cols$Iwtatage[,,iSu] = matrix(na.omit(.an(unlist(res1[counter:(counter + nY - 1)]))),
                                    ncol = nA, nrow = nY, byrow = TRUE)
     counter = counter + nY
@@ -661,6 +662,7 @@ listCtl$n_proj_yrs = fVector[cV]; cV = cV + 1
 
 FshInd = c(Fishery, Index)
 
+FshInd <- c(paste0("F", seq(Fishery)), paste0("I", seq(Index)))
 
   for(i in seq_along(FshInd)){
     listCtl[[paste0(FshInd[i], "_info")]] = fVector[cV:(cV + 5)]
@@ -1223,7 +1225,8 @@ if(Projections){
   }
   names(listCtl) = idx
   
-  listCtl = lapply(listCtl, toWrite, transpose=transpose)
+  for(i in seq(listCtl))
+    listCtl[[i]] <- toWrite(listCtl[[i]], transpose=transpose)
   
   nams = paste("#", names(listCtl), sep = "") 
   
