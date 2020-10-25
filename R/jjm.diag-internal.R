@@ -384,15 +384,19 @@ check.zero = function(x){
   # 13a: Fitted age by year by fleet
   
   if(.an(ageFleets)[1] != 0){
-    outPlots$ageFitsCatch = .fit_ageFitsCatchFUN(ageFleets, jjm.out, ages,
-                                                  xlab = "Age", ylab = "Proportion at age", 
-                                                  scales = list(alternating = 3))
+    for(iF in ageFleets) {
+      outPlots$ageFitsCatch[[c(jjm.out$Fshry_names)[.an(iF)]]] = .fit_ageFitsCatchFUN(iF, jjm.out, ages,
+                                                                                      xlab = "Age", ylab = "Proportion at age", 
+                                                                                      scales = list(alternating = 3))
+    }
   }
   
   # 13b: Fitted length by year by fleet
   if(.an(lgtFleets)[1] != 0){
-    outPlots$lengthFitsCatch = .fit_lengthFitsCatchFUN(lgtFleets, jjm.out, lengths,
+    for(iF in lgtFleets) {
+      outPlots$lengthFitsCatch[[c(jjm.out$Fshry_names)[.an(iF)]]] = .fit_lengthFitsCatchFUN(iF, jjm.out, lengths,
                                                         xlab = "Length", ylab = "Proportion at length")
+    }
   }
   
   # 14: Absolute catch by fleet modelled and observed
@@ -415,9 +419,11 @@ check.zero = function(x){
   
   # 15b: Fitted age by year by survey
   if(.an(ageSurveys)[1] != 0){
-    outPlots$ageFitsSurvey = .fit_ageFitsSurveyFUN(ageSurveys, jjm.out, ages,
-                                                    xlab = "Age", ylab = "Proportion at age", 
-                                                    scales = list(alternating = 3))
+    for(iS in ageSurveys) {
+      outPlots$ageFitsSurvey[[c(jjm.out$Index_names)[.an(iS)]]] = .fit_ageFitsSurveyFUN(iS, jjm.out, ages,
+                                                                                        xlab = "Age", ylab = "Proportion at age", 
+                                                                                        scales = list(alternating = 3))
+    }
   }
   
   # 16: Log residuals in survey
