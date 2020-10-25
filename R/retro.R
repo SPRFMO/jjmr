@@ -38,6 +38,11 @@ retro = function(model, n=5, output="results", exec=NULL, parallel=FALSE,
   runJJM(models, output=oPath, exec=exec, iprint=iprint, wait=wait, parallel=parallel, temp=temp)
   
   ifsh = grep(x=names(model[[1]]$output[[1]]), pattern="F_fsh", value = TRUE)
+  if(model[[1]]$info$output$nStock>1){
+    for(m in 2:model[[1]]$info$output$nStock){
+      ifsh = c(ifsh,grep(x=names(model[[1]]$output[[m]]), pattern="F_fsh", value = TRUE))
+    }
+  }
   ivar = c("SSB", "R", ifsh)
   .getRetro = function(x, ind) x[ind]
   
@@ -111,11 +116,11 @@ retro = function(model, n=5, output="results", exec=NULL, parallel=FALSE,
 
 .sortRetroByStock = function(object, iStock, n) {
   
-  nV = length(object[[1]][[1]])
-  varNames = names(object[[1]][[1]])
+  varNames = names(object[[1]][[iStock]])
+  varNames = varNames[!is.na(varNames)]
   
   out = list()
-  for(iVar in seq_len(nV)) {
+  for(iVar in varNames) {
     out[[iVar]] = .sortRetro(object=object, iStock=iStock, iVar=iVar, n=n)
   }
   names(out) = varNames
