@@ -249,7 +249,6 @@
                          dimnames = list(years = Ys[1]:Ys[2], age = As[1]:As[2], paste("index", 1:nI, sep = "")))
   
   for(iSu in 1:nI){
-    if(iSu == 8)
     cols$Iwtatage[,,iSu] = matrix(na.omit(.an(unlist(res1[counter:(counter + nY - 1)]))),
                                    ncol = nA, nrow = nY, byrow = TRUE)
     counter = counter + nY
