@@ -185,11 +185,13 @@ plot.jjm.retro = function(x, var=NULL, std=FALSE, ci=TRUE, lty=1, lwd=2, alpha=0
     }
   }
   mtext(var, 3, line=-2, adj=0.05, cex=1.8)
+  mtext(bquote("Mohn's" ~ rho == .(signif(icesAdvice::mohn(ssb$var[,1,1:n],peel=(n-1)),2))), side=3)
   axis(1)
   axis(2, las=2)
   box()
 
   legend("topright", lty=lty, col=1:n, legend = 1:n - 1, lwd=lwd, bty="n")
+  
   return(invisible())
 }
 
