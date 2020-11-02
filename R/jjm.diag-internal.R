@@ -557,7 +557,7 @@ check.zero = function(x){
   # 25: SSB not fished over SSB fished
   outPlots$fishedUnfishedBiomass = .fit_fishedUnfishedBiomassFUN(jjm.out,
                                                                   ylab = "Total biomass", xlab = "Years", 
-                                                                  main = "Fished vs. unfished biomass",
+                                                                  main = "Comparing fished with unfished biomass",
                                                                   col = c(1, 1), lwd = 3, lty = c(1, 3))
   
   # Plots of catch and ssb projections
@@ -1815,7 +1815,10 @@ check.zero = function(x){
 .fit_surveyMeanAgeFUN = function(Nsurveys, jjm.out, ...)
 {
   EffN_Survey = grep(pattern = "EffN_Survey_[0-9]*", x = names(jjm.out), value = TRUE)
-  
+  SurvInd = as.numeric(unlist(strsplit(EffN_Survey, "\\D+")))
+  SurvInd = SurvInd[!is.na(SurvInd)]
+  SurvNames = jjm.out$Index_names[SurvInd]
+
   for(iSurvey in 1:Nsurveys){
     res = data.frame(jjm.out[[EffN_Survey[iSurvey]]][,c(1, 4, 5, 7, 8)])
     if(nrow(res) > 1){
@@ -1824,7 +1827,7 @@ check.zero = function(x){
       for(i in 2:5){
         tot = data.frame(cbind(res[,1], res[,i]))
         tot$class = names(res)[i]
-        tot$Survey = jjm.out$Index_names[iSurvey]
+        tot$Survey = SurvNames[iSurvey]
         if(iSurvey == 1 & i == 2) total = tot
         if(iSurvey != 1 | i != 2) total = rbind(total, tot)
       }
