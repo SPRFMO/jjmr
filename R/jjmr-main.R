@@ -274,12 +274,19 @@ readJJMConfig = function(model, path, input=NULL, ...) {
 }
 
 #' @export
-readJJMConfig.default = function(model, path=NULL, input=NULL, ...) {
+readJJMConfig.default = function(model, path=NULL, input=NULL, output="results", ...) {
 		
   ctl  = .getCtlFile(model=model, path=path) # path to ctl file
   dat  = .getDatFile(ctl=ctl, input=input) # path to dat file
   
-  output = .getJjmConfig(data = dat, control = ctl, ...)
+  reps = .getRepFiles(model=model, output=output)
+  yld  = .getYldFile(model=model, output=output)
+  outputs    = .readOutputsJJM(files=reps, yld=yld)
+  data       = .readDat(dat=dat, version=.versionJJM(ctl))
+  info       = .getInfo(data=data, output=outputs, model=model)
+  control    = .readCtl(ctl=ctl, info=info)
+
+  output = .getJjmConfig(data = data, control = control)
   
   return(output)
 	
@@ -291,19 +298,26 @@ readJJMConfig.jjm.output = function(model, path, input=NULL, ...) {
   ctl  = .getCtlFile(model=model, path=path) # path to ctl file
   dat  = .getDatFile(ctl=ctl, input=input) # path to dat file
   
-  output = .getJjmConfig(data = dat, control = ctl, ...)
+  reps = .getRepFiles(model=model, output=output)
+  yld  = .getYldFile(model=model, output=output)
+  outputs    = .readOutputsJJM(files=reps, yld=yld)
+  data       = .readDat(dat=dat, version=.versionJJM(ctl))
+  info       = .getInfo(data=data, output=outputs, model=model)
+  control    = .readCtl(ctl=ctl, info=info)
+
+  output = .getJjmConfig(data = data, control = control)
   
   return(output)
   
 }
 
-.getJjmConfig = function(data, control, ...) {
+# .getJjmConfig = function(data, control, ...) {
   # where is this function
   # right above you
-  return(invisible())
-}
+  # return(invisible())
+# }
 
-# RUnit -------------------------------------------------------------------
+# Runit -------------------------------------------------------------------
 
 #' @title Fit, run, read and plot a JJM model
 #' @description Shortcut to fit, run, read and plot a JJM model

@@ -1,5 +1,5 @@
 
-.getJjmCongif = function(data, control, ...) {
+.getJjmConfig = function(data, control, ...) {
   
   out = list()
   out[[1]] = list()
