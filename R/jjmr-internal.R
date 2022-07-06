@@ -496,7 +496,7 @@ Fishery = as.vector(info$fisheryNames)
 Index = as.vector(info$indexModel)
 nFishery = length(Fishery)
 nIndex = length(Index)
-nAges = infoDat$age[2]
+nAges = infoDat$age[2] - infoDat$age[1] + 1
 nStock = info$nStock
 
 res1      = scan(file = filename, what = 'numeric', quiet = TRUE, sep = "\n",
