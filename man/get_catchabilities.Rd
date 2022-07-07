@@ -7,7 +7,7 @@
 get_catchabilities(models)
 }
 \arguments{
-\item{models}{}
+\item{models}{an object of class jjm.output}
 }
 \value{
 a data frame of estimated catchabilities

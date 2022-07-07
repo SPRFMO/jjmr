@@ -1,4 +1,6 @@
 library(here)
+library(ggplot2)
+library(tidyverse)
 # if (getwd() != here("assessment")){
 #   setwd("assessment")
 #   
@@ -33,3 +35,45 @@ a = get_msy_mt(old_vs_new_mods)
 kobe(mod0.00, engine = "ggplot")
 
 kobe(old_vs_new_mods, engine = "lattice")
+
+a = get_catchabilities(mod0.00)
+
+
+
+a %>% 
+  ggplot(aes(year, q, color = model)) + 
+  geom_line() + 
+  facet_wrap(~ index, scales = "free_y")
+
+
+totals <- get_totals(old_vs_new_mods)
+
+
+totals %>% 
+  ggplot(aes(year, value, color = stock, linetype = model)) + 
+  geom_line() + 
+  facet_wrap(~ metric, scales = "free_y")
+
+
+index_fits <- get_index_fits(old_vs_new_mods)
+
+index_fits %>% 
+  ggplot() + 
+  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se)) +
+  geom_path(aes(year, pred_ind, color = model)) + 
+  facet_wrap(~ index, scales = "free_y")
+
+
+age_fits <- get_age_fits(old_vs_new_mods)
+
+
+age_fits %>% 
+  filter(model == "h2_0.00", stock == "Stock_1", source == "fsh_1") %>% 
+  pivot_longer(predicted:observed) %>% 
+  ggplot() + 
+  geom_density(aes(age, value, fill = name),stat = "identity", alpha = 0.5) + 
+  facet_wrap(~year)
+
+
+tidy_jjm <- tidy_JJM(old_vs_new_mods)
+str(tidy_jjm)

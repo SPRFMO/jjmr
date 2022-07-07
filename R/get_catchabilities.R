@@ -1,6 +1,6 @@
 #' Get estimated catchability coefficients
 #'
-#' @param models 
+#' @param models an object of class jjm.output
 #'
 #' @return a data frame of estimated catchabilities
 #' @export

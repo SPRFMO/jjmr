@@ -4,7 +4,7 @@
 \alias{getter}
 \title{Get elements of a list by string matching on name}
 \usage{
-getter(x, pattern = "^sel_")
+getter(x, pattern = "^sel_", things = NA)
 }
 \arguments{
 \item{x}{the object}
