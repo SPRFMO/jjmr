@@ -1,16 +1,9 @@
 library(here)
 library(ggplot2)
 library(tidyverse)
-# if (getwd() != here("assessment")){
-#   setwd("assessment")
-#   
-# }
 library(jjmR)
 # mod0.00 <- runit(geth("0.00"),pdf=TRUE,portrait=F,est=TRUE,exec="../src/jjms")
 mod0.00 <- readJJM("h2_0.00", path = "config", input = "input")
-
-# mod_prev <- readJJM(geth("1.00"), path = "config", input = "input")
-# save(mod_prev, file="results/mod_prev_h1.Rdat")
 
 load("results/mod_prev_h1.Rdat")
 
@@ -74,6 +67,15 @@ age_fits %>%
   geom_density(aes(age, value, fill = name),stat = "identity", alpha = 0.5) + 
   facet_wrap(~year)
 
+
+recruits <- get_recruits(old_vs_new_mods)
+
+fishing_mortality <- get_fishing_mortality(old_vs_new_mods)
+
+fishing_mortality %>% 
+  ggplot(aes(year, mortality, color = age, group = age)) + 
+  geom_line() + 
+  facet_grid(model~stock)
 
 tidy_jjm <- tidy_JJM(old_vs_new_mods)
 str(tidy_jjm)
