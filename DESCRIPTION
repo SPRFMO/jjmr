@@ -14,7 +14,10 @@ Depends:
 Imports:
     doBy,
     doSNOW,
+    dplyr,
     foreach,
+    ggplot2,
+    ggridges,
     graphics,
     grDevices,
     grid,
@@ -23,12 +26,15 @@ Imports:
     knitr,
     lattice,
     latticeExtra,
+    magrittr,
     pander,
     PBSmodelling,
+    purrr,
     rmarkdown,
     stats,
+    tidyr,
     utils
 VignetteBuilder: knitr
 LazyData: TRUE
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0

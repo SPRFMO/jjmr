@@ -478,7 +478,8 @@
                      }
                    }
                    , ...)
-    } else {pic = xyplot(mean ~ year | stocks + model, data = dataShape, groups = stocks, ylab = "",
+    } else {
+      pic = xyplot(mean ~ year | stocks + model, data = dataShape, groups = stocks, ylab = "",
                          #ylim = c(0.8*min(dataShape$lower), 1.1*max(dataShape$upper)),
                          #xlim = c(min(dataShape$year - 1), max(dataShape$year + 1)),
                          scales = list(alternating = 1, tck = c(1, 0), y = list(relation = "free", rot = 0)),
@@ -524,7 +525,6 @@
                    , ...)
       
     } else {
-      
       pic = xyplot(mean ~ year | listStocks, data = dataShape, groups = listStocks, ylab = "",
                    #ylim = c(0.8*min(dataShape$lower), 1.1*max(dataShape$upper)),
                    #xlim = c(min(dataShape$year - 1), max(dataShape$year + 1)),
@@ -842,9 +842,10 @@
   ypr = if(!is.null(yld)) .readYPR(yld) else NULL # should be a list by stock
   outputs = list()
   for(i in seq_along(files)) {
-    outputs[[i]] = readList(files[i]) # add validation
+    outputs[[i]] = PBSmodelling::readList(files[i]) # add validation
     outputs[[i]]$YPR = ypr
   }
+
   names(outputs) = paste0("Stock_", 1:length(files)) # Puede ser modificado cuando se lea el ctl
   return(outputs)
   

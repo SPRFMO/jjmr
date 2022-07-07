@@ -4,3 +4,4 @@ vignettes/* # temporal solution
 TO_DO.txt
 cran-comments.md
 NEWS.md
+^README\.Rmd$
