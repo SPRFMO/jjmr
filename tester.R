@@ -26,7 +26,7 @@ plot(old_vs_new_mods,what="selectivity",fleet="fsh", alpha = 0.2, scale = 10,
 
 
 plot(mod0.00,what="selectivity",fleet="ind", alpha = 0.2, scale = 10,
-     years = 2000:2020)
+     years = 2015:2020)
 
 a = get_msy_mt(old_vs_new_mods)
 

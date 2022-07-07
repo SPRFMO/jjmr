@@ -16,14 +16,7 @@ get_selectivities <- function(models) {
   
   top_getter <- function(model){
     
-    getter <- function(x) {
-      inds <-
-        which(grepl("^sel_", (names(x)))) # find entries that start with some form of sel_
-      
-      out <- x[inds] # pull out selectivity objeccts
-      
-    }
-    
+
     sels <- lapply(model$output, getter) # pull out selectivity objects
     
     deeper_getter <- function(z){
