@@ -48,6 +48,7 @@ library(tidyverse)
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(jjmR)
+theme_set(theme_jjm())
 setwd(here("assessment"))
 
 # mod0.00 <- runit(geth("0.00"),pdf=TRUE,portrait=F,est=TRUE,exec="../src/jjms")
@@ -154,6 +155,18 @@ age_fits %>%
 
 recruits <- get_recruits(old_vs_new_mods)
 
+recruits %>% 
+  ggplot() + 
+  geom_ribbon(aes(year, ymin = lower_recruits, ymax = upper_recruits, fill = stock),alpha = 0.5) + 
+  geom_line(aes(year, recruits, color = stock)) + 
+  facet_wrap(~model)
+```
+
+<img src="man/figures/README-unnamed-chunk-2-10.png" width="100%" />
+
+``` r
+
+
 fishing_mortality <- get_fishing_mortality(old_vs_new_mods)
 
 fishing_mortality %>% 
@@ -162,7 +175,7 @@ fishing_mortality %>%
   facet_grid(model~stock)
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-10.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-11.png" width="100%" />
 
 ``` r
 tidy_jjm <- tidy_JJM(old_vs_new_mods)

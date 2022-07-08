@@ -53,6 +53,7 @@ library(here)
 library(ggplot2)
 library(tidyverse)
 library(jjmR)
+theme_set(theme_jjm())
 setwd(here("assessment"))
 
 # mod0.00 <- runit(geth("0.00"),pdf=TRUE,portrait=F,est=TRUE,exec="../src/jjms")
@@ -122,6 +123,14 @@ age_fits %>%
 
 
 recruits <- get_recruits(old_vs_new_mods)
+
+recruits %>% 
+  ggplot() + 
+  geom_ribbon(aes(year, ymin = lower_recruits, ymax = upper_recruits, fill = stock),alpha = 0.5) + 
+  geom_line(aes(year, recruits, color = stock)) + 
+  facet_wrap(~model)
+
+
 
 fishing_mortality <- get_fishing_mortality(old_vs_new_mods)
 
