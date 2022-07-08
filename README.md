@@ -15,24 +15,13 @@ You can install the development version of jjmR like so:
 
 ``` r
 install.packages("devtools")
-devtools::install_github("SPRFMO/jjmR")
+devtools::install_github("danovando/jjmR@dev")
 ```
 
-## Example
+## Example of tidying jjm outputs
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(jjmR) #load library 
-setwd("NAMEOFYOURDIRECTORY/jjm/assessment") # Make sure to keep the quotation marks!
-
-assessment <- "h1_1.00"
-
-h1.mod <- jjmR::readJJM(assessment, path = "config", input = "input") #pull in model 1
-jjmR::kobe(h1.mod) #plot kobe plot
-```
-
-## Tidying THings
+This is a quick and dirty example of how to use new features of `jjmR`
+to tidy and analyze results of JJM model that will get cleaned up.
 
 ``` r
 library(here)
@@ -51,9 +40,13 @@ library(jjmR)
 theme_set(theme_jjm())
 setwd(here("assessment"))
 
-# mod0.00 <- runit(geth("0.00"),pdf=TRUE,portrait=F,est=TRUE,exec="../src/jjms")
+# read in a model run
+# mod0.00 <- runit(mod="h2_0.00",pdf=TRUE,est=TRUE,exec="../src/jjms")
+
+
 mod0.00 <- readJJM("h2_0.00", path = "config", input = "input")
 
+# compare to a past model run
 load("results/mod_prev_h1.Rdat")
 
 old_vs_new_mods <- combineModels(mod0.00,mod_prev)
