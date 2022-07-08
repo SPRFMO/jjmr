@@ -104,11 +104,11 @@ age_fits <- get_age_fits(old_vs_new_mods)
 
 
 age_fits %>% 
-  filter(model == "h2_0.00", stock == "Stock_1", source == "fsh_1") %>% 
+  filter(model == "h2_0.00", stock == "Stock_1", year > 2015) %>% 
   pivot_longer(predicted:observed) %>% 
   ggplot() + 
   geom_density(aes(age, value, fill = name),stat = "identity", alpha = 0.5) + 
-  facet_wrap(~year)
+  facet_grid(year~fleet_name)
 
 
 recruits <- get_recruits(old_vs_new_mods)
