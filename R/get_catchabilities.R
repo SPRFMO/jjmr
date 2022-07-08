@@ -21,5 +21,27 @@ get_catchabilities <- function(models) {
   
   out <- purrr::map_df(models, top_getter, .id = "model") # flatten and collect across models
   
+  ind_names <-
+    data.frame(
+      fleet_type = "ind",
+      fleet_name = models[[1]]$data$Inames,
+      fleet_number = seq_along(models[[1]]$data$Inames)
+    )
   
+  fsh_names <-
+    data.frame(
+      fleet_type = "fsh",
+      fleet_name = models[[1]]$data$Fnames,
+      fleet_number = seq_along(models[[1]]$data$Fnames)
+    )
+  
+  fleet_names <- rbind(ind_names, fsh_names)
+  
+  out <- out %>% 
+    tidyr::separate(index, sep = "_", into = c("metric", "fleet_number")) %>% 
+    dplyr::mutate(fleet_number = as.integer(fleet_number),
+           fleet_type = "ind") %>% 
+    dplyr::left_join(fleet_names, by = c("fleet_number", "fleet_type"))
+  
+
 }

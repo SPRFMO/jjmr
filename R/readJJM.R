@@ -46,6 +46,14 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
   
   outputs <- lapply(outputs,namer,msy_mt_names = msy_mt_names)
   
+  ind_names <- data.frame(fleet_type = "ind",fleet_name = data$Inames, fleet_number = seq_along(data$Inames))
+  
+  fsh_names <- data.frame(fleet_type = "fsh",fleet_name = data$Fnames,
+                            fleet_number = seq_along( data$Fnames))
+  
+  fleet_names <- rbind(ind_names,fsh_names)
+  
+  data$fleet_names <- fleet_names
   
   # Group in a list
   output = list()    										

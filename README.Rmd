@@ -72,14 +72,14 @@ kobe(mod0.00, engine = "ggplot")
 
 kobe(old_vs_new_mods, engine = "lattice")
 
-a = get_catchabilities(mod0.00)
+qs = get_catchabilities(mod0.00)
 
 
 
-a %>% 
+qs %>% 
   ggplot(aes(year, q, color = model)) + 
   geom_line() + 
-  facet_wrap(~ index, scales = "free_y")
+  facet_wrap(~ fleet_name, scales = "free_y")
 
 
 totals <- get_totals(old_vs_new_mods)
@@ -97,7 +97,7 @@ index_fits %>%
   ggplot() + 
   geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se)) +
   geom_path(aes(year, pred_ind, color = model)) + 
-  facet_wrap(~ index, scales = "free_y")
+  facet_wrap(~ fleet_name, scales = "free_y")
 
 
 age_fits <- get_age_fits(old_vs_new_mods)
