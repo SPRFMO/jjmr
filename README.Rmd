@@ -38,7 +38,7 @@ library(here)
 library(ggplot2)
 library(tidyverse)
 library(jjmR)
-theme_set(theme_jjm())
+theme_set(theme_jjm(base_size = 15))
 setwd(here("assessment"))
 
 # read in a model run

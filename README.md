@@ -37,7 +37,7 @@ library(tidyverse)
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(jjmR)
-theme_set(theme_jjm())
+theme_set(theme_jjm(base_size = 15))
 setwd(here("assessment"))
 
 # read in a model run
