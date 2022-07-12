@@ -16,18 +16,17 @@ get_selectivities <- function(models) {
   
   top_getter <- function(model){
     
-    getter <- function(x) {
-      inds <-
-        which(grepl("^sel_", (names(x)))) # find entries that start with some form of sel_
-      
-      out <- x[inds] # pull out selectivity objeccts
-      
-    }
+    
+    ind_names <- data.frame(fleet_type = "ind",fleet_name = model$data$Inames, fleet_number = seq_along( model$data$Inames))
+
+    fsh_names <- data.frame(fleet_type = "fsh",fleet_name = model$data$Fnames,
+                              fleet_number = seq_along( model$data$Fnames))
+
+    fleet_names <- rbind(ind_names,fsh_names)
     
     sels <- lapply(model$output, getter) # pull out selectivity objects
     
-    deeper_getter <- function(z){
-      
+    deeper_getter <- function(z, fleet_names){
       tmp2 <- purrr::map_df(z, as.data.frame, .id = "object") %>% # convert each selectivity object to a data.frame
         dplyr::rename(year = V2, index = V1) %>% # rename
         tidyr::pivot_longer(
@@ -39,11 +38,13 @@ get_selectivities <- function(models) {
         ) %>% # ages to pivot to longer form 
         tidyr::separate(object,
                         sep = "_",
-                        into = c("sel", "fleet_type", "fleet_number")) #isolate components of name
+                        into = c("sel", "fleet_type", "fleet_number")) %>% 
+        dplyr::mutate(fleet_number = as.integer(fleet_number)) %>% 
+        dplyr::left_join(fleet_names, by = c("fleet_type", "fleet_number")) #isolate components of name
       
     }
     
-    sels <- purrr::map_df(sels, deeper_getter, .id = "stock") # flatten the selecivity data
+    sels <- purrr::map_df(sels, deeper_getter, fleet_names =fleet_names, .id = "stock") # flatten the selecivity data
     
   }
   

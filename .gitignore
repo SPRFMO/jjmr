@@ -26,3 +26,4 @@ vignettes/*.pdf
 # personal files
 TO_DO.txt
 assessment/*
+src/*

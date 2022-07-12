@@ -65,11 +65,11 @@ plot_selectivities <-
     if (dplyr::n_distinct(sels$fleet_type) == 1){
       
       out <- tmp + 
-        ggplot2::facet_wrap(~fleet_number, labeller = ggplot2::label_both)
+        ggplot2::facet_wrap(~fleet_name)
       
     } else {
       out <- tmp + 
-        ggplot2::facet_grid(fleet_type ~ fleet_number, labeller = ggplot2::label_both)
+        ggplot2::facet_grid(fleet_type ~ fleet_name)
         
     }
     
