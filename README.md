@@ -3,16 +3,11 @@
 
 # jjmR
 
-``` r
-getwd()
-#> [1] "/Users/danovan/projects/jjmr/assessment"
-```
-
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of jjmR is to … Graphics and diagnostics libraries for SPRFMO’s
-JJM model adopted from IMARPE’s jjmTools
+`jjmR` provides graphics and diagnostics libraries for SPRFMO’s JJM
+model adopted from IMARPE’s jjmTools
 
 ## Installation
 
@@ -34,11 +29,7 @@ results, you need to make sure your working directory is set to the
 location of the `assessment` folder.
 
 ``` r
-library(here)
-#> here() starts at /Users/danovan/projects/jjmr/assessment
 library(jjmR)
-# setwd(here("assessment"))
-
 
 jjm_results <- readJJM("h2_1.13", path = "config", input = "input")
 
@@ -82,23 +73,23 @@ summary(jjm_results)
 #> Stock_1
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-1-1.png" width="100%" />
 
     #> Stock_2
 
-<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-1-2.png" width="100%" />
 
 ``` r
 plot(jjm_results)
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-1-3.png" width="100%" />
 
 ## Example of tidying jjmR outputs
 
 `jjmR` also includes a series of helper functions to “tidy” up the data
 (see <https://r4ds.had.co.nz/tidy-data.html>). These are designed to
-help users access and comapre results across multiple models and stocks.
+help users access and compare results across multiple models and stocks.
 
 First, let’s load up two different model runs. As always with `jjmR`,
 make sure your working directory is set to the `assessment` folder.
@@ -249,14 +240,14 @@ index_fits <- tidy_jjm$index_fits
 
 index_fits %>% 
   ggplot() + 
-  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se)) +
+  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se), alpha = 0.5) +
   geom_path(aes(year, pred_ind, color = model)) + 
   facet_wrap(~ fleet_name, scales = "free_y") + 
   scale_x_continuous(name = "Year", guide = guide_axis(n.dodge = 2)) + 
   scale_y_continuous(name = "Index Values")
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 ``` r
 index_fits %>% 
@@ -272,11 +263,11 @@ index_fits %>%
   scale_y_continuous(name = "Standardized Residuals")
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-2.png" width="100%" />
 
 ### Using `get_` Functions: Plotting Selectivities
 
-You can also access the helper functions the underly `tidy_JJM`
+You can also access the helper functions the underlay `tidy_JJM`
 directly. Each of these is named `get_X`, where `X` is the name of the
 data.
 
@@ -308,14 +299,14 @@ the “tidy” functions of `jjmR`. You can use this by running
 plot_selectivities(selectivities)
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ``` r
 plot(m1_v_m2,what="selectivity",fleet="fsh", alpha = 0.2, scale = 10,
      years = 2000:2020)
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
 
 ``` r
 
@@ -323,7 +314,7 @@ plot(model_results_2,what="selectivity",fleet="ind", alpha = 0.2, scale = 10,
      years = 2015:2020)
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-3.png" width="100%" />
 
 ### Miscelanneous Examples
 
@@ -349,7 +340,7 @@ head(msy_my_results)
 kobe(model_results_1, engine = "ggplot")
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ``` r
 qs = get_catchabilities(model_results_1)
@@ -360,7 +351,7 @@ qs %>%
   facet_wrap(~ fleet_name, scales = "free_y")
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
 
 ``` r
 
@@ -372,7 +363,7 @@ totals %>%
   facet_wrap(~ metric, scales = "free_y")
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-3.png" width="100%" />
 
 ``` r
 
@@ -380,12 +371,12 @@ index_fits <- get_index_fits(m1_v_m2)
 
 index_fits %>% 
   ggplot() + 
-  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se)) +
+  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se), alpha = 0.5) +
   geom_path(aes(year, pred_ind, color = model)) + 
   facet_wrap(~ fleet_name, scales = "free_y")
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-4.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-4.png" width="100%" />
 
 ``` r
 
@@ -400,7 +391,7 @@ age_fits %>%
   facet_grid(year~fleet_name)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-5.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-5.png" width="100%" />
 
 ``` r
 
@@ -413,7 +404,7 @@ recruits %>%
   facet_wrap(~model)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-6.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-6.png" width="100%" />
 
 ``` r
 
@@ -423,7 +414,7 @@ fishing_mortality <- get_fishing_mortality(m1_v_m2)
 fishing_mortality %>% 
   ggplot(aes(year, mortality, color = age, group = age)) + 
   geom_line() + 
-  facet_grid(model~stock)
+  facet_grid(model~stock, scales = "free_y") 
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-7.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-7.png" width="100%" />

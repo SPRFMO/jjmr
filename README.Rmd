@@ -17,14 +17,11 @@ knitr::opts_chunk$set(
 
 # jjmR
 
-```{r}
-getwd()
-```
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of jjmR is to ... Graphics and diagnostics libraries for SPRFMO's JJM model adopted from IMARPE's jjmTools
+`jjmR` provides graphics and diagnostics libraries for SPRFMO's JJM model adopted from IMARPE's jjmTools
 
 
 ## Installation
@@ -44,14 +41,12 @@ devtools::install_github("SPRFMO/jjmR")
 In order to run any of the `jjmR` functions for reading assessment results, you need to make sure your working directory is set to the location of the `assessment` folder. 
 
 ```{r, eval=TRUE}
-library(here)
 library(jjmR)
-# setwd(here("assessment"))
-
 
 jjm_results <- readJJM("h2_1.13", path = "config", input = "input")
 
 summary(jjm_results)
+
 plot(jjm_results)
 
 ```
@@ -60,7 +55,7 @@ plot(jjm_results)
 ## Example of tidying jjmR outputs
 
 
-`jjmR` also includes a series of helper functions to "tidy" up the data (see https://r4ds.had.co.nz/tidy-data.html). These are designed to help users access and comapre results across multiple models and stocks. 
+`jjmR` also includes a series of helper functions to "tidy" up the data (see https://r4ds.had.co.nz/tidy-data.html). These are designed to help users access and compare results across multiple models and stocks. 
 
 First, let's load up two different model runs. As always with `jjmR`, make sure your working directory is set to the `assessment` folder. 
 
@@ -109,7 +104,7 @@ index_fits <- tidy_jjm$index_fits
 
 index_fits %>% 
   ggplot() + 
-  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se)) +
+  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se), alpha = 0.5) +
   geom_path(aes(year, pred_ind, color = model)) + 
   facet_wrap(~ fleet_name, scales = "free_y") + 
   scale_x_continuous(name = "Year", guide = guide_axis(n.dodge = 2)) + 
@@ -131,7 +126,7 @@ index_fits %>%
 
 ### Using `get_` Functions: Plotting Selectivities
 
-You can also access the helper functions the underly `tidy_JJM` directly. Each of these is named `get_X`, where `X` is the name of the data. 
+You can also access the helper functions the underlay `tidy_JJM` directly. Each of these is named `get_X`, where `X` is the name of the data. 
 
 For example, to access the estimated selectivity ogives ,we can use `get_selectivities`. 
 
@@ -192,7 +187,7 @@ index_fits <- get_index_fits(m1_v_m2)
 
 index_fits %>% 
   ggplot() + 
-  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se)) +
+  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se), alpha = 0.5) +
   geom_path(aes(year, pred_ind, color = model)) + 
   facet_wrap(~ fleet_name, scales = "free_y")
 
@@ -223,7 +218,7 @@ fishing_mortality <- get_fishing_mortality(m1_v_m2)
 fishing_mortality %>% 
   ggplot(aes(year, mortality, color = age, group = age)) + 
   geom_line() + 
-  facet_grid(model~stock)
+  facet_grid(model~stock, scales = "free_y") 
 
 
 ```
