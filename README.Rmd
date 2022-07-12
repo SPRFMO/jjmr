@@ -1,0 +1,232 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, setup, include = FALSE}
+
+knitr::opts_knit$set(root.dir = 'assessment')
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%")
+```
+
+# jjmR
+
+```{r}
+getwd()
+```
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of jjmR is to ... Graphics and diagnostics libraries for SPRFMO's JJM model adopted from IMARPE's jjmTools
+
+
+## Installation
+
+You can install `jjmR` like so:
+
+``` r
+install.packages("devtools")
+devtools::install_github("SPRFMO/jjmR")
+```
+
+## Basic Usage
+
+
+`jjmR` provides support for objects of class `jm.output`. Reading in the outputs of a JJM model with `jjmR` provides a number of summary and plotting functions. 
+
+In order to run any of the `jjmR` functions for reading assessment results, you need to make sure your working directory is set to the location of the `assessment` folder. 
+
+```{r, eval=TRUE}
+library(here)
+library(jjmR)
+# setwd(here("assessment"))
+
+
+jjm_results <- readJJM("h2_1.13", path = "config", input = "input")
+
+summary(jjm_results)
+plot(jjm_results)
+
+```
+
+
+## Example of tidying jjmR outputs
+
+
+`jjmR` also includes a series of helper functions to "tidy" up the data (see https://r4ds.had.co.nz/tidy-data.html). These are designed to help users access and comapre results across multiple models and stocks. 
+
+First, let's load up two different model runs. As always with `jjmR`, make sure your working directory is set to the `assessment` folder. 
+
+
+```{r, eval=TRUE}
+library(jjmR)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+theme_set(theme_jjm(base_size = 15))
+# example of code to generate model results
+# model_results_1 <- runit(mod="h1_1.13",pdf=TRUE,est=TRUE,exec="../src/jjms")
+
+# model_results_2 <- runit(mod="h2_1.13",pdf=TRUE,est=TRUE,exec="../src/jjms")
+
+# read in a model run
+
+model_results_1<- readJJM("h1_1.13", path = "config", input = "input")
+
+model_results_2 <- readJJM("h2_1.13", path = "config", input = "input")
+
+# compare to another model run
+
+m1_v_m2 <- combineModels(model_results_1,model_results_2)
+```
+
+
+We can now use the `tidy_JJM` function to tidy up the results. As of now `tidy_JJM` provides support for a number of the most commonly used outputs of the JJM model, but not all. 
+
+`tidy_JJM` returns a list with objects for each tidied data type (e.g. selectivities and msy_mt), with columns denoting the model, stock, etc. for a given observation. 
+
+```{r}
+
+tidy_jjm <- tidy_JJM(m1_v_m2)
+str(tidy_jjm)
+
+```
+
+
+This tidy form is useful for users wishing to quickly generate new plots or analyses based on the results of different model runs. 
+
+For example, suppose we want to plot the predicted index values for each of the indicies across models, as well as the residuals. 
+
+```{r}
+index_fits <- tidy_jjm$index_fits
+
+index_fits %>% 
+  ggplot() + 
+  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se)) +
+  geom_path(aes(year, pred_ind, color = model)) + 
+  facet_wrap(~ fleet_name, scales = "free_y") + 
+  scale_x_continuous(name = "Year", guide = guide_axis(n.dodge = 2)) + 
+  scale_y_continuous(name = "Index Values")
+
+index_fits %>% 
+  mutate(residual = pred_ind - observed_ind ) %>% 
+  group_by(fleet_name, model) %>% 
+  mutate(standardized_residual = residual / sd(residual)) %>% 
+  filter(!is.na(standardized_residual)) %>% 
+  ggplot() + 
+  geom_hline(yintercept = 0,linetype = 2) +
+  geom_col(aes(x = year, y =standardized_residual, fill =model), position = position_dodge(width = 0.5)) +
+  facet_wrap(~ fleet_name, scales = "free_x") + 
+  scale_x_continuous(name = "Year", guide = guide_axis(n.dodge = 2)) + 
+  scale_y_continuous(name = "Standardized Residuals")
+
+```
+
+### Using `get_` Functions: Plotting Selectivities
+
+You can also access the helper functions the underly `tidy_JJM` directly. Each of these is named `get_X`, where `X` is the name of the data. 
+
+For example, to access the estimated selectivity ogives ,we can use `get_selectivities`. 
+
+```{r}
+
+
+selectivities <- get_selectivities(m1_v_m2)
+
+head(selectivities)
+
+```
+
+
+Selectivities alone have a dedicated plotting function added to them by the "tidy" functions of `jjmR`. You can use this by running `plot_selectivities`, or by calling `plot` directly. 
+
+
+
+```{r}
+
+plot_selectivities(selectivities)
+
+plot(m1_v_m2,what="selectivity",fleet="fsh", alpha = 0.2, scale = 10,
+     years = 2000:2020)
+
+
+plot(model_results_2,what="selectivity",fleet="ind", alpha = 0.2, scale = 10,
+     years = 2015:2020)
+
+```
+
+
+### Miscelanneous Examples
+
+```{r}
+msy_my_results = get_msy_mt(m1_v_m2)
+
+head(msy_my_results)
+
+kobe(model_results_1, engine = "ggplot")
+
+qs = get_catchabilities(model_results_1)
+
+qs %>% 
+  ggplot(aes(year, q, color = model)) + 
+  geom_line() + 
+  facet_wrap(~ fleet_name, scales = "free_y")
+
+
+totals <- get_totals(m1_v_m2)
+
+totals %>% 
+  ggplot(aes(year, value, color = stock, linetype = model)) + 
+  geom_line() + 
+  facet_wrap(~ metric, scales = "free_y")
+
+
+index_fits <- get_index_fits(m1_v_m2)
+
+index_fits %>% 
+  ggplot() + 
+  geom_pointrange(aes(year, observed_ind, ymin = observed_ind - 1.96 * observed_se, ymax =  observed_ind + 1.96 * observed_se)) +
+  geom_path(aes(year, pred_ind, color = model)) + 
+  facet_wrap(~ fleet_name, scales = "free_y")
+
+
+age_fits <- get_age_fits(m1_v_m2)
+
+
+age_fits %>% 
+  filter(model == "h2_1.13", stock == "Stock_1", year > 2015) %>% 
+  pivot_longer(predicted:observed) %>% 
+  ggplot() + 
+  geom_density(aes(age, value, fill = name),stat = "identity", alpha = 0.5) + 
+  facet_grid(year~fleet_name)
+
+
+recruits <- get_recruits(m1_v_m2)
+
+recruits %>% 
+  ggplot() + 
+  geom_ribbon(aes(year, ymin = lower_recruits, ymax = upper_recruits, fill = stock),alpha = 0.5) + 
+  geom_line(aes(year, recruits, color = stock)) + 
+  facet_wrap(~model)
+
+
+
+fishing_mortality <- get_fishing_mortality(m1_v_m2)
+
+fishing_mortality %>% 
+  ggplot(aes(year, mortality, color = age, group = age)) + 
+  geom_line() + 
+  facet_grid(model~stock)
+
+
+```
+
+
+

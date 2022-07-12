@@ -24,3 +24,6 @@ NULL
 NULL
 #' @importFrom doBy orderBy
 NULL
+#' @importFrom ggplot2 aes ggplot
+NULL
+

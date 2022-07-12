@@ -108,7 +108,6 @@ print.summary.jjm.output = function(x, ...) {
 }
 
 
-
 #' @export
 plot.jjm.output = function(x, what = "biomass", stack = TRUE, endvalue = FALSE, total = FALSE, combine = FALSE,
                            cols = NULL, poslegend = "right", scen = 1, ...){
@@ -125,7 +124,8 @@ plot.jjm.output = function(x, what = "biomass", stack = TRUE, endvalue = FALSE, 
 			   catchProjScen = .funPlotScen(x, what, cols, stack, endvalue, poslegend, ...),          
 			   ssbProjScen   = .funPlotScen(x, what, cols, stack, endvalue, poslegend, ...),         
 			   ratioSSB_F    = .funPlotRatioSSB_F(x, what, cols, stack, endvalue, poslegend, ...),
-			   ratioSSB      = .funPlotRatioSSB(x, what, cols, stack, endvalue, poslegend, ...))
+			   ratioSSB      = .funPlotRatioSSB(x, what, cols, stack, endvalue, poslegend, ...),
+			   selectivity = plot_selectivities(get_selectivities(x),...))
   
 }
 
