@@ -45,7 +45,7 @@ plot_selectivities <-
       ggridges::geom_density_ridges(
         aes(
           x = age,
-          y = year,
+          y = fct_rev(as.factor(year)),
           height = selectivity,
           group = interaction(model, year),
           fill = model,
@@ -58,7 +58,7 @@ plot_selectivities <-
       ) +
       theme_jjm() +
       ggplot2::scale_x_continuous(name = "Age", guide = ggplot2::guide_axis(check.overlap = TRUE, n.dodge = 2)) +
-      ggplot2::scale_y_continuous(name = "Year") +
+      #ggplot2::scale_y_continuous(name = "Year") +
       ggplot2::scale_color_viridis_d(name = "Model") +
       ggplot2::scale_fill_viridis_d(name = "Model")
     
