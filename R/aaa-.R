@@ -26,4 +26,6 @@ NULL
 NULL
 #' @importFrom ggplot2 aes ggplot
 NULL
+#' @importFrom forcats fct_rev
+NULL
 

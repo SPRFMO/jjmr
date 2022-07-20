@@ -16,6 +16,7 @@ Imports:
     doSNOW,
     dplyr,
     foreach,
+    forcats,
     ggplot2,
     ggridges,
     graphics,
