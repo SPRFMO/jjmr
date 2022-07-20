@@ -844,6 +844,8 @@
   for(i in seq_along(files)) {
     outputs[[i]] = PBSmodelling::readList(files[i]) # add validation
     outputs[[i]]$YPR = ypr
+    outputs[[i]]$Index_names = as.matrix(outputs[[i]]$Index_names,ncol=1) # Reading in single index
+    outputs[[i]]$Fshry_names = as.matrix(outputs[[i]]$Fshry_names,ncol=1) # Reading in single index
   }
 
   names(outputs) = paste0("Stock_", 1:length(files)) # Puede ser modificado cuando se lea el ctl

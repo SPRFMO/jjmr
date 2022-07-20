@@ -2297,7 +2297,7 @@ check.zero = function(x){
   scenarios = c(paste0("F", lastYear ," SQ"), 
 				paste0("F", lastYear, " 0.75x"), 
 				paste0("F", lastYear, " 1.25x"), 
-				paste0("F", lastYear, " 0.5x"), 
+				paste0("FMSY"), 
 				paste0("F", lastYear, " 0x"))
  #[1:Nfutscen]
   
@@ -2394,7 +2394,7 @@ check.zero = function(x){
   scenarios = c(paste0("F", lastYear ," SQ"), 
 				paste0("F", lastYear, " 0.75x"), 
 				paste0("F", lastYear, " 1.25x"), 
-				paste0("F", lastYear, " 0.5x"), 
+				paste0("FMSY"), 
 				paste0("F", lastYear, " 0x"))
   totCatch  = 0
   for(iFlt in grep("Obs_catch_", names(jjm.out)))
