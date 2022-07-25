@@ -45,7 +45,7 @@ plot_selectivities <-
       ggridges::geom_density_ridges(
         aes(
           x = age,
-          y = fct_rev(as.factor(year)),
+          y = forcats::fct_rev(as.factor(year)),
           height = selectivity,
           group = interaction(model, year),
           fill = model,

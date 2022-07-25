@@ -414,6 +414,7 @@ fishing_mortality <- get_fishing_mortality(m1_v_m2)
 fishing_mortality %>% 
   ggplot(aes(year, mortality, color = age, group = age)) + 
   geom_line() + 
+  scale_color_viridis_c() +
   facet_grid(model~stock, scales = "free_y") 
 ```
 
