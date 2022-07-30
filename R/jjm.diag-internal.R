@@ -808,19 +808,23 @@ check.zero = function(x){
 
 .input_ageCompositionSurvey1FUN = function(jjm.in, ages, ...)
 {
-  for(iSurvey in which(jjm.in$Inumageyears>0)){
-    res = .createDataFrame(sweep(jjm.in$Ipropage[,,iSurvey], 1,
+	itmp=1 # to get an independent index
+  for(iSurvey in which(jjm.in$Inumageyears>0))
+	{
+    res13 = .createDataFrame(sweep(jjm.in$Ipropage[,,iSurvey], 1,
                                   apply(jjm.in$Ipropage[,,iSurvey], 1, sum, na.rm = TRUE), "/"),
                             jjm.in$years[1]:jjm.in$years[2], ages)
-    res = cbind(res, jjm.in$Inames[iSurvey])
+    res13 = cbind(res13, jjm.in$Inames[iSurvey])
     
-    yrs = rev(sort(unique(res$year)))[1:10]
+    yrs = rev(sort(unique(res13$year)))[1:10]
     
-    if(iSurvey == 1)
-      tot = res
+    if(itmp == 1)
+      tot = res13
     
-    if(iSurvey != 1)
-      tot = rbind(tot, res)
+    if(itmp != 1)
+      tot = rbind(tot, res13)
+
+		itmp = itmp + 1
   }
   
   colnames(tot) = c("year", "data", "age", "survey"); res = tot
@@ -840,19 +844,20 @@ check.zero = function(x){
 
 .input_ageCompositionSurvey2FUN = function(jjm.in, cols, ages, ...)
 {
+	itmp=1 # to get an independent index
   for(iSurvey in which(jjm.in$Inumageyears > 0)){
-    res = .createDataFrame(sweep(jjm.in$Ipropage[,,iSurvey], 1,
+    res1 = .createDataFrame(sweep(jjm.in$Ipropage[,,iSurvey], 1,
                                   apply(jjm.in$Ipropage[,,iSurvey], 1, sum, na.rm = TRUE), "/"),
                             jjm.in$years[1]:jjm.in$years[2], ages)
-    res = cbind(res, jjm.in$Inames[iSurvey])
+    res1 = cbind(res1, jjm.in$Inames[iSurvey])
     
-    yrs = rev(sort(unique(res$year)))[1:10]
+    yrs = rev(sort(unique(res1$year)))[1:10]
     
-    if(iSurvey == 1)
-      tot = res
+    if(itmp == 1)
+      tot = res1
     
-    if(iSurvey != 1)
-      tot = rbind(tot, res)
+    if(itmp != 1)
+      tot = rbind(tot, res1)
   }
   
   colnames(tot) = c("year", "data", "age", "survey"); res = tot
@@ -891,16 +896,18 @@ check.zero = function(x){
 .input_lengthComposition1FUN = function(cols, lgtFleets, jjm.in, lengths, ...)
 {
   for(iFleet in .an(lgtFleets)){
-    res = .createDataFrame(sweep(jjm.in$Flengthcomp[,,iFleet], 1,
+    res2 = .createDataFrame(sweep(jjm.in$Flengthcomp[,,iFleet], 1,
                                   apply(jjm.in$Flengthcomp[,,iFleet], 1, sum, na.rm = TRUE), "/"),
                             jjm.in$years[1]:jjm.in$years[2], lengths)
-    res = cbind(res, jjm.in$Fnames[iFleet])
+    res2 = cbind(res2, jjm.in$Fnames[iFleet])
     
     if(iFleet == .an(lgtFleets)[1])
-      tot = res
+      tot = res2
     
-    if(iFleet != .an(lgtFleets)[1]) 
-      tot = rbind(tot, res)
+    if(iFleet != .an(lgtFleets)[1]) {
+      if(iFleet == 1) tot = res2
+      if(iFleet != 1) tot = rbind(tot, res2)
+		}
   }
   colnames(tot) = c("year", "data", "length", "fleet"); res = tot
   
@@ -920,16 +927,18 @@ check.zero = function(x){
 .input_lengthComposition2FUN = function(lgtFleets, jjm.in, lengths, ...)
 {
   for(iFleet in .an(lgtFleets)){
-    res = .createDataFrame(sweep(jjm.in$Flengthcomp[,,iFleet], 1,
+    res3 = .createDataFrame(sweep(jjm.in$Flengthcomp[,,iFleet], 1,
                                   apply(jjm.in$Flengthcomp[,,iFleet], 1, sum, na.rm = TRUE), "/"),
                             jjm.in$years[1]:jjm.in$years[2], lengths)
-    res = cbind(res, jjm.in$Fnames[iFleet])
+    res3 = cbind(res3, jjm.in$Fnames[iFleet])
     
     if(iFleet == .an(lgtFleets)[1])
-      tot = res
+      tot = res3
     
-    if(iFleet != .an(lgtFleets)[1]) 
-      tot = rbind(tot, res)
+    if(iFleet != .an(lgtFleets)[1]) {
+      if(iFleet == 1) tot = res3
+      if(iFleet != 1) tot = rbind(tot, res3)
+	  }
   }
   colnames(tot) = c("year", "data", "length", "fleet"); res = tot
   
@@ -959,12 +968,12 @@ check.zero = function(x){
   Obs_catch = grep(pattern ="Obs_catch_[0-9]*", x = names(jjm.out), value=TRUE)
   
   for(iFleet in 1:Nfleets){
-    res = cbind(jjm.out$Yr, jjm.out[[Obs_catch[iFleet]]])
+    res4 = cbind(jjm.out$Yr, jjm.out[[Obs_catch[iFleet]]])
    
-    if(Nfleets == 1) res = cbind(res, jjm.out$Fshry_names[iFleet])
-    if(Nfleets > 1) res = cbind(res, jjm.out$Fshry_names[iFleet, 1])
-    if(iFleet == 1) tot = res
-    if(iFleet != 1) tot = rbind(tot, res)
+    if(Nfleets == 1) res4 = cbind(res4, jjm.out$Fshry_names[iFleet])
+    if(Nfleets > 1) res4 = cbind(res4, jjm.out$Fshry_names[iFleet, 1])
+    if(iFleet == 1) tot = res4
+    if(iFleet != 1) tot = rbind(tot, res4)
   }
   colnames(tot) = c("year", "catch", "fleet"); res = data.frame(tot)
   res$catch = as.numeric(as.character(res$catch))
@@ -989,12 +998,12 @@ check.zero = function(x){
   Obs_catch = grep(pattern = "Obs_catch_[0-9]*", x = names(jjm.out), value = TRUE)
   
   for(iFleet in 1:Nfleets){
-    res = cbind(jjm.out$Yr, jjm.out[[Obs_catch[iFleet]]])
+    res5 = cbind(jjm.out$Yr, jjm.out[[Obs_catch[iFleet]]])
     
-    if(Nfleets == 1) res = cbind(res, jjm.out$Fshry_names[iFleet])
-    if(Nfleets > 1) res = cbind(res, jjm.out$Fshry_names[iFleet, 1])
-    if(iFleet == 1) tot = res
-    if(iFleet != 1) tot = rbind(tot, res)
+    if(Nfleets == 1) res5 = cbind(res5, jjm.out$Fshry_names[iFleet])
+    if(Nfleets > 1) res5 = cbind(res5, jjm.out$Fshry_names[iFleet, 1])
+    if(iFleet == 1) tot = res5
+    if(iFleet != 1) tot = rbind(tot, res5)
   }
   colnames(tot) = c("year", "catch", "fleet"); res = data.frame(tot)
   res$catch = as.numeric(as.character(res$catch))
@@ -1035,11 +1044,11 @@ check.zero = function(x){
   Pred_catch = grep(pattern = "Pred_catch_[0-9]*", x = names(jjm.out), value=TRUE)
   
   for(iFleet in 1:Nfleets){
-    res = data.frame(year = jjm.out$Yr, obs = jjm.out[[Obs_catch[iFleet]]],
+    res6 = data.frame(year = jjm.out$Yr, obs = jjm.out[[Obs_catch[iFleet]]],
                       model = jjm.out[[Pred_catch[iFleet]]], fleet = jjm.out$Fshry_names[iFleet])
     
-    if(iFleet == 1) tot = res
-    if(iFleet != 1) tot = rbind(tot, res)
+    if(iFleet == 1) tot = res6
+    if(iFleet != 1) tot = rbind(tot, res6)
   }
   tot$obs[tot$obs<=0]   = NA
   tot$obs[tot$model<=0] = NA
@@ -1078,11 +1087,11 @@ check.zero = function(x){
 #     res = data.frame(year = jjm.out$Yr, obs = jjm.out[[paste("Obs_catch_", iFleet, sep = "")]],
 #                       model = jjm.out[[paste("Pred_catch_", iFleet, sep = "")]], fleet = jjm.out$Fshry_names[iFleet])
 
-    res = data.frame(year = jjm.out$Yr, obs = jjm.out[[Obs_catch[iFleet]]],
+    res7 = data.frame(year = jjm.out$Yr, obs = jjm.out[[Obs_catch[iFleet]]],
                      model = jjm.out[[Pred_catch[iFleet]]], fleet = jjm.out$Fshry_names[iFleet])
     
-    if(iFleet == 1) tot = res
-    if(iFleet != 1) tot = rbind(tot, res)
+    if(iFleet == 1) tot = res7
+    if(iFleet != 1) tot = rbind(tot, res7)
   }
   tot$obs[tot$obs <= 0]   = NA
   tot$obs[tot$model <= 0] = NA
@@ -1281,8 +1290,9 @@ check.zero = function(x){
       y = cbind(mod, rep("model", nrow(mod)), jjm.out$Fshry_names[iFleet])
       colnames(y) = c("year", "data", "length", "class", "fleet")
       
-      res = rbind(x, y)
-      tot = rbind(tot, res)
+      res8 = rbind(x, y)
+      if(iFleet == 1) tot = res8
+      if(iFleet != 1) tot = rbind(tot, res8)
     }
   }
   res = tot
@@ -1387,12 +1397,12 @@ check.zero = function(x){
       addToDF$class = .ac(addToDF$class)
     }
     
-    res = .createDataFrame(jjm.out[[Obs_Survey[iSurvey]]][,-1],
+    res2 = .createDataFrame(jjm.out[[Obs_Survey[iSurvey]]][,-1],
                            jjm.out[[Obs_Survey[iSurvey]]][,1],
                            c("obs", "model", "sd", "stdres", "lstdres"))
-    res$class = .ac(res$class)
-    res$data  = res$data/max(subset(res, class %in% c("model", "obs", "sd"))$data, na.rm = TRUE)
-    resSort   = rbind(res, addToDF)
+    res2$class = .ac(res2$class)
+    res2$data  = res2$data/max(subset(res2, class %in% c("model", "obs", "sd"))$data, na.rm = TRUE)
+    resSort   = rbind(res2, addToDF)
     resSort   = doBy::orderBy(~year + class, data = resSort)
     
     if(iSurvey == 1)
@@ -1465,8 +1475,8 @@ check.zero = function(x){
       y = cbind(mod, rep("model", nrow(mod)), jjm.out$Index_names[iSurvey])
       colnames(y) = c("year", "data", "age", "class", "survey")
       
-      res = rbind(x, y)
-      tot = rbind(tot, res)
+      res9 = rbind(x, y)
+      if(iSurvey != 1){ tot = rbind(tot, res9)} else tot = res9
     }
   }
   res = tot
@@ -1617,11 +1627,11 @@ check.zero = function(x){
   sel_fsh = grep(pattern = "sel_fsh_[0-9]*", x = names(jjm.out), value = TRUE)
   
   for(iFleet in 1:Nfleets){
-    res = .createDataFrame(jjm.out[[sel_fsh[iFleet]]][,-c(1,2)], jjm.out$Yr, ages)
-    res = cbind(res, jjm.out$Fshry_names[iFleet])
+    res10 = .createDataFrame(jjm.out[[sel_fsh[iFleet]]][,-c(1,2)], jjm.out$Yr, ages)
+    res10 = cbind(res10, jjm.out$Fshry_names[iFleet])
     
-    if(iFleet == 1) tot = res
-    if(iFleet != 1) tot = rbind(tot, res)
+    if(iFleet == 1) tot = res10
+    if(iFleet != 1) tot = rbind(tot, res10)
   }
   colnames(tot) = c("year", "data", "age", "fleet"); res = tot
   
@@ -1637,11 +1647,11 @@ check.zero = function(x){
   sel_ind = grep(pattern = "sel_ind_[0-9]*", x = names(jjm.out), value = TRUE)
   
   for(iSurvey in 1:Nsurveys){
-    res = .createDataFrame(jjm.out[[sel_ind[iSurvey]]][,-c(1,2)], jjm.out$Yr, ages)
-    res = cbind(res, jjm.out$Index_names[iSurvey])
+    res12 = .createDataFrame(jjm.out[[sel_ind[iSurvey]]][,-c(1,2)], jjm.out$Yr, ages)
+    res12 = cbind(res12, jjm.out$Index_names[iSurvey])
     
-    if(iSurvey == 1) tot = res
-    if(iSurvey != 1) tot = rbind(tot, res)
+    if(iSurvey == 1) tot = res12
+    if(iSurvey != 1) tot = rbind(tot, res12)
   }
   colnames(tot) = c("year", "data", "age", "survey"); res = tot
   
