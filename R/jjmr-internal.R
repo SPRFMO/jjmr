@@ -114,7 +114,7 @@
   }
   
   cols$Flengthcomp = array(NA, dim = c(nY, nL, nF), 
-                            dimnames = list(years = Ys[1]:Ys[2], lengths = Ls[1]:Ls[length(Ls)],
+                            dimnames = list(years = Ys[1]:Ys[2], lengths = Ls,
                                             paste("fishery", 1:nF, sep = "")))
   for(iFs in 1:nF){
     if(cols$FnumyearsL[iFs] > 0){
@@ -233,7 +233,7 @@
     }
   }
   cols$Iproplength = array(NA, dim = c(nY, nL, nI),
-                            dimnames = list(years = Ys[1]:Ys[2], lengths = Ls[1]:Ls[length(Ls)], 
+                            dimnames = list(years = Ys[1]:Ys[2], lengths = Ls, 
                                             paste("index", 1:nI, sep = "")))
   for(iSu in 1:nI){
     if(cols$Inumlengthyears[iSu] > 0){
