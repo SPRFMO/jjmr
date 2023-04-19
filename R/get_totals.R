@@ -13,7 +13,7 @@ get_totals <- function(models){
     things <-
       lapply(model$output,
              getter,
-             things = c("SSB", "R", "TotBiom")) # pull out selectivity objects
+             things = c("SSB", "R", "TotBiom")) # pull out sdreport objects
     
     things <-
       purrr::map_df(things, ~ purrr::map_df(.x, as.data.frame, .id = "metric"), .id = "stock")

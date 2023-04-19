@@ -141,10 +141,12 @@
   cols$Inames = list()
   cols$Inames = strsplit(res1[[counter]], "%")[[1]] 
   counter = counter + 1
+  #print("Made it to here") 
+  #print(cols) 
+  #print(nI) 
   cols$Inumyears = matrix(NA, ncol = nI, nrow = 1, dimnames = list("years", paste("index", 1:nI, sep = "")))
   cols$Inumyears[] = na.omit(.an(unlist(res1[counter:(counter + cols$Inum - 1)])))
   counter = counter + cols$Inum
-  
   cols$Iyears = matrix(NA, ncol = nI, nrow = nY, dimnames = list(years = Ys[1]:Ys[2], paste("index", 1:nI, sep = "")))
   for(iSu in 1:nI){
     if(cols$Inumyears[iSu] > 0){
