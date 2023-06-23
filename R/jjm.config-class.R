@@ -103,6 +103,7 @@ runJJM.default = function(models, path=NULL, output="results", input=NULL,
   cat("\nEffective running time:", round(elapsed[3], 1), "s.\n")
   
   cat("\n Models were run at", temp, "folder.")
+  cat("\n\n")
   
   return(invisible(temp))
 }

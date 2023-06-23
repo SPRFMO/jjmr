@@ -2,6 +2,9 @@
 # Internal functions of diagnostic ----------------------------------------
 .createDataFrame = function(data, years, class){
   dims  = dim(data)
+print(dims)
+#print(years)
+print(class)
   res   = data.frame(year = rep(years, dims[2]), data = c(data), class = rep(class, each = dims[1]))
   return(res)}
 

@@ -180,12 +180,23 @@
   cols$Inumageyears = matrix(NA, ncol = nI, nrow = 1, dimnames = list("years", paste("index", 1:nI, sep = "")))
   cols$Inumageyears[] = na.omit(.an(unlist(res1[counter:(counter + cols$Inum - 1)])))
   counter = counter + cols$Inum
+
   cols$Inumlengthyears = matrix(NA, ncol = nI, nrow = 1, dimnames = list("years", paste("index", 1:nI, sep = "")))
   cols$Inumlengthyears[] = na.omit(.an(unlist(res1[counter:(counter + cols$Inum - 1)])))
   counter = counter + cols$Inum
   
-  cols$Iyearslength = matrix(NA, ncol = nI, nrow = nY, 
-                              dimnames = list(years = Ys[1]:Ys[2], paste("index", 1:nI, sep = "")))
+  cols$Iyearsage = matrix(NA, ncol = nI, nrow = nY, dimnames = list(years = Ys[1]:Ys[2], paste("index", 1:nI, sep = "")))
+  for(iSu in 1:nI){
+    if(cols$Inumageyears[iSu] > 0){
+      Iyearsage = na.omit(.an(res1[[counter]])); wIyearsage = pmatch(Iyearsage, cols$years[1]:cols$years[2])
+      cols$Iyearsage[wIyearsage, iSu] = Iyearsage
+      counter = counter + 1
+    }
+  }
+	#print("Years of age data")
+	#print(cols$Iyearsage)
+  
+  cols$Iyearslength = matrix(NA, ncol = nI, nrow = nY, dimnames = list(years = Ys[1]:Ys[2], paste("index", 1:nI, sep = "")))
   for(iSu in 1:nI){
     if(cols$Inumlengthyears[iSu] > 0){
       Iyearslength = na.omit(.an(res1[[counter]]))
@@ -194,23 +205,28 @@
       counter = counter + 1
     }
   }
-  
-  cols$Iyearsage = matrix(NA, ncol = nI, nrow = nY, 
-                           dimnames = list(years = Ys[1]:Ys[2], paste("index", 1:nI, sep = "")))
-  for(iSu in 1:nI){
-    if(cols$Inumageyears[iSu] > 0){
-      Iyearsage = na.omit(.an(res1[[counter]])); wIyearsage = pmatch(Iyearsage, cols$years[1]:cols$years[2])
-      cols$Iyearsage[wIyearsage, iSu] = Iyearsage
-      counter = counter + 1
-    }
-  }
+	#print("Years of length data")
+	#print(cols$Iyearslength)
   
   cols$Iagesample = matrix(NA, ncol = nI, nrow = nY, 
                             dimnames = list(years = Ys[1]:Ys[2], paste("index", 1:nI, sep = "")))
+	    #print(paste("Indices and Nyrs",nI,nY))
   for(iSu in 1:nI){
     if(cols$Inumageyears[iSu] > 0){
       wIyears = rownames(cols$Iyearsage)[which(is.na(cols$Iyearsage[,paste("index", iSu, sep = "")]) == FALSE)]
+	    #print(paste(cols$Inumageyears[iSu],wIyears,iSu,counter,res1[[counter]]))
       cols$Iagesample[wIyears,iSu] = na.omit(.an(res1[[counter]]))
+      counter = counter + 1
+    }
+  }
+
+  cols$Ilengthsample = matrix(NA, ncol = nI, nrow = nY, dimnames = list(years = Ys[1]:Ys[2], paste("index", 1:nI, sep = "")))
+	#print(cols$Ilengthsample)
+  for(iSu in 1:nI){
+    if(cols$Inumlengthyears[iSu] > 0){
+      wIyears = rownames(cols$Iyearslength)[which(is.na(cols$Iyearslength[,paste("index", iSu, sep = "")]) == FALSE)]
+	    #print(paste(cols$Inumlengthyears[iSu],wIyears,iSu,counter,res1[[counter]]))
+      cols$Ilengthsample[wIyears, iSu] = na.omit(.an(res1[[counter]]))
       counter = counter + 1
     }
   }
@@ -225,15 +241,7 @@
     }
   }
   
-  cols$Ilengthsample = matrix(NA, ncol = nI, nrow = nY, 
-                               dimnames = list(years = Ys[1]:Ys[2], paste("index", 1:nI, sep = "")))
-  for(iSu in 1:nI){
-    if(cols$Inumlengthyears[iSu] > 0){
-      wIyears = rownames(cols$Iyearslength)[which(is.na(cols$Iyearslength[,paste("index", iSu, sep = "")]) == FALSE)]
-      cols$Ilengthsample[wIyears, iSu] = na.omit(.an(res1[[counter]]))
-      counter = counter + 1
-    }
-  }
+
   cols$Iproplength = array(NA, dim = c(nY, nL, nI),
                             dimnames = list(years = Ys[1]:Ys[2], lengths = Ls, 
                                             paste("index", 1:nI, sep = "")))
@@ -473,6 +481,7 @@
     class(listCtl[[i]]) = "numeric"
   }
   
+	print(listCtl)
   return(listCtl)
   
 }
@@ -620,12 +629,15 @@ if(nparM > 0) {
 listCtl$phase_Mage = fVector[cV:(cV + diffN - 1)] ; cV = cV + diffN
 listCtl$Phase_Random_walk_M = fVector[cV:(cV + nStock - 1)]; cV = cV + nStock
 listCtl$Nyrs_Random_walk_M = fVector[cV:(cV + nStock - 1)]; cV = cV + nStock
-
+ 
 nranM = sum(listCtl$Nyrs_Random_walk_M)
+print("nranM1")
+print(nranM)
 if(nranM == 0) { 
 listCtl$RW_M_yrs = NA
 listCtl$RW_M_sigmas = NA
 cV = cV } 
+
 if(nranM > 0) {
   listCtl$RW_M_yrs = fVector[cV:(cV + nranM - 1)] ; cV = cV + nranM
   listCtl$RW_M_sigmas = fVector[cV:(cV + nranM - 1)] ; cV = cV + nranM
@@ -777,11 +789,13 @@ listCtl$Phase_Random_walk_M = fVector[cV]; cV = cV + 1
 listCtl$Nyrs_Random_walk_M = fVector[cV]; cV = cV + 1
 
 nranM = listCtl$Nyrs_Random_walk_M
-if(nranM == 0) {
+print("nranM2")
+print(nranM)
+if(is.na(nranM) | nranM == 0) {
   listCtl$RW_M_yrs = NA
   listCtl$RW_M_sigmas = NA
 cV = cV }
-if(nranM > 0)  {
+if(!is.na(nranM) & nranM>0)  {
   listCtl$RW_M_yrs = fVector[cV:(cV + nranM - 1)] ; cV = cV + nranM
   listCtl$RW_M_sigmas = fVector[cV:(cV + nranM - 1)] ; cV = cV + nranM
 }
@@ -801,11 +815,11 @@ listCtl$RW_q_phases = fVector[cV:(cV + nIndex - 1)] ; cV = cV + nIndex
 listCtl$RW_walk_q   = fVector[cV:(cV + nIndex - 1)] ; cV = cV + nIndex
 
 nWalkq = sum(listCtl$RW_walk_q)
-if(nWalkq == 0) {
+if(is.na(nWalkq) | nWalkq == 0) {
   listCtl$RW_q_yrs = NA
   listCtl$RW_q_sigmas = NA
 cV = cV }
-if(nWalkq > 0)  {
+if(!is.na(nWalkq) & nWalkq > 0)  {
   listCtl$RW_q_yrs = fVector[cV:(cV + nWalkq - 1)] ; cV = cV + nWalkq
   listCtl$RW_q_sigmas = fVector[cV:(cV + nWalkq - 1)] ; cV = cV + nWalkq
 }
@@ -822,7 +836,9 @@ FshInd = c(Fishery, Index)
 for(i in seq_along(FshInd)){
   listCtl[[paste0(FshInd[i], "_info")]] = fVector[cV:(cV + 5)]
   cV = cV + 6
-  if(listCtl[[paste0(FshInd[i], "_info")]][6] == 0) {
+	tmpflag= listCtl[[paste0(FshInd[i], "_info")]][6] 
+  #if(listCtl[[paste0(FshInd[i], "_info")]][6] == 0) {
+  if(is.na(tmpflag) | tmpflag == 0) {
     listCtl[[paste0(FshInd[i], "_selchangeYear")]] = NA
     listCtl[[paste0(FshInd[i], "_selchange")]] = NA
     listCtl[[paste0(FshInd[i], "_selbyage")]] = fVector[cV:(cV + nAges - 1)]
@@ -891,8 +907,10 @@ return(listCtl)
   }
   
   nranM = sum(listCtl$Nyrs_Random_walk_M)
-  if(nranM == 0) cV = cV 
-  if(nranM > 0)  {
+print("nranM3")
+print(nranM)
+  if(nranM == 0 | is.na(nranM)) cV = cV 
+  if(nranM > 0 & !is.na(nranM))  {
   #   listPar$M_rw = fVector[cV:(cV + nranM - 1)] ; 
     cV = cV + nranM
   }
