@@ -8,7 +8,8 @@
 get_len_fits <- function(models) {
   top_getter <- function(model) {
     obs_lens <-
-      lapply(model$output, getter, pattern = "^pobs_(?!.*?age)") # pull out pobs that aren't lengths
+      lapply(model$output, getter, pattern = "^pobs_(.*?len)") # pull out pobs that aren't lengths
+    # obs_lens
     
     obs_lens <-
       purrr::map_df(obs_lens,
@@ -19,7 +20,8 @@ get_len_fits <- function(models) {
     
     
     pred_lens <-
-      lapply(model$output, getter, pattern = "^phat_(?!.*?len)") # pull out pobs that aren't lengths
+      lapply(model$output, getter, pattern = "^phat_(.*?len)") # pull out pobs that aren't lengths
+    #pred_lens
     
     pred_lens <-
       purrr::map_df(pred_lens,
@@ -34,12 +36,14 @@ get_len_fits <- function(models) {
       dplyr::rename(year = V1) %>%
       tidyr::pivot_longer(
         tidyr::matches("^V", perl = TRUE),
-        names_to = "len",
+        names_to = "rowid",
         values_to = "proportion",
         names_prefix = "V",
-        names_transform = list(len = as.integer)
+        names_transform = list(rowid = as.integer)
       ) %>%
-      dplyr::mutate(len = len - min(len) + model$data$lens[1])
+      dplyr::mutate(rowid=rowid-1) %>%
+      dplyr::left_join(tibble::tibble(len=model$data$lengthbin) %>% tibble::rowid_to_column()) %>%
+      dplyr::select(-rowid)
     
     
     tmp <-
@@ -71,11 +75,13 @@ get_len_fits <- function(models) {
     )
   
   fleet_names <- rbind(ind_names, fsh_names)
-
+  
   out <-
     purrr::map_df(models, top_getter, .id = "model") %>% 
     tidyr::separate(source, sep = "_", into = c("fleet_type", "fleet_number")) %>% 
     dplyr::mutate(fleet_number = as.integer(fleet_number)) %>% 
     dplyr::left_join(fleet_names, by = c("fleet_type", "fleet_number"))
-    # flatten and collect across models
+  # flatten and collect across models
 }
+
+
