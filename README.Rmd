@@ -167,7 +167,7 @@ msy_my_results = get_msy_mt(m1_v_m2)
 
 head(msy_my_results)
 
-kobe(model_results_1, engine = "ggplot")
+kobe(msy_my_results, engine = "ggplot")
 
 qs = get_catchabilities(model_results_1)
 
@@ -182,7 +182,7 @@ totals <- get_totals(m1_v_m2)
 totals %>% 
   ggplot(aes(year, value, color = stock, linetype = model)) + 
   geom_line() + 
-  facet_wrap(~ metric, scales = "free_y")
+  facet_grid( metric~., scales = "free_y")
 
 
 index_fits <- get_index_fits(m1_v_m2)

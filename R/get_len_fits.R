@@ -78,7 +78,7 @@ get_len_fits <- function(models) {
   
   out <-
     purrr::map_df(models, top_getter, .id = "model") %>% 
-    tidyr::separate(source, sep = "_", into = c("fleet_type", "fleet_number")) %>% 
+    tidyr::separate(source, sep = "_", into = c("dtype","fleet_type", "fleet_number")) %>% 
     dplyr::mutate(fleet_number = as.integer(fleet_number)) %>% 
     dplyr::left_join(fleet_names, by = c("fleet_type", "fleet_number"))
   # flatten and collect across models
