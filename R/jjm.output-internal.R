@@ -446,9 +446,10 @@
   
   dataShape = .reshapeJJM(x, what = what, total = total)
   if(is.null(cols)) cols = rep(trellis.par.get("superpose.symbol")$col, 2)
-  mtheme = standard.theme("pdf", color=TRUE)
+  mtheme = standard.theme()
   mtheme$plot.line$lwd = 5
   mtheme$superpose.line$lwd = 5
+  mtheme$superpose.symbol$fill = lower.saturation(cols, 0.4, space = "HCL")
   
   listStocks = NULL
   for(i in seq_along(x)){
@@ -483,6 +484,7 @@
                          #ylim = c(0.8*min(dataShape$lower), 1.1*max(dataShape$upper)),
                          #xlim = c(min(dataShape$year - 1), max(dataShape$year + 1)),
                          scales = list(alternating = 1, tck = c(1, 0), y = list(relation = "free", rot = 0)),
+                         par.settings = mtheme,
                          upper = dataShape$upper, lower = dataShape$lower,
                          panel = function(x, y, ...){
                            panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
@@ -530,6 +532,7 @@
                    #xlim = c(min(dataShape$year - 1), max(dataShape$year + 1)),
                    scales = list(alternating = 1, tck = c(1, 0), y = list(relation = "free", rot = 0)),
                    upper = dataShape$upper, lower = dataShape$lower,
+                   par.settings = mtheme,
                    panel = function(x, y, ...){
                      panel.superpose(x, y, panel.groups = .my.panel.bands, type = 'l', ...)
                      panel.xyplot(x, y, type = 'l', cex = 0.6, lty = 1, lwd = 2, ...)
@@ -602,9 +605,10 @@
 	
   dataShape = .reshapeJJM3(x, what = what)
   if(is.null(cols)) cols = rep(trellis.par.get("superpose.symbol")$col, 2)
-  mtheme = standard.theme("pdf", color=TRUE)
+  mtheme = standard.theme()
   mtheme$plot.line$lwd = 5
   mtheme$superpose.line$lwd = 5
+  mtheme$superpose.symbol$fill = lower.saturation(cols, 0.4, space = "HCL")
   
   listStocks = NULL
   for(i in seq_along(x)){
@@ -655,9 +659,10 @@
 	
   dataShape = .reshapeJJM4(x, what = what)
   if(is.null(cols)) cols = rep(trellis.par.get("superpose.symbol")$col, 2)
-  mtheme = standard.theme("pdf", color=TRUE)
+  mtheme = standard.theme()
   mtheme$plot.line$lwd = 5
   mtheme$superpose.line$lwd = 5
+  mtheme$superpose.symbol$fill = lower.saturation(cols, 0.4, space = "HCL")
   
   listStocks = NULL
   for(i in seq_along(x)){
@@ -708,9 +713,10 @@
 	
   dataShape = .reshapeJJM4(x, what = what)
   if(is.null(cols)) cols = rep(trellis.par.get("superpose.symbol")$col, 2)
-  mtheme = standard.theme("pdf", color=TRUE)
+  mtheme = standard.theme()
   mtheme$plot.line$lwd = 5
   mtheme$superpose.line$lwd = 5
+  mtheme$superpose.symbol$fill = lower.saturation(cols, 0.4, space = "HCL")
   
   listStocks = NULL
   for(i in seq_along(x)){
