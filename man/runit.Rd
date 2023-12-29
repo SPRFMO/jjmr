@@ -13,7 +13,8 @@ runit(
   output = "results",
   version = "2015MS",
   pdf = FALSE,
-  portrait = TRUE
+  portrait = TRUE,
+  ...
 )
 }
 \arguments{

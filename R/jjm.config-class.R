@@ -85,7 +85,7 @@ runJJM.default = function(models, path=NULL, output="results", input=NULL,
     cat("\nRunning models", paste(models, collapse=", "), "in parallel.\n")
     cat("\tStarting at", as.character(Sys.time()), "\n")
     tempDir = tempdir()
-    res = foreach(i=seq_along(models), .combine=c) %dopar% {
+    res = foreach(i=seq_along(models), .combine=c, .packages='jjmR') %dopar% {
       setwd(base)
       .runJJM(model=models[i], output=output, input=input, exec=exec, useGuess=useGuess, 
               guess=guess[i], iprint=iprint, piner=piner, wait=wait, temp=temp, ...)  

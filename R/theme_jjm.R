@@ -39,7 +39,7 @@ theme_jjm <- function(base_size = 14,...) {
       ),
       plot.title.position = "panel",
       # strips for faceted plots
-      strip.background = ggplot2::element_rect(fill = "#2F385C"),
+      strip.background = ggplot2::element_rect(fill = "#203c64"),
       strip.text = ggplot2::element_text(
         colour = "white",
         face = "italic",

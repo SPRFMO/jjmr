@@ -39,6 +39,8 @@ plot_selectivities <-
         "Specified fleet for plotting not in list of available fleets. Must be one of 'fsh','ind', or 'all'"
       )
     }
+
+    yrs_pretty <- years[(years %% 5) == 0]
     
     tmp <- sels %>%
       ggplot() +
@@ -58,7 +60,7 @@ plot_selectivities <-
       ) +
       theme_jjm() +
       ggplot2::scale_x_continuous(name = "Age", guide = ggplot2::guide_axis(check.overlap = TRUE, n.dodge = 2)) +
-      #ggplot2::scale_y_continuous(name = "Year") +
+      ggplot2::scale_y_discrete(name = "Year", breaks=yrs_pretty) +
       ggplot2::scale_color_viridis_d(name = "Model") +
       ggplot2::scale_fill_viridis_d(name = "Model")
     

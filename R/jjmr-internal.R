@@ -2171,7 +2171,7 @@ toWrite.array  = function(x, transpose) {
   return(modelName)
 }
 
-.runJJM = function(model, output, input, exec, useGuess, guess, piner, iprint, wait, temp=NULL, ...) {
+.runJJM = function(model, output, input, exec, useGuess, guess, piner, iprint, wait, adflags=NULL, temp=NULL, ...) {
   
   cat("\nRunning model", model, "|", as.character(Sys.time()), "\n")
   
@@ -2190,6 +2190,10 @@ toWrite.array  = function(x, transpose) {
   
   if(!is.null(piner)) {
     jjm = sprintf("%s -piner %f", jjm, piner)
+  }
+
+  if(exists("adflags")) {
+    jjm = paste0(jjm, " ", adflags)
   }
   
   start   = proc.time()  

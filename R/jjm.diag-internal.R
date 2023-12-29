@@ -1936,8 +1936,16 @@ check.zero = function(x){
                   if(lattice::panel.number() == 3){
                     lattice::panel.polygon(c(x[lower], rev(x[upper])), c(y[lower], rev(y[upper])), col = "grey90", border = NA)
                     lattice::panel.xyplot(x[point], y[point], type = "l", lwd = 3, lty = 1, col = 1)
-                    lattice::panel.lines(x[point], jjm.out$msy_mt[,10], lwd = 4, 
-                                col = adjustcolor("blue", alpha.f = alpha.f))
+                    if(is.null(jjm.out$oldbmsy)){
+                      lattice::panel.lines(x[point], jjm.out$msy_mt[,10], lwd = 4, 
+                                  col = adjustcolor("blue", alpha.f = alpha.f))
+                    }
+                    if(!is.null(jjm.out$oldbmsy)){
+                      lattice::panel.lines(x[point], jjm.out$msy_mt[,10], lwd = 4, 
+                                  col = adjustcolor("orange", alpha.f = alpha.f))
+                      lattice::panel.lines(x[point], jjm.out$oldbmsy, lwd = 4, 
+                                  col = adjustcolor("blue", alpha.f = alpha.f))
+                    }
                   }
                 }, ...)
   
@@ -2311,6 +2319,7 @@ check.zero = function(x){
 				paste0("F", lastYear, " 0.75x"), 
 				paste0("F", lastYear, " 1.25x"), 
 				paste0("FMSY"), 
+        paste0("TAC", lastYear),
 				paste0("F", lastYear, " 0x"))
  #[1:Nfutscen]
   
@@ -2408,6 +2417,7 @@ check.zero = function(x){
 				paste0("F", lastYear, " 0.75x"), 
 				paste0("F", lastYear, " 1.25x"), 
 				paste0("FMSY"), 
+        paste0("TAC", lastYear),
 				paste0("F", lastYear, " 0x"))
   totCatch  = 0
   for(iFlt in grep("Obs_catch_", names(jjm.out)))

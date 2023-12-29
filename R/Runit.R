@@ -17,7 +17,7 @@
 #' }
 #' @export
 runit = function(mod, est=FALSE, exec=NULL, path="config", input="input", output="results",
-                 version="2015MS", pdf=FALSE, portrait=TRUE) {
+                 version="2015MS", pdf=FALSE, portrait=TRUE,...) {
   
   
   if(isTRUE(est)) {
@@ -25,17 +25,22 @@ runit = function(mod, est=FALSE, exec=NULL, path="config", input="input", output
       exec = "jjms"
       message(sprintf("Using '%s' as default executable, check 'exec' argument.", exec))
     }
-    runJJM(mod, path=path, input=input, output=output, version=version, exec=exec)
+    runJJM(mod, path=path, input=input, output=output, version=version, exec=exec,...)
   }
-  modtmp = readJJM(mod, path=path, input=input, output=output, version=version)
-  
-  dims = if(isTRUE(portrait)) c(9,7) else c(7,9)
-  
-  if(pdf) {
-    pdf(file.path(output, paste0(mod,".pdf")), height=dims[1], width=dims[2])
-    plot(diagnostics(modtmp))
-    dev.off()
+
+  modtmp <- list()
+  for(m in seq_along(mod)){
+    modtmp[[m]] = readJJM(mod[m], path=path, input=input, output=output, version=version)
+    
+    dims = if(isTRUE(portrait)) c(9,7) else c(7,9)
+    
+    if(pdf) {
+      pdf(file.path(output, paste0(mod[m],".pdf")), height=dims[1], width=dims[2])
+      plot(diagnostics(modtmp[[m]]))
+      dev.off()
+    }  
   }
+  
   return(modtmp)
 }
 
