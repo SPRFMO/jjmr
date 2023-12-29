@@ -10,6 +10,7 @@ get_len_fits <- function(models) {
     obs_lens <-
       lapply(model$output, getter, pattern = "^pobs_(.*?len)") # pull out pobs that aren't lengths
     # obs_lens
+
     
     obs_lens <-
       purrr::map_df(obs_lens,
@@ -17,8 +18,10 @@ get_len_fits <- function(models) {
                     .id = "stock")
     
     obs_lens$type <- "observed"
-    
-    
+ 
+ if(dim(obs_lens)[1]==0) {len_fits <- dplyr::tibble(stock=NA,source=NA,year=NA,type=NA,proportion=NA,len=NA)}   
+
+  if(dim(obs_lens)[1] >0) {    
     pred_lens <-
       lapply(model$output, getter, pattern = "^phat_(.*?len)") # pull out pobs that aren't lengths
     #pred_lens
@@ -54,7 +57,10 @@ get_len_fits <- function(models) {
     len_fits <- len_fits %>%
       dplyr::mutate(source = tmp) %>%
       tidyr::pivot_wider(names_from = type, values_from = proportion)
-    
+
+    }
+
+  
     return(len_fits)
     
     
