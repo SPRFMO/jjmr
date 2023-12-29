@@ -631,8 +631,8 @@ listCtl$Phase_Random_walk_M = fVector[cV:(cV + nStock - 1)]; cV = cV + nStock
 listCtl$Nyrs_Random_walk_M = fVector[cV:(cV + nStock - 1)]; cV = cV + nStock
  
 nranM = sum(listCtl$Nyrs_Random_walk_M)
-print("nranM1")
-print(nranM)
+#print("nranM1")
+#print(nranM)
 if(nranM == 0) { 
 listCtl$RW_M_yrs = NA
 listCtl$RW_M_sigmas = NA
@@ -789,8 +789,8 @@ listCtl$Phase_Random_walk_M = fVector[cV]; cV = cV + 1
 listCtl$Nyrs_Random_walk_M = fVector[cV]; cV = cV + 1
 
 nranM = listCtl$Nyrs_Random_walk_M
-print("nranM2")
-print(nranM)
+#print("nranM2")
+#print(nranM)
 if(is.na(nranM) | nranM == 0) {
   listCtl$RW_M_yrs = NA
   listCtl$RW_M_sigmas = NA
@@ -907,8 +907,8 @@ return(listCtl)
   }
   
   nranM = sum(listCtl$Nyrs_Random_walk_M)
-print("nranM3")
-print(nranM)
+#print("nranM3")
+#print(nranM)
   if(nranM == 0 | is.na(nranM)) cV = cV 
   if(nranM > 0 & !is.na(nranM))  {
   #   listPar$M_rw = fVector[cV:(cV + nranM - 1)] ; 

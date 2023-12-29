@@ -37,7 +37,7 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
   
   namer <- function(x, msy_mt_names) {
     
-    print(.an(ncol(x$msy_mt)), .an(length(msy_mt_names)))
+    #print(.an(ncol(x$msy_mt)), .an(length(msy_mt_names)))
     if (.an(ncol(x$msy_mt)) != .an(length(msy_mt_names))){
       stop("Dimensions of msy_mt no longer match supplied names of each column")
     }
