@@ -7,8 +7,8 @@
 #' @importFrom ggplot2 %+replace%
 #' 
 #' @examples  
-#' 
-#' ggplot(mtcars, aes(mpg)) + geom_histogram() + jjmr::theme_jjm()
+#' library(ggplot2)
+#' ggplot(mtcars, aes(mpg)) + geom_histogram() + theme_jjm()
 #' 
 theme_jjm <- function(base_size = 14,...) {
   ggplot2::theme_minimal(...) %+replace%

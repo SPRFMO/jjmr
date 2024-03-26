@@ -20,6 +20,6 @@ Calculate or input a fixed Bmsy value for the jjm model
 Updates the msy_mt table in the jjm output with new B/Bmsy ratios.
 }
 \examples{
-fixed_bmsy(mod_h1_1.00, refpt=5500) # To input a fixed Bmsy
-fixed_bmsy(mod_h1_1.00) # To calculate the Bmsy
+# fixed_bmsy(mod_h1_1.00, refpt=5500) # To input a fixed Bmsy
+# fixed_bmsy(mod_h1_1.00) # To calculate the Bmsy
 }

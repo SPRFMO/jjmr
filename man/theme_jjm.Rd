@@ -17,7 +17,7 @@ ggplot2 theme for jjmR
 }
 \examples{
  
-
-ggplot(mtcars, aes(mpg)) + geom_histogram() + jjmr::theme_jjm()
+library(ggplot2)
+ggplot(mtcars, aes(mpg)) + geom_histogram() + theme_jjm()
 
 }

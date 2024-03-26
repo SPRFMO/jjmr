@@ -8,12 +8,9 @@
 #' 
 #' @name jjmR-package
 #' @aliases jjmR-package jjmR
-#' @docType package
 #' @author Ricardo Oliveros-Ramos, Wencheng Lau-Medrano, Giancarlo Moron 
 #' Josymar Torrejon and Niels Hintzen
 #' @seealso Joint Jack Mackerel Repository <https://github.com/SPRFMO/jjm>
-#' @keywords jjmr
+#' @keywords internal
 #' 
-#' 
-NULL
-
+"_PACKAGE"

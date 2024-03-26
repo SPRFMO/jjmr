@@ -5,8 +5,8 @@
 #' @param refpt A number to input as Bmsy. If not filled, calculated as the average of the Bmsy estimated for the last ten years (as determined in SCW14 benchmark 2022)
 #' @return A model
 #' @examples
-#' fixed_bmsy(mod_h1_1.00, refpt=5500) # To input a fixed Bmsy
-#' fixed_bmsy(mod_h1_1.00) # To calculate the Bmsy
+#' # fixed_bmsy(mod_h1_1.00, refpt=5500) # To input a fixed Bmsy
+#' # fixed_bmsy(mod_h1_1.00) # To calculate the Bmsy
 #' @export
 
 fixed_bmsy <- function(mod, refpt=NULL){
