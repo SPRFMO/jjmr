@@ -7,7 +7,7 @@ Description: Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel mod
 Authors@R: c( person("Ricardo", "Oliveros-Ramos", email = "roliveros@imarpe.gob.pe", role = c("cre", "aut")), person("Wencheng",
     "Lau-Medrano", role = "aut"), person("Giancarlo", "Moron", role = "aut"), person("Josymar", "Torrejon-Magallanes", role = "aut"),
     person("Niels", "Hintzen", email = "niels.hintzen@wur.nl", role = "aut"),
-    person("Enrique", "Ramos-Vasquez", role = "ctb"))
+    person("Enrique", "Ramos-Vasquez", role = "ctb"),     person("Jim", "Ianelli", email = "jim.ianelli@gmail.com", role = "aut"))
 License: GPL-2
 Depends:
     R (>= 2.15)
