@@ -32,10 +32,10 @@ kobe = function(obj,
                 engine = "ggplot",
                 ...) {
   if (engine == "ggplot") {
-    
+
     msy_mt_results <- get_msy_mt(obj)
-    
-    
+
+
     quadrants <-  data.frame(
       panel = c("bottom_left", "top_right",
                 "bottom_right", "top_left"),
@@ -50,7 +50,7 @@ kobe = function(obj,
       ymin = c(-Inf, Fref,-Inf, Fref),
       ymax = c(Fref, Inf, Fref, Inf)
     )
-    
+
     quadrants <-
       tidyr::expand_grid(
         model = unique(msy_mt_results$model),
@@ -58,9 +58,10 @@ kobe = function(obj,
         things = quadrants
       ) %>%
       tidyr::unnest(cols = things)
-    
+
     kobe_plot <- msy_mt_results %>%
-      ggplot() +
+      dplyr::mutate(label = ifelse(year %in% range(year), year, NA)) %>%
+      ggplot2::ggplot() +
       ggplot2::geom_rect(
         data = quadrants,
         aes(
@@ -76,6 +77,14 @@ kobe = function(obj,
       ggplot2::geom_vline(aes(xintercept = Bref), linetype = 2) +
       ggplot2::geom_path(aes(b_bmsy, f_fmsy), color = "darkgrey") +
       ggplot2::geom_point(aes(b_bmsy, f_fmsy), size = 3, color = col) +
+      ggplot2::geom_label(aes(
+        b_bmsy,
+        f_fmsy,
+        label = label
+        ),
+      nudge_x = 0.15,
+      na.rm=T
+      ) +
       ggplot2::scale_x_continuous(
         name = bquote(B / B[MSY]),
         breaks = seq(0, max(2, 1.1 * max(
@@ -94,13 +103,13 @@ kobe = function(obj,
       ) +
       ggplot2::facet_grid(model ~ stock) +
       theme_jjm()
-    
-    
+
+
     return(kobe_plot)
   } else if (engine == "lattice") {
     for (i in seq_along(obj)) {
       object = obj[[i]]
-      
+
       kobe_plot <- .kobe1(
         x = object,
         stock = stock,
@@ -114,14 +123,14 @@ kobe = function(obj,
         ylim = ylim,
         ...
       )
-      
+
       return(invisible())
     } # close for loop
-    
-    
+
+
   }
-  
-  
+
+
 }
 
 
@@ -141,21 +150,21 @@ kobe = function(obj,
                   ...) {
   #if(class(obj) == "jjm.output") kob = x$output$msy_mt
   #if(class(obj) == "jjm.diag") kob = x$
-  
+
   kob = x$output[[stock]]$msy_mt
-  
+
   F_Fmsy = kob[, 4]
   B_Bmsy = kob[, 13]
   years  = kob[, 1]
-  
+
   n = length(B_Bmsy)
-  
+
   if (!isTRUE(add)) {
     if (is.null(xlim))
       xlim = range(pretty(c(0, B_Bmsy)))
     if (is.null(ylim))
       ylim = range(pretty(c(0, F_Fmsy)))
-    
+
     plot.new()
     plot.window(
       xlim = xlim,
@@ -164,10 +173,10 @@ kobe = function(obj,
       yaxs = "i"
     )
     par(xpd = TRUE)
-    
+
     ylim = par()$usr[3:4]
     zero = ylim[1]
-    
+
     polygon(
       x = c(0, 0, Bref, Bref),
       y = c(Fref, ylim[2], ylim[2], Fref),
@@ -198,14 +207,14 @@ kobe = function(obj,
       col = rgb(1, 0, 0, alpha = 1),
       border = NA
     )
-    
+
     mtext(toExpress("WTF[msy]"), 2, line = 2.5)
     mtext(toExpress("B/B[msy]"), 1, line = 2.5)
     axis(1, las = 1)
     axis(2, las = 2)
     box()
   }
-  
+
   text(
     B_Bmsy[c(1, n)] + 0.01,
     F_Fmsy[c(1, n)] + 0.1,
@@ -222,7 +231,7 @@ kobe = function(obj,
     col = col,
     cex = 0.8
   )
-  
+
   return(invisible())
-  
+
 }
