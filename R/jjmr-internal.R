@@ -1266,13 +1266,16 @@ toWrite = function(x, transpose=TRUE) {
   UseMethod("toWrite")
 }
 
+#@export
 toWrite.default = function(x, transpose) t(as.matrix(x))
 
+#@export
 toWrite.matrix = function(x, transpose) {
   x = if(isTRUE(transpose)) t(x) else x
   return(x)
 }
 
+#@export
 toWrite.array  = function(x, transpose) {
   y = apply(x, 3, function(x) list(x))
   y = lapply(y, FUN="[[", 1)
