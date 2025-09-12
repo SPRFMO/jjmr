@@ -60,7 +60,13 @@ kobe = function(obj,
       tidyr::unnest(cols = things)
 
     kobe_plot <- msy_mt_results %>%
-      dplyr::mutate(label = ifelse(year %in% range(year), year, NA)) %>%
+      dplyr::mutate(
+        label = ifelse(year %in% range(year), year, NA),
+        b_bmsy_end = c(b_bmsy[-1],b_bmsy[1]),
+        b_bmsy_diff = (b_bmsy + b_bmsy_end) / 2,
+        f_fmsy_end = c(f_fmsy[-1],f_fmsy[1]),
+        f_fmsy_diff = (f_fmsy + f_fmsy_end) / 2
+      ) %>%
       ggplot2::ggplot() +
       ggplot2::geom_rect(
         data = quadrants,
@@ -75,8 +81,23 @@ kobe = function(obj,
       ) +
       ggplot2::geom_hline(aes(yintercept = Fref), linetype = 2) +
       ggplot2::geom_vline(aes(xintercept = Bref), linetype = 2) +
-      ggplot2::geom_path(aes(b_bmsy, f_fmsy), color = "darkgrey") +
+      ggplot2::geom_path(aes( b_bmsy, f_fmsy), color = "darkgrey") +
+      ggplot2::geom_segment(
+        aes(x= b_bmsy, y = f_fmsy, xend = b_bmsy_diff, yend = f_fmsy_diff),
+        arrow = arrow(length = unit(.2, "cm")),
+        data = ~subset(., year %% 2 == 0 & year < max(year)),
+        color = "darkgrey"
+      ) +
       ggplot2::geom_point(aes(b_bmsy, f_fmsy), size = 3, color = col) +
+      ggplot2::geom_point(
+        aes(b_bmsy, f_fmsy),
+        size = 3,
+        shape = 21,
+        colour = "#203c64",
+        fill = "white",
+        data = ~subset(., year == max(year)),
+        stroke = 3,
+        alpha = .5) +
       ggplot2::geom_label(aes(
         b_bmsy,
         f_fmsy,

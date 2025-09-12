@@ -27,3 +27,4 @@ vignettes/*.pdf
 TO_DO.txt
 assessment/*
 src/*
+*.DS_Store

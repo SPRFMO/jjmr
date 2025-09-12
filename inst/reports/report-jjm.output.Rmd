@@ -23,7 +23,7 @@ namesCol = colnames(table[[1]])
 NameFs = paste0("Multiplier of \n", "$F_{", namesCol[1], "}$")
 
 #Nombre de las col B. Depende de la longitud de BiomProj
-nBiom = 3
+nBiom = if(is.null(BiomProj))  3 else length(BiomProj)
 NameBs = NULL
 for(i in 1:nBiom){
   NameBs1 = c(paste0("$B_{", namesCol[i*2], "}$"), paste0("P(", "$B_{", namesCol[i*2+1], "}$", " > ", "$B_{MSY}$) %"))
@@ -31,7 +31,7 @@ for(i in 1:nBiom){
 }
 
 #Nombre de las col C. Depende de la longitud de CapProj
-nCap = 2
+nCap = if(is.null(CapProj))  2 else length(CapProj)
 indName = 1 + nBiom * 2
 NameCt = NULL
 for(i in 1:nCap){
