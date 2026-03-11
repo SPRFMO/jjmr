@@ -408,7 +408,7 @@
   modelList = list(...)
 
   for(i in modelList)
-    if(class(i) != "jjm.output")
+    if(!is(i, "jjm.output"))
       stop("Objects must be of class 'jjm.output'.")
 
   modelList = c(...)

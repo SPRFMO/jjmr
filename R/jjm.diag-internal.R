@@ -2840,7 +2840,6 @@ check.zero = function(x){
 #'
 #' @param x Vector to coerce
 #' @param to   One of "chr", "num", "num_chr"
-#' @export
 coerce <- function(x, to = c("chr", "num", "num_chr")) {
   to <- match.arg(to)
   switch(to,

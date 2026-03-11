@@ -3,7 +3,7 @@
   modelList = list(...)
   
   for(i in modelList)
-    if(class(i) != "jjm.config")
+    if(!is(i, "jjm.config"))
       stop("Objects must be of class 'jjm.config'.")
   
   modelList = c(...)

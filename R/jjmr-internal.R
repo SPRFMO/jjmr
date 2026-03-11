@@ -478,7 +478,7 @@
   finList = finList[-c(posChar)]
 
   for(i in finList){
-    class(listCtl[[i]]) = "numeric"
+    is(listCtl[[i]],  "numeric")
   }
 
 	print(listCtl)
@@ -1334,7 +1334,7 @@ toWrite.array  = function(x, transpose) {
 #}
 
 .Puntual_SSB_SD = function(lstOuts,year){
-  if(class(lstOuts)[1] == 'jjm.output') {
+  if(is(lstOuts[1], 'jjm.output')) {
     Name = lstOuts$output$info$model
     lstOuts = list(lstOuts$output$output)
   }else {
@@ -1976,7 +1976,7 @@ toWrite.array  = function(x, transpose) {
   formulaVector = NULL
   for(i in names(object[[typePlot]]))
   {
-    if(class(object[[typePlot]][[i]]) == "list")
+    if(is(object[[typePlot]][[i]], "list"))
     {
       result = c(name = i, type = "List of plots")
     }else
