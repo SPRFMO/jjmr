@@ -2151,7 +2151,7 @@ toWrite.array  = function(x, transpose) {
 
 .getOutFile = function(model, output, ext) {
   out = file.path(output, paste0(model, ext)) # add path
-  out = normalizePath(out)
+  out = normalizePath(out, mustWork = FALSE)
   return(out)
 }
 
@@ -2195,7 +2195,7 @@ toWrite.array  = function(x, transpose) {
     jjm = sprintf("%s -piner %f", jjm, piner)
   }
 
-  if(exists("adflags")) {
+  if(!is.null(adflags)) {
     jjm = paste0(jjm, " ", adflags)
   }
 

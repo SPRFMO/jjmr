@@ -36,7 +36,7 @@ readJJMConfig.default = function(model, path=NULL, input=NULL, output="results",
 }
 
 #' @export
-readJJMConfig.jjm.output = function(model, path, input=NULL, ...) {
+readJJMConfig.jjm.output = function(model, path, input=NULL, output="results", ...) {
   
   ctl  = .getCtlFile(model=model, path=path) # path to ctl file
   dat  = .getDatFile(ctl=ctl, input=input) # path to dat file

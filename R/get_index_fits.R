@@ -16,7 +16,11 @@ get_index_fits <- function(models){
     things <-
       purrr::map_df(things, ~ purrr::map_df(.x, as.data.frame, .id = "index"), .id = "stock")
     
-    names(things)[grepl("^V",names(things))] <- c('year', "observed_ind", "pred_ind", "observed_se", "pearson_resid", "something_resids")
+    v_cols <- grepl("^V", names(things))
+    if (sum(v_cols) != 6) {
+      stop("Unexpected number of index fit columns (expected 6).")
+    }
+    names(things)[v_cols] <- c('year', "observed_ind", "pred_ind", "observed_se", "pearson_resid", "something_resids")
     
     return(things)
     
