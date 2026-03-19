@@ -14,8 +14,7 @@ compareModels <- function(mods)
   for(i in seq_along(mods)){
     temp[[i]] <- readJJM(mods[i], path = "config", input = "input")
   }
-  cmd <- paste0("mods_comb <- combineModels(",paste(paste0("temp[[",seq_along(mods),"]]"),collapse=", "),")")
-  eval(parse(text=cmd))
+  mods_comb <- do.call(combineModels, temp)
   
   return(mods_comb)
 }

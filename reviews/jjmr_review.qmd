@@ -1,0 +1,186 @@
+---
+title: "jjmR Code Review"
+format: html
+execute:
+  eval: false
+---
+
+## Scope
+
+Review of the R package source in `jjmr/`, focusing on likely bugs, robustness, and maintainability issues. Notes below reference file names and functions.
+
+## Executive summary
+
+Primary risks are hard failures during routine use: (1) `readJJMConfig.jjm.output()` errors immediately due to an undefined `output`; (2) `.runJJM()` can build an empty command when `adflags = NULL`; and (3) `readJJM()` can fail before reading outputs because `normalizePath()` expects existing files. Secondary issues affect robustness and reproducibility (assumptions about fixed column counts and shared fleet metadata), plus maintainability items (use of `eval(parse())`, strict class checks). Fixes are small, localized, and low‑risk.
+
+## Summary (high‑priority items)
+
+- **Confirmed runtime error** in `readJJMConfig.jjm.output()` due to an undefined `output` variable.
+- **Likely runtime error** in `.runJJM()` when `adflags = NULL` (default): the current check uses `exists("adflags")`, which is always `TRUE` and can collapse the command to `character(0)`.
+- **Potential failure** in `readJJM()`/`.getOutFile()` when output files are missing because `normalizePath()` defaults to `mustWork = TRUE`.
+
+## Bugs and fixes
+
+### 1) `readJJMConfig.jjm.output()` references `output` but never defines it
+
+**File:** `R/readJJMConfig.R`
+
+```{r}
+readJJMConfig.jjm.output = function(model, path, input=NULL, ...) {
+  ctl  = .getCtlFile(model=model, path=path)
+  dat  = .getDatFile(ctl=ctl, input=input)
+  
+  reps = .getRepFiles(model=model, output=output) # output is undefined
+  yld  = .getYldFile(model=model, output=output)
+  ...
+}
+```
+
+**Issue:** `output` is not in the argument list for this method, so the function errors immediately.
+
+**Fix:** add `output = "results"` to the signature and pass it through, or use `output` from the model object (if stored there).
+
+---
+
+### 2) `.runJJM()` command assembly breaks when `adflags = NULL`
+
+**File:** `R/jjmr-internal.R` (`.runJJM`)
+
+```{r}
+if(exists("adflags")) {
+  jjm = paste0(jjm, " ", adflags)
+}
+```
+
+**Issue:** `exists("adflags")` is always `TRUE` inside the function. When `adflags` is `NULL` (default), `paste0(jjm, " ", NULL)` returns `character(0)`, which breaks the `system()` call.
+
+**Fix:**
+
+```{r}
+if (!is.null(adflags)) {
+  jjm <- paste0(jjm, " ", adflags)
+}
+```
+
+---
+
+### 3) `readJJM()` fails early if outputs do not exist
+
+**File:** `R/jjmr-internal.R` (`.getOutFile`)
+
+```{r}
+.getOutFile = function(model, output, ext) {
+  out = file.path(output, paste0(model, ext))
+  out = normalizePath(out)  # mustWork = TRUE by default
+  return(out)
+}
+```
+
+**Issue:** `normalizePath()` errors when the file does not exist. This causes `readJJM()` to error before a clearer diagnostic can be given.
+
+**Fix:** Use `normalizePath(..., mustWork = FALSE)` and follow with an explicit `file.exists()` check with a targeted error message.
+
+---
+
+### 4) Unused `version` argument in `readJJM()`
+
+**File:** `R/readJJM.R`
+
+`readJJM()` accepts `version`, but it always calls `.versionJJM(ctl)` and ignores the user-supplied value.
+
+**Fix:** Either remove the argument or respect it (e.g., `version = version %||% .versionJJM(ctl)`), and document precedence clearly.
+
+---
+
+### 5) `compareModels()` uses `eval(parse())`
+
+**File:** `R/compareModels.R`
+
+```{r}
+cmd <- paste0("mods_comb <- combineModels(",
+              paste(paste0("temp[[",seq_along(mods),"]]"),collapse=", "),")")
+
+eval(parse(text=cmd))
+```
+
+**Issue:** `eval(parse())` is avoidable and makes debugging harder.
+
+**Fix:**
+
+```{r}
+mods_comb <- do.call(combineModels, temp)
+```
+
+---
+
+### 6) `get_index_fits()` assumes 6 V-columns without checking
+
+**File:** `R/get_index_fits.R`
+
+```{r}
+names(things)[grepl("^V",names(things))] <- c('year', "observed_ind", "pred_ind", "observed_se", "pearson_resid", "something_resids")
+```
+
+**Issue:** If the number of `V` columns changes, this silently mislabels columns or errors.
+
+**Fix:** check `sum(grepl("^V", names(things))) == 6` and stop with a clear message if not, or dynamically map by position with validation.
+
+---
+
+### 7) Class checking in `.combineModels()` is too strict
+
+**File:** `R/jjm.output-internal.R`
+
+```{r}
+for(i in modelList)
+  if(class(i) != "jjm.output")
+    stop("Objects must be of class 'jjm.output'.")
+```
+
+**Issue:** `class(i)` may include multiple classes. `inherits(i, "jjm.output")` is safer.
+
+**Fix:**
+
+```{r}
+if (!inherits(i, "jjm.output")) stop("Objects must be of class 'jjm.output'.")
+```
+
+---
+
+### 8) Fleet name mapping assumes all models share identical fleet metadata
+
+**Files:** `R/get_age_fits.R`, `R/get_index_fits.R`, `R/get_len_fits.R`, `R/get_selectivities.R`
+
+**Issue:** Fleet name lookup uses `models[[1]]$data$Inames/Fnames` for all models. If models differ (common in sensitivity runs), joins become incorrect or incomplete.
+
+**Fix:** Build `fleet_names` per model inside `top_getter()` and join before concatenating across models, or validate that all models share identical fleet definitions and throw a clear error if not.
+
+## Fix roadmap (ordered)
+
+1. Fix `readJJMConfig.jjm.output()` signature and output handling.
+2. Correct `.runJJM()` adflags check to avoid empty command strings.
+3. Make `.getOutFile()` tolerant of missing outputs and add explicit existence checks in `readJJM()`.
+4. Replace `eval(parse())` in `compareModels()` with `do.call()`.
+5. Add input validation in `get_index_fits()` for expected column counts.
+6. Use `inherits()` in `.combineModels()` class checks.
+
+## Improvements (non‑breaking)
+
+- **Explicit returns:** Many functions end with an assignment (e.g., `out <- ...`). This works but is fragile. Prefer `return(out)` for clarity.
+- **Input validation:** Add checks for missing/empty output files with actionable messages in `readJJM()`, `readJJMConfig()`, and `runJJM()`.
+- **Consistent parameter handling:** A few functions accept `version` but do not use it. Either remove or standardize across all functions.
+- **Avoid `setwd()` side effects:** `.runJJM()` changes directories without restoring. In `runJJM.default` the caller resets working directory, but adding `on.exit(setwd(oldwd))` within `.runJJM()` would make the function safer on its own.
+- **Testing:** Add minimal `testthat` tests for:
+  - `readJJMConfig.jjm.output()` works with a small fixture.
+  - `runJJM()` assembles commands correctly when `adflags = NULL` and when set.
+  - `get_index_fits()` fails cleanly when the expected columns are not present.
+
+## Suggested quick patch list
+
+1. Fix `readJJMConfig.jjm.output()` signature and `output` usage.
+2. Replace `exists("adflags")` with `!is.null(adflags)` in `.runJJM()`.
+3. Update `.getOutFile()` to `normalizePath(..., mustWork = FALSE)` and add explicit `file.exists()` checks.
+4. Replace `eval(parse())` in `compareModels()` with `do.call()`.
+5. Add column count checks in `get_index_fits()` (and other `get_*` functions that assume fixed column counts).
+6. Use `inherits()` in `.combineModels()` class checks.
+

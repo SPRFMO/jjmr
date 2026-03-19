@@ -1,0 +1,94 @@
+diff --git a/R/compareModels.R b/R/compareModels.R
+index 428fbb9..37e6457 100644
+--- a/R/compareModels.R
++++ b/R/compareModels.R
+@@ -14,8 +14,7 @@ compareModels <- function(mods)
+   for(i in seq_along(mods)){
+     temp[[i]] <- readJJM(mods[i], path = "config", input = "input")
+   }
+-  cmd <- paste0("mods_comb <- combineModels(",paste(paste0("temp[[",seq_along(mods),"]]"),collapse=", "),")")
+-  eval(parse(text=cmd))
++  mods_comb <- do.call(combineModels, temp)
+   
+   return(mods_comb)
+ }
+diff --git a/R/get_index_fits.R b/R/get_index_fits.R
+index 82564ef..8d5cebe 100644
+--- a/R/get_index_fits.R
++++ b/R/get_index_fits.R
+@@ -16,7 +16,11 @@ get_index_fits <- function(models){
+     things <-
+       purrr::map_df(things, ~ purrr::map_df(.x, as.data.frame, .id = "index"), .id = "stock")
+     
+-    names(things)[grepl("^V",names(things))] <- c('year', "observed_ind", "pred_ind", "observed_se", "pearson_resid", "something_resids")
++    v_cols <- grepl("^V", names(things))
++    if (sum(v_cols) != 6) {
++      stop("Unexpected number of index fit columns (expected 6).")
++    }
++    names(things)[v_cols] <- c('year', "observed_ind", "pred_ind", "observed_se", "pearson_resid", "something_resids")
+     
+     return(things)
+     
+diff --git a/R/jjm.output-internal.R b/R/jjm.output-internal.R
+index be4dd56..a0c66e9 100644
+--- a/R/jjm.output-internal.R
++++ b/R/jjm.output-internal.R
+@@ -408,7 +408,7 @@
+   modelList = list(...)
+ 
+   for(i in modelList)
+-    if(class(i) != "jjm.output")
++    if(!inherits(i, "jjm.output"))
+       stop("Objects must be of class 'jjm.output'.")
+ 
+   modelList = c(...)
+diff --git a/R/jjmr-internal.R b/R/jjmr-internal.R
+index 77a6738..4ba101a 100644
+--- a/R/jjmr-internal.R
++++ b/R/jjmr-internal.R
+@@ -2151,7 +2151,7 @@ toWrite.array  = function(x, transpose) {
+ 
+ .getOutFile = function(model, output, ext) {
+   out = file.path(output, paste0(model, ext)) # add path
+-  out = normalizePath(out)
++  out = normalizePath(out, mustWork = FALSE)
+   return(out)
+ }
+ 
+@@ -2195,7 +2195,7 @@ toWrite.array  = function(x, transpose) {
+     jjm = sprintf("%s -piner %f", jjm, piner)
+   }
+ 
+-  if(exists("adflags")) {
++  if(!is.null(adflags)) {
+     jjm = paste0(jjm, " ", adflags)
+   }
+ 
+diff --git a/R/readJJM.R b/R/readJJM.R
+index c7b95d0..c3e47eb 100644
+--- a/R/readJJM.R
++++ b/R/readJJM.R
+@@ -22,6 +22,10 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
+   par  = .getParFile(model=model, output=output)
+   reps = .getRepFiles(model=model, output=output)
+   
++  if(!file.exists(yld)) stop(sprintf("Output file not found: %s", yld))
++  if(!file.exists(par)) stop(sprintf("Output file not found: %s", par))
++  if(length(reps) < 1) warning("No .rep files found; results may be incomplete.")
++  
+   # basic info
+   
+   modelName = .getModelName(ctl)  
+diff --git a/R/readJJMConfig.R b/R/readJJMConfig.R
+index 1e6c15a..7f9db9b 100644
+--- a/R/readJJMConfig.R
++++ b/R/readJJMConfig.R
+@@ -36,7 +36,7 @@ readJJMConfig.default = function(model, path=NULL, input=NULL, output="results",
+ }
+ 
+ #' @export
+-readJJMConfig.jjm.output = function(model, path, input=NULL, ...) {
++readJJMConfig.jjm.output = function(model, path, input=NULL, output="results", ...) {
+   
+   ctl  = .getCtlFile(model=model, path=path) # path to ctl file
+   dat  = .getDatFile(ctl=ctl, input=input) # path to dat file
