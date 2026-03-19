@@ -22,6 +22,10 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
   par  = .getParFile(model=model, output=output)
   reps = .getRepFiles(model=model, output=output)
   
+  if(!file.exists(yld)) stop(sprintf("Output file not found: %s", yld))
+  if(!file.exists(par)) stop(sprintf("Output file not found: %s", par))
+  if(length(reps) < 1) warning("No .rep files found; results may be incomplete.")
+  
   # basic info
   
   modelName = .getModelName(ctl)  
