@@ -10,7 +10,7 @@ Authors@R: c( person("Ricardo", "Oliveros-Ramos", email = "roliveros@imarpe.gob.
     person("Enrique", "Ramos-Vasquez", role = "ctb"),     person("Jim", "Ianelli", email = "jim.ianelli@gmail.com", role = "aut"))
 License: GPL-2
 Depends:
-    R (>= 2.15)
+    R (>= 4.1.0)
 Imports:
     doBy,
     doSNOW,
