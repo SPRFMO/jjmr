@@ -1,0 +1,26 @@
+url: https://sprfmo.github.io/jjmr/
+
+template:
+  bootstrap: 5
+
+home:
+  title: "jjmR"
+  description: "Graphics and diagnostics tools for SPRFMO's Joint Jack Mackerel (JJM) model."
+
+navbar:
+  structure:
+    left:  [home, reference, articles, news]
+    right: [github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/SPRFMO/jjmr
+
+reference:
+  - title: "Package"
+    contents:
+      - starts_with("read")
+      - starts_with("get_")
+      - starts_with("plot")
+      - tidy_JJM
+      - combineModels
