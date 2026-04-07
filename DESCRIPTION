@@ -12,6 +12,7 @@ License: GPL-2
 Depends:
     R (>= 4.1.0)
 Imports:
+    colorspace,
     doBy,
     doSNOW,
     dplyr,
@@ -31,11 +32,11 @@ Imports:
     pander,
     PBSmodelling,
     purrr,
+    rlang,
     rmarkdown,
     stats,
+    tibble,
     tidyr,
     utils
-VignetteBuilder: knitr
-LazyData: TRUE
 Encoding: UTF-8
 RoxygenNote: 7.3.2

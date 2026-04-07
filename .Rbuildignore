@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.vscode$
 vignettes/* # temporal solution
 TO_DO.txt
 cran-comments.md
