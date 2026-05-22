@@ -1,0 +1,130 @@
+---
+title: "JJM Annex Plot Example"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    theme: flatly
+    embed-resources: true
+execute:
+  echo: true
+  message: false
+  warning: false
+params:
+  assessment_dir: "assessment"
+  model: "h1_1.14"
+  stock: 1
+---
+
+```{r}
+library(jjmR)
+
+config_dir <- file.path(params$assessment_dir, "config")
+input_dir <- file.path(params$assessment_dir, "input")
+output_dir <- file.path(params$assessment_dir, "results")
+
+mod <- readJJM(
+  params$model,
+  path = config_dir,
+  input = input_dir,
+  output = output_dir
+)
+
+plot_title <- jjm_label(params$model)
+```
+
+## Input Data
+
+```{r}
+plot_metadata_overview(mod, title = plot_title)
+```
+
+```{r}
+plot_catch_fleet(mod, stock = params$stock, title = plot_title)
+```
+
+```{r}
+plot_effn(mod, stock = params$stock, title = plot_title)
+```
+
+## Weight At Age
+
+```{r}
+plot_wtat(extr_wtat_fsh(mod, stock = params$stock), facet_var = "fleet",
+  title = plot_title)
+```
+
+```{r}
+plot_wtat_cohort(extr_wtat_fsh(mod, stock = params$stock), facet_var = "fleet",
+  title = plot_title)
+```
+
+## Composition Diagnostics
+
+```{r}
+age_fits <- extr_agefits_fsh(mod, stock = params$stock)
+plot_comp_ridge(age_fits, x_var = "age", facet_var = "fleet",
+  x_lab = "Age", title = plot_title)
+```
+
+```{r}
+fleets <- unique(age_fits$fleet)
+if (length(fleets) > 0 && has_comp(age_fits, "fleet", fleets[[1]])) {
+  plot_comp_fits(age_fits, x_var = "age", grp_var = "fleet",
+    grp_filter = fleets[[1]], x_lab = "Age",
+    title = paste(fleets[[1]], plot_title, sep = " | "))
+}
+```
+
+## Index Diagnostics
+
+```{r}
+plot_indices_v2(mod, stock = params$stock, title = plot_title)
+```
+
+```{r}
+index_fits <- extr_indices(mod, stock = params$stock)
+surveys <- unique(index_fits$survey[!is.na(index_fits$obs)])
+if (length(surveys) > 0) {
+  one_survey <- index_fits[index_fits$survey == surveys[[1]], ]
+  plot_fit_diagnostics(one_survey,
+    title = paste(surveys[[1]], plot_title, sep = " | "))
+}
+```
+
+## Selectivity
+
+```{r}
+plot_sel_ridge(extr_sel_fsh(mod, stock = params$stock), facet_var = "fleet",
+  title = plot_title, breaks_df = extr_sel_breaks(mod, "fsh"))
+```
+
+## Stock Status
+
+```{r}
+plot_summary_sheet(fixed_bmsy(mod), stock = params$stock, title = plot_title)
+```
+
+```{r}
+plot_fished_unfished(mod, stock = params$stock, title = plot_title)
+```
+
+```{r}
+plot_kobe(mod, stock = params$stock, title = plot_title)
+```
+
+```{r}
+plot_sr(mod, stock = params$stock, title = plot_title)
+```
+
+## Historical Retrospective
+
+```{r}
+historic_file <- file.path(params$assessment_dir, "hist_retro",
+  "SPRFMO historical retro.csv")
+
+if (file.exists(historic_file)) {
+  plot_historic_retro(historic_file, quantity = "stock",
+    title = "Historical retrospective")
+}
+```

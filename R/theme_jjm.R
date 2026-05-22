@@ -1,55 +1,27 @@
 #' ggplot2 theme for jjmR
 #'
-#' @param ...
+#' @param base_size Base font size.
+#' @param ... Additional arguments passed to [ggplot2::theme_bw()].
 #'
 #' @return a ggplot2 theme object
 #' @export
-#' @importFrom ggplot2 %+replace%
 #' 
 #' @examples  
 #' library(ggplot2)
 #' ggplot(mtcars, aes(mpg)) + geom_histogram() + theme_jjm()
 #' 
-theme_jjm <- function(base_size = 14,...) {
-  ggplot2::theme_minimal(...) %+replace%
+theme_jjm <- function(base_size = 12, ...) {
+  ggplot2::theme_bw(base_size = base_size, ...) +
     ggplot2::theme(
-      # background
-      panel.background = ggplot2::element_blank(),
-      # borders and axis lines
-      panel.border = ggplot2::element_rect(size = 1, fill = "NA"),
-      axis.line = ggplot2::element_blank(),
-      # gridlines
-      panel.grid.major = ggplot2::element_line(
-        size = 0.1,
-        linetype = 2,
-        colour = "lightgray"
-      ),
-      panel.grid.minor = ggplot2::element_line(
-        size = 0.1,
-        linetype = 2,
-        colour = "lightgray"
-      ),
-      # title
-      plot.title = ggplot2::element_text(
-        face = "bold.italic",
-        size = 14,
-        margin = ggplot2::margin(t = 5, b = 5),
-        vjust = 0.5,
-        hjust = 0
-      ),
-      plot.title.position = "panel",
-      # strips for faceted plots
-      strip.background = ggplot2::element_rect(fill = "#203c64"),
-      strip.text = ggplot2::element_text(
-        colour = "white",
-        face = "italic",
-        margin = ggplot2::margin(t = 2, b = 2),
-        vjust = 0.5
-      ),
-      # legends
-      legend.title = ggplot2::element_text(face = "italic", hjust = 0.5),
-      #text
-      axis.title = ggplot2::element_text(size = base_size),
-      axis.text = ggplot2::element_text(size = 0.75 * base_size)
+      panel.grid.minor = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_line(colour = "grey92", linewidth = 0.4),
+      strip.background = ggplot2::element_rect(fill = "grey95", colour = "grey70"),
+      strip.text = ggplot2::element_text(size = ggplot2::rel(0.85), face = "bold"),
+      legend.position = "bottom",
+      legend.key = ggplot2::element_blank(),
+      legend.title = ggplot2::element_text(size = ggplot2::rel(0.9)),
+      axis.ticks = ggplot2::element_line(linewidth = 0.4),
+      plot.title = ggplot2::element_text(size = ggplot2::rel(1), face = "bold"),
+      plot.subtitle = ggplot2::element_text(size = ggplot2::rel(0.85), colour = "grey40")
     )
 }

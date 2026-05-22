@@ -2,6 +2,8 @@
 #' @title Change the internal name of a model
 #' @description This function internally replaces the name of a JJM output object with a user-specified string.
 #' Mostly useful for plots.
+#' @param modList A list of JJM model output objects.
+#' @param nameVector Character vector of replacement model names.
 #' @examples
 #' \dontrun{
 #' recmods <- compareModels(c("mod1.00.hl","mod1.00.ll","mod1.00.hs","mod1.00.ls"))
@@ -15,4 +17,3 @@ changeNameModel = function(modList, nameVector){
   }
   return(modList)
 }
-

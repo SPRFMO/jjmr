@@ -10,6 +10,8 @@ getter(x, pattern = "^sel_", things = NA)
 \item{x}{the object}
 
 \item{pattern}{the string pattern (regex supported) to search for}
+
+\item{things}{Optional preselected object list; defaults to \code{NA}.}
 }
 \value{
 an object subset to matches in names with strings

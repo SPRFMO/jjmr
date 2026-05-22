@@ -17,6 +17,18 @@ navbar:
       href: https://github.com/SPRFMO/jjmr
 
 reference:
+  - title: "Annex diagnostics"
+    contents:
+      - jjm_label
+      - jjm_pfa_palette
+      - starts_with("extr_")
+      - has_comp
+      - starts_with("comp_fig")
+      - starts_with("facet_fig")
+      - calc_mohn_rho
+      - strong_cohorts
+      - annotate_cohorts
+      - read_historic_retro
   - title: "Package"
     contents:
       - starts_with("read")

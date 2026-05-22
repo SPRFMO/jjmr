@@ -10,6 +10,7 @@
 #' @param version version of JJM, default to "2015MS" (2015 SC multi-stock).
 #' @param pdf Produce outputs in a pdf file?
 #' @param portrait Orientation of the pdf output, default TRUE.
+#' @param ... Additional arguments passed to \code{\link{runJJM}}.
 #'
 #' @examples
 #' \dontrun{
@@ -43,4 +44,3 @@ runit = function(mod, est=FALSE, exec=NULL, path="config", input="input", output
   
   return(modtmp)
 }
-
