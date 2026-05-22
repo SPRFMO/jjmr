@@ -6,6 +6,9 @@
 \usage{
 compareModels(mods)
 }
+\arguments{
+\item{mods}{Character vector of model names to compare.}
+}
 \description{
 This function takes a vector of model names, reads in the JJM runs, and combines them.
 Basically a wrapper function for \code{combineModels}.

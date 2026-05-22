@@ -8,12 +8,20 @@ Authors@R: c( person("Ricardo", "Oliveros-Ramos", email = "roliveros@imarpe.gob.
     "Lau-Medrano", role = "aut"), person("Giancarlo", "Moron", role = "aut"), person("Josymar", "Torrejon-Magallanes", role = "aut"),
     person("Niels", "Hintzen", email = "niels.hintzen@wur.nl", role = "aut"),
     person("Enrique", "Ramos-Vasquez", role = "ctb"),     person("Jim", "Ianelli", email = "jim.ianelli@gmail.com", role = "aut"))
+Author: Ricardo Oliveros-Ramos [cre, aut],
+    Wencheng Lau-Medrano [aut],
+    Giancarlo Moron [aut],
+    Josymar Torrejon-Magallanes [aut],
+    Niels Hintzen [aut],
+    Enrique Ramos-Vasquez [ctb],
+    Jim Ianelli [aut]
+Maintainer: Ricardo Oliveros-Ramos <roliveros@imarpe.gob.pe>
 License: GPL-2
 Depends:
-    R (>= 2.15)
+    R (>= 4.1.0)
 Imports:
+    colorspace,
     doBy,
-    doSNOW,
     dplyr,
     foreach,
     forcats,
@@ -28,14 +36,15 @@ Imports:
     lattice,
     latticeExtra,
     magrittr,
-    pander,
+    patchwork,
     PBSmodelling,
     purrr,
     rmarkdown,
+    scales,
+    methods,
     stats,
+    tibble,
     tidyr,
     utils
-VignetteBuilder: knitr
-LazyData: TRUE
 Encoding: UTF-8
 RoxygenNote: 7.3.2

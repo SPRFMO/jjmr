@@ -2,6 +2,7 @@
 #' @description This function takes a vector of model names, reads in the JJM runs, and combines them.
 #' Basically a wrapper function for \code{combineModels}.
 #' Assumes model runs are in the same folder.
+#' @param mods Character vector of model names to compare.
 #' @examples
 #' \dontrun{
 #' 
@@ -18,4 +19,3 @@ compareModels <- function(mods)
   
   return(mods_comb)
 }
-

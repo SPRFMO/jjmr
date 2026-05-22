@@ -1,8 +1,13 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.git$
+^\.vscode$
+^\.github$
 vignettes/* # temporal solution
 TO_DO.txt
 cran-comments.md
 NEWS.md
 ^README\.Rmd$
 src
+^docs$
+^_pkgdown\.yml$

@@ -11,6 +11,7 @@
 #' @param Flim Limit reference point for F/F_MSY, default=1.5.
 #' @param xlim 'x' axis limits.
 #' @param ylim 'y' axis limits.
+#' @param engine Plotting engine, either \code{"ggplot"} or \code{"lattice"}.
 #' @param ... Additional parameters passed to plot.
 #'
 #' @examples

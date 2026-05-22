@@ -1,7 +1,7 @@
 #' Create a jjm.config object
 #'
 #' @description
-#' Construct a \\code{jjm.config} object from data and control lists.
+#' Construct a \code{jjm.config} object from data and control lists.
 #'
 #' @param data List of raw data elements for the JJM model.
 #' @param control List of control parameters, including \code{modelName}.
@@ -245,6 +245,5 @@ runJJM.jjm.config <- function(models,
                  ...)
   return(invisible())
 }
-
 
 

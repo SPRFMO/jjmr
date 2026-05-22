@@ -35,6 +35,8 @@ runit(
 \item{pdf}{Produce outputs in a pdf file?}
 
 \item{portrait}{Orientation of the pdf output, default TRUE.}
+
+\item{...}{Additional arguments passed to \code{\link{runJJM}}.}
 }
 \description{
 Shortcut to fit, run, read and plot a JJM model

@@ -10,7 +10,7 @@ fixed_bmsy(mod, refpt = NULL)
 \arguments{
 \item{mod}{jjm object that is a list of lists}
 
-\item{refpt}{A number to input as Bmsy. If not filled, calculated as the average of the Bmsy estimated for the last ten years (as determined in SCW14 benchmark 2022)}
+\item{refpt}{A number (or vector of numbers if multiple stocks) to input as Bmsy. If not filled, calculated as the average of the Bmsy estimated for the last ten years (as determined in SCW14 benchmark 2022)}
 }
 \value{
 A model

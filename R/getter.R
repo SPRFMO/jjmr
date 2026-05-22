@@ -2,6 +2,7 @@
 #'
 #' @param x the object
 #' @param pattern the string pattern (regex supported) to search for
+#' @param things Optional preselected object list; defaults to \code{NA}.
 #'
 #' @return an object subset to matches in names with strings
 #' @export
