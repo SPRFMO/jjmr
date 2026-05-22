@@ -4,10 +4,12 @@
 \alias{theme_jjm}
 \title{ggplot2 theme for jjmR}
 \usage{
-theme_jjm(base_size = 14, ...)
+theme_jjm(base_size = 12, ...)
 }
 \arguments{
-\item{...}{}
+\item{base_size}{Base font size.}
+
+\item{...}{Additional arguments passed to \code{\link[ggplot2:theme_bw]{ggplot2::theme_bw()}}.}
 }
 \value{
 a ggplot2 theme object

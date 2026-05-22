@@ -2859,7 +2859,7 @@ gray_ramp <- function(n) {
   grDevices::gray(shades)
 }
 
-#' Melt an age‐or‐length matrix into a long tibble
+#' Melt an age-or-length matrix into a long tibble
 #'
 #' @param mat   A matrix with years in column 1 and data in subsequent columns
 #' @param years Vector of years (if not the first column)
@@ -2873,6 +2873,9 @@ melt_matrix <- function(mat, years = NULL, ages = NULL, class = "age") {
   requireNamespace("dplyr")
   requireNamespace("tidyr")
   df <- as.data.frame(mat, check.names = FALSE)
+  if (!is.null(ages)) {
+    names(df)[seq_along(ages)] <- ages
+  }
   if (!is.null(years)) {
     df$year <- years
   }
@@ -2881,10 +2884,8 @@ melt_matrix <- function(mat, years = NULL, ages = NULL, class = "age") {
       cols = -year,
       names_to = class,
       values_to = "value"
-    ) |>
-    dplyr::mutate(
-      !!class := as.integer(!!rlang::sym(class))
     )
+  df_long[[class]] <- as.integer(df_long[[class]])
   df_long
 }
 
@@ -2908,7 +2909,7 @@ plot_fishery_weight <- function(out, ages) {
     ggplot2::facet_wrap(~ fleet) +
     ggplot2::labs(
       x = "Year", y = "Weight (kg)", color = "Age",
-      title = "Weight‐at‐Age by Fleet"
+      title = "Weight-at-Age by Fleet"
     ) +
     ggplot2::theme_minimal()
 }
@@ -2916,9 +2917,10 @@ plot_fishery_weight <- function(out, ages) {
 
 #' Summarize all diagnostics from a jjm run
 #'
-#' @param x A list returned by runJJM
+#' @param object A list returned by runJJM
+#' @param ... Additional arguments. Currently ignored.
 #' @export
-summary.jjm.diagnostics <- function(x, ...) {
+summary.jjm.diagnostics <- function(object, ...) {
   # e.g. compute residuals, age/length fits, kobe points, etc.
   # return a list of tibbles/plots
 }
@@ -2927,6 +2929,7 @@ summary.jjm.diagnostics <- function(x, ...) {
 #'
 #' @param x A summary.jjm.diagnostics
 #' @param which Vector of named diagnostics to render
+#' @param ... Additional arguments. Currently ignored.
 #' @export
 plot.jjm.diagnostics <- function(x, which = names(x), ...) {
   for (nm in which) {
@@ -2935,89 +2938,61 @@ plot.jjm.diagnostics <- function(x, which = names(x), ...) {
   invisible()
 }
 
-
-
-#' Plot catch-at-age residuals by fleet
+#' Bubble plot of catch-at-age residuals
 #'
-#' For each fleet and year, size of the bubble is proportional to |log(obs+1) − log(pred+1)|,
-#' and fill indicates whether the residual is positive.
-#'
-#' @param out A `jjm.out` list as returned by `runJJM()`
-#' @param ages Integer vector of ages
-#' @param fleets Optional character vector of fleet names to include (default all)
-#' @return A ggplot object
-#' @importFrom purrr imap_dfr
-#' @importFrom dplyr mutate filter left_join
-#' @importFrom ggplot2 ggplot aes geom_point scale_fill_manual scale_size_continuous facet_wrap labs theme_minimal
+#' @param out  jjm.out list from runJJM()
+#' @param ages integer vector of ages
+#' @param fleets optional character vector; default = all fleets
 #' @export
 plot_catch_age_residuals <- function(out, ages, fleets = NULL) {
-  # find the matching observed & predicted prop-at-age slots
   obs_vars  <- grep("^pobs_fsh_\\d+$", names(out), value = TRUE)
   pred_vars <- grep("^phat_fsh_\\d+$", names(out), value = TRUE)
   
   df <- purrr::imap_dfr(obs_vars, function(obs_v, idx) {
     pred_v <- pred_vars[idx]
+    yrs    <- out[[obs_v]][,1]
+    m_obs  <- out[[obs_v]][, -1, drop = FALSE]
+    m_pred <- out[[pred_v]][, -1, drop = FALSE]
     
-    mat_obs  <- out[[obs_v]][, -1, drop = FALSE]
-    years    <- out[[obs_v]][, 1]
-    df_obs   <- melt_matrix(mat_obs, years = years, ages = ages, class = "age")
-    
-    mat_pred <- out[[pred_v]][, -1, drop = FALSE]
-    df_pred  <- melt_matrix(mat_pred, years = out[[pred_v]][, 1], ages = ages, class = "age")
+    d_obs  <- melt_matrix(m_obs, years = yrs, ages = ages, class = "age")
+    d_pred <- melt_matrix(m_pred, years = yrs, ages = ages, class = "age")
     
     dplyr::left_join(
-      df_obs,
-      dplyr::select(df_pred, year, age, pred = data),
+      dplyr::rename(d_obs, obs = value),
+      dplyr::rename(d_pred, pred = value),
       by = c("year", "age")
     ) |>
-      dplyr::mutate(fleet = out$Fshry_names[idx])
+      dplyr::mutate(
+        fleet = out$Fshry_names[idx],
+        resid = log(obs + 1) - log(pred + 1),
+        size_s = abs(resid) / max(abs(resid), na.rm = TRUE)
+      )
   })
   
-  df <- df |>
-    dplyr::mutate(
-      resid = log(data + 1) - log(pred + 1),
-      size_s = abs(resid) / max(abs(resid), na.rm = TRUE)
-    )
-  
-  if (!is.null(fleets)) {
-    df <- df |> dplyr::filter(fleet %in% fleets)
-  }
+  if (!is.null(fleets)) df <- dplyr::filter(df, fleet %in% fleets)
   
   ggplot2::ggplot(df, ggplot2::aes(x = year, y = age)) +
     ggplot2::geom_point(
       ggplot2::aes(size = size_s, fill = resid > 0),
-      shape = 21, color = "black"
+      shape = 21,
+      color = "black"
     ) +
     ggplot2::scale_fill_manual(
-      values = c("FALSE" = "white", "TRUE" = "black"),
-      guide  = FALSE
+      values = c("TRUE" = "black", "FALSE" = "white"),
+      guide = FALSE
     ) +
-    ggplot2::scale_size_continuous(
-      range = c(1, 5),
-      name  = "|log obs − log pred|"
-    ) +
-    ggplot2::facet_wrap(~ fleet) +
-    ggplot2::labs(
-      title = "Catch-at-Age Residuals by Fleet",
-      x     = "Year",
-      y     = "Age"
-    ) +
+    ggplot2::scale_size_continuous(range = c(1, 5), name = "|log(obs)-log(pred)|") +
+    ggplot2::facet_wrap(~fleet) +
+    ggplot2::labs(title = "Catch-at-Age Residuals", x = "Year", y = "Age") +
     ggplot2::theme_minimal()
 }
 
 
-#' Plot catch-at-age fits by fleet
+#' Bar+line plot of observed vs predicted catch-at-age
 #'
-#' For each fleet, shows observed proportions as bars and predicted as an overlaid line,
-#' facetted by year.
-#'
-#' @param out A `jjm.out` list as returned by `runJJM()`
-#' @param ages Integer vector of ages
-#' @param fleets Optional character vector of fleet names to include (default all)
-#' @return A named list of ggplot objects (one per fleet); if only one fleet, returns the single plot
-#' @importFrom purrr imap
-#' @importFrom dplyr bind_rows filter
-#' @importFrom ggplot2 ggplot aes geom_col geom_line facet_wrap labs theme_minimal
+#' @param out  jjm.out list from runJJM()
+#' @param ages integer vector of ages
+#' @param fleets optional character vector; default = all fleets
 #' @export
 plot_catch_age_fits <- function(out, ages, fleets = NULL) {
   obs_vars  <- grep("^pobs_fsh_\\d+$", names(out), value = TRUE)
@@ -3027,44 +3002,34 @@ plot_catch_age_fits <- function(out, ages, fleets = NULL) {
     fleet_name <- out$Fshry_names[idx]
     if (!is.null(fleets) && !(fleet_name %in% fleets)) return(NULL)
     
-    mat_obs  <- out[[obs_v]][, -1, drop = FALSE]
-    mat_pred <- out[[pred_vars[idx]]][, -1, drop = FALSE]
-    years    <- out[[obs_v]][, 1]
+    yrs     <- out[[obs_v]][,1]
+    m_obs   <- out[[obs_v]][, -1, drop = FALSE]
+    m_pred  <- out[[pred_vars[idx]]][, -1, drop = FALSE]
     
-    df_obs  <- melt_matrix(mat_obs,  years = years, ages = ages, class = "age") |> 
+    df_obs <- melt_matrix(m_obs, years = yrs, ages = ages, class = "age") |>
       dplyr::mutate(type = "Observed")
-    df_pred <- melt_matrix(mat_pred, years = years, ages = ages, class = "age") |> 
+    df_pred <- melt_matrix(m_pred, years = yrs, ages = ages, class = "age") |>
       dplyr::mutate(type = "Predicted")
     
     df_all <- dplyr::bind_rows(df_obs, df_pred)
     
-    ggplot2::ggplot(df_all, ggplot2::aes(x = age, y = data, fill = type)) +
-      ggplot2::geom_col(
-        data = subset(df_all, type == "Observed"),
-        show.legend = FALSE,
-        width = 0.8
-      ) +
+    ggplot2::ggplot(df_all, ggplot2::aes(x = age, y = value, fill = type)) +
+      ggplot2::geom_col(data = subset(df_all, type == "Observed"), width = 0.8) +
       ggplot2::geom_line(
         data = subset(df_all, type == "Predicted"),
-        aes(group = 1),
+        ggplot2::aes(group = 1),
         size = 1
       ) +
-      ggplot2::facet_wrap(~ year, ncol = 5) +
+      ggplot2::facet_wrap(~year, ncol = 5) +
       ggplot2::labs(
         title = paste("Catch-at-Age Fits:", fleet_name),
-        x     = "Age",
-        y     = "Proportion",
-        fill  = "Type"
+        x = "Age",
+        y = "Proportion",
+        fill = ""
       ) +
       ggplot2::theme_minimal()
   })
   
   plots <- purrr::compact(plots)
-  if (length(plots) == 1) return(plots[[1]])
-  plots
+  if (length(plots) == 1) plots[[1]] else plots
 }
-
-
-
-
-

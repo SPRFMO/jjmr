@@ -40,6 +40,8 @@ kobe(
 
 \item{ylim}{'y' axis limits.}
 
+\item{engine}{Plotting engine, either \code{"ggplot"} or \code{"lattice"}.}
+
 \item{...}{Additional parameters passed to plot.}
 }
 \description{
