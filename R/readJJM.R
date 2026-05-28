@@ -40,8 +40,7 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
 # // Yr Fspr 1-Fspr F/Fmsy Fmsy F Fsprmsy MSY MSYL Bmsy Bzero SSB B/Bmsy
   
   namer <- function(x, msy_mt_names) {
-    
-    #print(.an(ncol(x$msy_mt)), .an(length(msy_mt_names)))
+   #print(.an(ncol(x$msy_mt)), .an(length(msy_mt_names)))
     if (.an(ncol(x$msy_mt)) != .an(length(msy_mt_names))){
       stop("Dimensions of msy_mt no longer match supplied names of each column")
     }
@@ -49,8 +48,9 @@ readJJM = function(model, path = NULL, output="results", input=NULL,
     return(x)
   }
   
-  outputs <- lapply(outputs,namer,msy_mt_names = msy_mt_names)
-  
+# BUG:
+#  outputs <- lapply(outputs,namer,msy_mt_names = msy_mt_names)
+ 
   ind_names <- data.frame(fleet_type = "ind",fleet_name = data$Inames, fleet_number = seq_along(data$Inames))
   
   fsh_names <- data.frame(fleet_type = "fsh",fleet_name = data$Fnames,
