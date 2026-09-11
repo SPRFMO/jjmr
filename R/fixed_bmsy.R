@@ -11,15 +11,22 @@
 #' @export
 
 fixed_bmsy <- function(mod, bmsy_in = NULL, dyn = FALSE) {
-  for(s in 1:mod[[1]]$info$output$nStock) {
+  mod_new <- mod
 
-    mod_new <- mod
+  for(s in 1:mod[[1]]$info$output$nStock) {
     msy_mt <- mod[[1]]$output[[s]]$msy_mt
 
     if(is.null(bmsy_in)) {
       bmsy <- mean(rev(msy_mt[,10])[1:10])
     } else {
-      bmsy <- bmsy_in[s]
+      if(is.matrix(bmsy_in)) {
+            bmsy <- bmsy_in[,s]
+      } else{
+          if(length(bmsy_in) == mod[[1]]$info$output$nStock) {
+          bmsy <- bmsy_in[s]
+          }
+        else(bmsy <- bmsy_in)
+      }
     }
 
     if(dyn) {
@@ -39,7 +46,6 @@ fixed_bmsy <- function(mod, bmsy_in = NULL, dyn = FALSE) {
           } else{
             bmsy <- bmsy_in
         }
-
       }
     }
 
