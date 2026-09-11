@@ -27,7 +27,7 @@ Options are "data" (or deprecated "input") and "output". Default is c("data", "o
 
 \item{var}{Character vector of variable names to include. If NULL (default), all variables are used.}
 
-\item{fleet}{Character vector or numeric vector of fleet indices to include.
+\item{fleet}{Character vector or numeric vector of fleet indices to include. 
 If NULL (default), all fleets are used.}
 
 \item{plot}{Logical. If TRUE (default), plots are displayed. If FALSE, plot objects are returned.}

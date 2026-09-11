@@ -2,7 +2,7 @@
 % Please edit documentation in R/jjm.diag-internal.R
 \name{melt_matrix}
 \alias{melt_matrix}
-\title{Melt an age‐or‐length matrix into a long tibble}
+\title{Melt an age-or-length matrix into a long tibble}
 \usage{
 melt_matrix(mat, years = NULL, ages = NULL, class = "age")
 }
@@ -19,5 +19,5 @@ melt_matrix(mat, years = NULL, ages = NULL, class = "age")
 A tibble with columns `year`, `value`, and `<class>`
 }
 \description{
-Melt an age‐or‐length matrix into a long tibble
+Melt an age-or-length matrix into a long tibble
 }

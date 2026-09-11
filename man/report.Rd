@@ -7,7 +7,7 @@
 report(object, format, output, tangle = FALSE, tidy = TRUE, ...)
 }
 \arguments{
-\item{object}{The object to create the report with, can be of classes 
+\item{object}{The object to create the report with, can be of classes
 'jjm.output' or 'jjm.diag' as created with \code{readJJM} or \code{diagnostics}.}
 
 \item{format}{Format for the report: either "pdf", "html" or "word".}

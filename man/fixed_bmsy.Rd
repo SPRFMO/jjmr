@@ -5,12 +5,14 @@
 \title{Calculate or input a fixed Bmsy value for the jjm model
 Updates the msy_mt table in the jjm output with new B/Bmsy ratios.}
 \usage{
-fixed_bmsy(mod, refpt = NULL)
+fixed_bmsy(mod, bmsy_in = NULL, dyn = FALSE)
 }
 \arguments{
 \item{mod}{jjm object that is a list of lists}
 
-\item{refpt}{A number (or vector of numbers if multiple stocks) to input as Bmsy. If not filled, calculated as the average of the Bmsy estimated for the last ten years (as determined in SCW14 benchmark 2022)}
+\item{bmsy_in}{A number (or vector of numbers if multiple stocks) to input as Bmsy. If not filled, calculated as the average of the Bmsy estimated for the last ten years (as determined in SCW14 benchmark 2022)}
+
+\item{dyn}{Logical value to indicate whether a dynamic Bmsy should be calculated}
 }
 \value{
 A model
@@ -20,6 +22,6 @@ Calculate or input a fixed Bmsy value for the jjm model
 Updates the msy_mt table in the jjm output with new B/Bmsy ratios.
 }
 \examples{
-# fixed_bmsy(mod_h1_1.00, refpt=5500) # To input a fixed Bmsy
+# fixed_bmsy(mod_h1_1.00, bmsy_in=5500) # To input a fixed Bmsy
 # fixed_bmsy(mod_h1_1.00) # To calculate the Bmsy
 }
