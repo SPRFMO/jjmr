@@ -168,8 +168,10 @@ if (!inherits(i, "jjm.output")) stop("Objects must be of class 'jjm.output'.")
 
 - **Explicit returns:** Many functions end with an assignment (e.g., `out <- ...`). This works but is fragile. Prefer `return(out)` for clarity.
 - **Input validation:** Add checks for missing/empty output files with actionable messages in `readJJM()`, `readJJMConfig()`, and `runJJM()`.
+- **Configuration file checks:** Fail fast if `.ctl` or `.dat` files are missing, with clear error messages before attempting `scan()`.
 - **Consistent parameter handling:** A few functions accept `version` but do not use it. Either remove or standardize across all functions.
 - **Avoid `setwd()` side effects:** `.runJJM()` changes directories without restoring. In `runJJM.default` the caller resets working directory, but adding `on.exit(setwd(oldwd))` within `.runJJM()` would make the function safer on its own.
+- **Command execution:** Consider `system2()` (with stdout/stderr capture) for more robust error reporting in `.runJJM()`.
 - **Testing:** Add minimal `testthat` tests for:
   - `readJJMConfig.jjm.output()` works with a small fixture.
   - `runJJM()` assembles commands correctly when `adflags = NULL` and when set.
